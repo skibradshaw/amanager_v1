@@ -1,0 +1,24 @@
+{
+  "name": "amanager",
+  "version": "0.0.0",
+  "authors": [
+    "Tim Bradshaw <tim@alltrips.com>"
+  ],
+  "description": "A Manager",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/js/vendor/",
+    "test",
+    "tests",
+    "vendor/bower_components"
+  ],
+  "main": "",
+  "homepage": "",
+  "private": true
+}

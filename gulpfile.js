@@ -12,5 +12,36 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    // Copy Foundation Elements from Bower to Assets.
+    mix.copy('vendor/bower_components/foundation/scss', 'resources/assets/sass');
+    mix.copy('vendor/bower_components/foundation/js', 'resources/assets/js');
+    // Foundation Core and all JavaScript Plugins to Public folder
+    mix.copy('resources/assets/js/foundation.min.js', 'public/js/foundation.min.js');
+    // Foundation Mondernizr Shim for IE8 to Public folder
+    mix.copy('resources/assets/js/vendor/modernizr.js', 'public/js/modernizr.js');
+
+
+    mix.sass([
+        // Foundation
+    	'foundation.scss',
+    	'normalize.scss',
+        // jQuery UI
+        'jquery-ui.scss',
+        // App Specific Overrides and Needs
+    	'app.scss'
+    	]);
+    	
+    mix.scripts([
+        // Foundation (direct link to jQuery in foot)
+        'vendor/fastclick.js',
+        // jQuery UI
+        'jquery-ui.js',
+    	]);
+
+    mix.version([
+        'public/css/app.css',
+        'public/js/all.js'
+        ]);
+
+   	
 });
