@@ -1,95 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
 
-    <title>{{ $title }}</title>
-
-    <!-- Foundation core CSS -->
-	{{-- Link to compiled, minimized and versioned css file. --}}
-	<link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">    
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
 
   <!--- <body style="background-image: url('/img/background.jpg'); background-repeat:no-repeat; background-position: center; "> -->
-  <!--- FOUNDATION Template: Contact Page Template http://foundation.zurb.com/templates.html -->
+
 <body>
   
   	
 
 
 <!-- TODO Move to NAV and include  -->
-      <nav class="top-bar" data-topbar>
-        <ul class="title-area">
-           
-          <li class="name">
-            <h1>
-              <a href="#">
-                Top Bar Title
-              </a>
-            </h1>
-          </li>
-          <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
-        </ul>
-     
-        <section class="top-bar-section">
-           
-          <ul class="right">
-            <li class="divider"></li>
-            <li class="has-dropdown">
-              <a href="#">Main Item 1</a>
-              <ul class="dropdown">
-                <li><label>Section Name</label></li>
-                <li class="has-dropdown">
-                  <a href="#" class="">Has Dropdown, Level 1</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Dropdown Options</a></li>
-                    <li><a href="#">Dropdown Options</a></li>
-                    <li><a href="#">Level 2</a></li>
-                    <li><a href="#">Subdropdown Option</a></li>
-                    <li><a href="#">Subdropdown Option</a></li>
-                    <li><a href="#">Subdropdown Option</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li class="divider"></li>
-                <li><label>Section Name</label></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li class="divider"></li>
-                <li><a href="#">See all →</a></li>
-              </ul>
-            </li>
-            <li class="divider"></li>
-            <li><a href="#">Main Item 2</a></li>
-            <li class="divider"></li>
-            <li class="has-dropdown">
-              <a href="#">Main Item 3</a>
-              <ul class="dropdown">
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li class="divider"></li>
-                <li><a href="#">See all →</a></li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-      </nav>
+ 
      
        
      
@@ -179,24 +100,6 @@
      
        
      
-      <footer class="row">
-        <div class="large-12 columns">
-          <hr/>
-          <div class="row">
-            <div class="large-6 columns">
-              <p>© Copyright no one at all. Go to town.</p>
-            </div>
-            <div class="large-6 columns">
-              <ul class="inline-list right">
-                <li><a href="#">Link 1</a></li>
-                <li><a href="#">Link 2</a></li>
-                <li><a href="#">Link 3</a></li>
-                <li><a href="#">Link 4</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
      
        
      
@@ -223,30 +126,6 @@
 
 
 
-
-    <!-- Foundation core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- JQuery Files -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-	
-	<!-- Foundation Javascript Files -->
-	<script src="{{ URL::asset('js/foundation.min.js') }}"></script>
-	<script src="{{ URL::asset('js/all.js') }}"></script>
-
-	<!-- DataTables -->
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-	<script>
-	$(document).foundation();
-	</script>
-	<script>
-	$(function() {
-	$( ".datepicker" ).datepicker();
-	});
-	</script>
-
-    @yield('scripts')
 
   </body>
 </html>

@@ -14,7 +14,7 @@
 Route::get('/', function () {
     //return Auth::user();
     
-    return view('test',['title' => 'Hello World']);
+    return view('page_template',['title' => 'Hello World']);
 });
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
