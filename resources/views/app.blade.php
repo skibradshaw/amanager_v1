@@ -17,9 +17,9 @@
 
         @yield('content')
      
- 
+		@include('inc.foot')
         </div>
-  	@include('inc.foot')
+  	
   </body>
 
 </html>

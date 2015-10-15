@@ -4,7 +4,7 @@
           <li class="name">
             <h1>
               <a href="#">
-                A - Manager
+               <img src="/img/logo.png">
               </a>
             </h1>
           </li>

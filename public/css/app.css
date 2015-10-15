@@ -8374,5 +8374,8 @@ body .ui-tooltip {
   /* support: IE8 */
   border-radius: 8px; }
 
+/** Changes background color, height and margin of the border **/
+.top-bar {
+  background: #100f36; }
 
 /*# sourceMappingURL=app.css.map */
