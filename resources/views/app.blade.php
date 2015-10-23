@@ -19,7 +19,8 @@
      
 		@include('inc.foot')
         </div>
-  	
+      </div>
+      
   </body>
 
 </html>
