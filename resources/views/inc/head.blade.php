@@ -6,7 +6,7 @@
     <meta name="author" content="">
     
 
-    <title>{{ $title }}</title>
+    <title>{{ $title or "A Manager"}}</title>
 
     <!-- Foundation core CSS -->
 	{{-- Link to compiled, minimized and versioned css file. --}}

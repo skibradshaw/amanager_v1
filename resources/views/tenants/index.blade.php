@@ -4,5 +4,7 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
-<p>It has begun...</p>
+	@foreach($tenants as $tenant)
+		<a href="/tenants/{{ $tenant->id }}/edit">{{ $tenant->firstname . " " . $tenant->lastname }}</a><br>
+	@endforeach
 @stop

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration {
 			$table->string('license_state')->nullable();
 			$table->string('license_plate')->nullable();
 			$table->boolean('active')->default(1);
+			$table->string('type')->nullable();
 			$table->string('remember_token', 100)->nullable();
 			$table->timestamps();
 		});

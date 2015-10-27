@@ -9,7 +9,7 @@
       <div class="row">
      
          
-        <div class="large-9 columns">
+        <div class="large-12 columns">
 	    @if(Session::has('error'))
 	        <div class="alert alert-warning">{{Session::get('error')}}</div>
 	    @endif	  	

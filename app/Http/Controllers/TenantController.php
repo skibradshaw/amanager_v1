@@ -6,16 +6,11 @@ use Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Apartment;
-use App\Property;
+use App\Tenant;
 
-class ApartmentController extends Controller
+
+class TenantController extends Controller
 {
-    
-    public function __construct()
-    {
-	    $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,9 +19,8 @@ class ApartmentController extends Controller
     public function index()
     {
         //
-        $apartments = Apartment::with('property')->get();
-        return view('apartments.index',['title' => 'Apartments','apartments' => $apartments]);
-        
+        $tenants = Tenant::get();
+        return view('tenants.index',['title' => 'Tenants','tenants' => $tenants]);
     }
 
     /**
@@ -37,9 +31,7 @@ class ApartmentController extends Controller
     public function create()
     {
         //
-        $properties = Property::lists('abbreviation','id');
-        
-        return view('apartments.edit',['title' => 'Create Apartment','properties' => $properties]);
+        return view('tenants.edit',['title' => 'Create New Tenant']);
     }
 
     /**
@@ -52,9 +44,9 @@ class ApartmentController extends Controller
     {
         //
         $input = Request::all();
-        //return $input;
-        Apartment::create($input);
-        return redirect('apartments');
+        Tenant::create($input);
+        return redirect('tenants');
+        
         
     }
 
@@ -67,7 +59,7 @@ class ApartmentController extends Controller
     public function show($id)
     {
         //
-    }
+     }
 
     /**
      * Show the form for editing the specified resource.
@@ -78,10 +70,9 @@ class ApartmentController extends Controller
     public function edit($id)
     {
         //
-        $properties = Property::lists('abbreviation','id');
-        $apartment = Apartment::with('property')->find($id);
+       $tenant = Tenant::find($id);
+       return view('tenants.edit',['title' => 'Update Tenant: ' . $tenant->lastname,'tenant' => $tenant]);
         
-        return view('apartments.edit',['title' => 'Edit Apartment','properties' => $properties, 'apartment' => $apartment]);
     }
 
     /**
@@ -95,11 +86,10 @@ class ApartmentController extends Controller
     {
         //
         $input = Request::all();
-        $apartment = Apartment::find($id);
-        $apartment->fill($input);
-        $apartment->save();
+        $tenant = Tenant::find($id);
+        $tenant->fill($input);
+        $tenant->save();
         return back();
-        
     }
 
     /**

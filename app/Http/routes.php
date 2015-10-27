@@ -18,8 +18,11 @@ Route::get('/', ['middleware' => 'auth', function () {
 }]);
 
 
-Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('/login', 'Auth\AuthController@getLogin');
+Route::post('/login', 'Auth\AuthController@postLogin');
+Route::get('/logout', 'Auth\AuthController@getLogout');
+
+
 
 Route::resource('/apartments','ApartmentController');
+Route::resource('/tenants','TenantController');

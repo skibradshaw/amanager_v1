@@ -3,7 +3,7 @@
            
           <li class="name">
             <h1>
-              <a href="#">
+              <a href="/">
                <img src="/img/logo.png">
               </a>
             </h1>
@@ -14,26 +14,14 @@
         <section class="top-bar-section">
            
           <ul class="right">
-            <li class="divider"></li>
+            @if(Auth::check())
             <li class="has-dropdown">
-              <a href="#">Main Item 1</a>
+              <a href="#">Navigation</a>
               <ul class="dropdown">
-                <li><label>Section Name</label></li>
-                <li class="has-dropdown">
-                  <a href="#" class="">Has Dropdown, Level 1</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Dropdown Options</a></li>
-                    <li><a href="#">Dropdown Options</a></li>
-                    <li><a href="#">Level 2</a></li>
-                    <li><a href="#">Subdropdown Option</a></li>
-                    <li><a href="#">Subdropdown Option</a></li>
-                    <li><a href="#">Subdropdown Option</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
+                <li><a href="/apartments">Apartments</a></li>
+                <li><a href="/tenants">Tenants</a></li>
                 <li class="divider"></li>
-                <li><label>Section Name</label></li>
+                <li><label>Current Leases</label></li>
                 <li><a href="#">Dropdown Option</a></li>
                 <li><a href="#">Dropdown Option</a></li>
                 <li><a href="#">Dropdown Option</a></li>
@@ -41,9 +29,18 @@
                 <li><a href="#">See all →</a></li>
               </ul>
             </li>
+	        <li class="divider"></li>
+	        
+            <li><a href="#">{{ Auth::user()->firstname . ' ' . Auth::user()->lastname }}</a></li>
             <li class="divider"></li>
-            <li><a href="#">Main Item 2</a></li>
-            <li class="divider"></li>
+            <li><a href="/logout">Logout</a></li>
+            @else
+            <li><a href="/login">Login</a></li>
+            @endif
+            
+<!--
+
+            
             <li class="has-dropdown">
               <a href="#">Main Item 3</a>
               <ul class="dropdown">
@@ -53,7 +50,10 @@
                 <li class="divider"></li>
                 <li><a href="#">See all →</a></li>
               </ul>
+          
+
             </li>
+-->
           </ul>
         </section>
       </nav>

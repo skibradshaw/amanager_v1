@@ -4,39 +4,47 @@
 <h1>Apartment</h1>
 @stop
 @section('content')
-	@if(isset($model))
-	{!! Form::model($model,['route' => 'apartments.update']) !!}
+	@if(isset($apartment))
+	{!! Form::model($apartment,['route' => ['apartments.update',$apartment->id],'method' => 'put']) !!}
 	@else
-	{!! Form::open(['route' => 'apartments.create']) !!}
+	{!! Form::open(['route' => 'apartments.store']) !!}
 	@endif
 
    <div class="row collapse">
+  <div class="row collapse">
     <div class="large-2 columns">
-      <label class="inline">Apartment Name</label>
+      <label class="inline">Choose Property</label>
    </div>
-   <div class="large-10 columns">
-      <input type="text" id="name" name="name" placeholder="CS1">
+   <div class="large-4 columns left">
+      {!! Form::select('properties_id',$properties) !!}
     </div>
-   </div>
-   <div class="row collapse">
+   </div> 
+  <div class="row collapse">
     <div class="large-2 columns">
       <label class="inline">Apartment #</label>
    </div>
-   <div class="large-10 columns">
-      <input type="text" id="number" name="name" placeholder="1">
+   <div class="large-1 columns left">
+      {!! Form::text('number') !!}
     </div>
    </div>
-   <div class="row collapse">
     <div class="large-2 columns">
-      <label class="inline">Property</label>
+      
+      <label class="inline">Apartment Name</label>
    </div>
-   <div class="large-10 columns">
-      <input type="text" id="name" name="name" placeholder="CS1">
+   <div class="large-4 columns left">
+      {!! Form::text('name') !!}
     </div>
    </div>
+ 
+ 
 
-   <button type="submit" class="radius button">Submit</button>
-   {!! Form::close() !!}
+ 	@if(isset($apartment))
+		<button type="submit" class="radius button">Update</button>
+		
+	@else
+		<button type="submit" class="radius button">Submit</button>
+	@endif	
+  {!! Form::close() !!}
 
 
 @stop

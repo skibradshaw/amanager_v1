@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Apartment extends Model
 {
     //
-    protected $fillable = ['name'];
+    protected $fillable = ['name','number','properties_id','active'];
     
     public function property() {
-	    return $this->belongsTo('App\Property');
+	    return $this->belongsTo('App\Property','properties_id');
     }
 }
