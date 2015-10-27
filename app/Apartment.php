@@ -12,4 +12,8 @@ class Apartment extends Model
     public function property() {
 	    return $this->belongsTo('App\Property','properties_id');
     }
+    
+    public function leases() {
+	    return $this->hasMany('App\Lease','apartment_id');
+    }
 }

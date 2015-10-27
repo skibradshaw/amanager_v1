@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Apartment;
-use App\Property;
+use App\Lease;
 
-class ApartmentController extends Controller
+class LeaseController extends Controller
 {
-    
-    public function __construct()
-    {
-	    $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,9 +19,6 @@ class ApartmentController extends Controller
     public function index()
     {
         //
-        $apartments = Apartment::with('property')->get();
-        return view('apartments.index',['title' => 'Apartments','apartments' => $apartments]);
-        
     }
 
     /**
@@ -34,12 +26,10 @@ class ApartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Apartment $apartment)
     {
         //
-        $properties = Property::lists('abbreviation','id');
-        
-        return view('apartments.edit',['title' => 'Create Apartment','properties' => $properties]);
+        return view('leases.edit',['title' => 'Create a New Lease: Apartment ' . $apartment->name ]);
     }
 
     /**
@@ -51,11 +41,6 @@ class ApartmentController extends Controller
     public function store(Request $request)
     {
         //
-        $input = Request::all();
-        //return $input;
-        Apartment::create($input);
-        return redirect('apartments');
-        
     }
 
     /**
@@ -75,13 +60,9 @@ class ApartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Apartment $apartment)
+    public function edit($id)
     {
         //
-        $properties = Property::lists('abbreviation','id');
-        //$apartment = Apartment::with('property')->find($id);
-        
-        return view('apartments.edit',['title' => 'Edit Apartment','properties' => $properties, 'apartment' => $apartment]);
     }
 
     /**
@@ -91,15 +72,9 @@ class ApartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Apartment $apartment)
+    public function update(Request $request, $id)
     {
         //
-        $input = Request::all();
-        //$apartment = Apartment::find($id);
-        $apartment->fill($input);
-        $apartment->save();
-        return back();
-        
     }
 
     /**

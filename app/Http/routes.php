@@ -23,6 +23,16 @@ Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
 
+//Route Model Mapping
+Route::model('apartments','App\Apartment');
+Route::model('tenants','App\Tenant');
+Route::model('lease', 'App\Lease');
 
-Route::resource('/apartments','ApartmentController');
-Route::resource('/tenants','TenantController');
+//Better URLs
+Route::bind('apartments',function($value,$route){
+	return App\Apartment::where('name',$value)->first();
+});
+
+Route::resource('apartments','ApartmentController');
+Route::resource('tenants','TenantController');
+Route::resource('apartments.lease','LeaseController');

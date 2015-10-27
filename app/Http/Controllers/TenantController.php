@@ -67,10 +67,10 @@ class TenantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tenant $tenant)
     {
         //
-       $tenant = Tenant::find($id);
+       //$tenant = Tenant::find($id);
        return view('tenants.edit',['title' => 'Update Tenant: ' . $tenant->lastname,'tenant' => $tenant]);
         
     }
@@ -82,11 +82,11 @@ class TenantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tenant $tenant)
     {
         //
         $input = Request::all();
-        $tenant = Tenant::find($id);
+        //$tenant = Tenant::find($id);
         $tenant->fill($input);
         $tenant->save();
         return back();
