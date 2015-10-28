@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -29,7 +29,7 @@ class LeaseController extends Controller
     public function create(Apartment $apartment)
     {
         //
-        return view('leases.edit',['title' => 'Create a New Lease: Apartment ' . $apartment->name ]);
+        return view('leases.edit',['title' => 'Create a New Lease: Apartment ' . $apartment->name, 'apartment' => $apartment ]);
     }
 
     /**
@@ -41,6 +41,10 @@ class LeaseController extends Controller
     public function store(Request $request)
     {
         //
+        $input = Request::all();
+        $lease = Lease::create($input);
+        $apartment = Apartment::find($lease->apartment_id);
+        return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
     }
 
     /**
