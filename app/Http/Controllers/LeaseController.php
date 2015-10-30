@@ -11,6 +11,11 @@ use App\Lease;
 
 class LeaseController extends Controller
 {
+
+	public function __construct()
+    {
+	    $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -53,9 +58,11 @@ class LeaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Apartment $apartment, Lease $lease)
     {
         //
+        $title = $lease->startdate->diffInMonths($lease->enddate)+1 . ' Month Lease: ' . $lease->apartment->name . ' ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y');
+        return view('leases.show',['title' => $title, 'lease' => $lease]);
     }
 
     /**

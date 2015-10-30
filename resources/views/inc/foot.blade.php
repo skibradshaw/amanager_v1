@@ -17,27 +17,37 @@
         </div>
       </footer>
 
+
     <!-- Foundation core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- JQuery Files -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-	
-	<!-- Foundation Javascript Files -->
-	<script src="{{ URL::asset('js/foundation.min.js') }}"></script>
 	<script src="{{ URL::asset('js/all.js') }}"></script>
 
-	<!-- DataTables -->
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
-	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+	<!-- Foundation Javascript Files -->
+	<script src="{{ URL::asset('js/foundation.min.js') }}"></script>
+	<script src="{{ URL::asset('js/modernizr.js') }}"></script>
+
 	<script>
 	$(document).foundation();
 	</script>
-	<script>
-	$(function() {
-	$( ".datepicker" ).datepicker();
-	});
-	</script>
+
+
+		
 
     @yield('scripts')
 
+	</script>
+	    <script type="text/javascript">
+	/*
+			  (function() {
+			  var s = document.createElement("script");
+			    s.type = "text/javascript";
+			    s.async = true;
+			    s.src = '//api.usersnap.com/load/'+
+			            'b4bd0fc5-8ba6-4a2f-83ea-88e1f3f774a3.js';
+			    var x = document.getElementsByTagName('script')[0];
+			    x.parentNode.insertBefore(s, x);
+			  })();
+	*/
+	</script> 

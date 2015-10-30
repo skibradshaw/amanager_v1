@@ -6,7 +6,9 @@ use Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+
 use App\Tenant;
+use DB;
 
 
 class TenantController extends Controller
@@ -101,5 +103,24 @@ class TenantController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function search(Request $request)
+    {
+		$term = Request::get('term');
+		
+		$results = array();
+		
+		$queries = DB::table('users')
+			->where('firstname', 'LIKE', '%'.$term.'%')
+			->orWhere('lastname', 'LIKE', '%'.$term.'%')
+			->get();
+		
+		foreach ($queries as $query)
+		{
+		    $results[] = [ 'id' => $query->id, 'value' => $query->firstname.' '.$query->lastname ];
+		}
+
+		return response()->json($results);	    
     }
 }

@@ -10,8 +10,13 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+//Route Model Mapping
+Route::model('apartments','App\Apartment');
+Route::model('tenants','App\Tenant');
+Route::model('lease', 'App\Lease');
 
-Route::get('/', ['middleware' => 'auth', function () {
+
+Route::get('/', ['middleware' => 'auth',function () {
     //return Auth::user();
     
     return view('page_template',['title' => 'Hello World']);
@@ -22,11 +27,13 @@ Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
+//Tenant Lookup Routes
+Route::get('/tenants/lookup',['middleware' => 'auth',function(){
+	return view('tenants.search');
+}]);
+Route::get('/tenants/search',['as' => 'tenants.search', 'uses' => 'TenantController@search']);
 
-//Route Model Mapping
-Route::model('apartments','App\Apartment');
-Route::model('tenants','App\Tenant');
-Route::model('lease', 'App\Lease');
+
 
 //Better URLs
 Route::bind('apartments',function($value,$route){

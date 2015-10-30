@@ -10,7 +10,7 @@
 	{!! Form::open(['route' => 'apartments.store']) !!}
 	@endif
 
-   <div class="row collapse">
+  <div class="row collapse">
   <div class="row collapse">
     <div class="large-2 columns">
       <label class="inline">Choose Property</label>
@@ -18,7 +18,7 @@
    <div class="large-4 columns left">
       {!! Form::select('properties_id',$properties) !!}
     </div>
-   </div> 
+  </div> 
   <div class="row collapse">
     <div class="large-2 columns">
       <label class="inline">Apartment #</label>

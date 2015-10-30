@@ -15,6 +15,8 @@ elixir(function(mix) {
     // Copy Foundation Elements from Bower to Assets.
     mix.copy('vendor/bower_components/foundation/scss', 'resources/assets/sass');
     mix.copy('vendor/bower_components/foundation/js', 'resources/assets/js');
+    mix.copy('vendor/bower_components/jquery-ui/jquery-ui.js', 'resources/assets/js');
+    mix.copy('vendor/bower_components/jquery-ui/themes/base/jquery-ui.css', 'resources/assets/sass');
     // Foundation Core and all JavaScript Plugins to Public folder
     mix.copy('resources/assets/js/foundation.min.js', 'public/js/foundation.min.js');
     // Foundation Mondernizr Shim for IE8 to Public folder
@@ -26,16 +28,20 @@ elixir(function(mix) {
     	'foundation.scss',
     	'normalize.scss',
         // jQuery UI
-        'jquery-ui.scss',
+        'jquery-ui.css',
         // App Specific Overrides and Needs
     	'app.scss'
     	]);
     	
     mix.scripts([
         // Foundation (direct link to jQuery in foot)
+        'datatables.js',
         'vendor/fastclick.js',
+        'vendor/jquery.js',
         // jQuery UI
         'jquery-ui.js',
+
+        
     	]);
 
     mix.version([
