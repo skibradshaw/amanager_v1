@@ -27,12 +27,12 @@ Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
-//Tenant Lookup Routes
+//Tenant Routes
 Route::get('/tenants/lookup',['middleware' => 'auth',function(){
 	return view('tenants.search');
 }]);
 Route::get('/tenants/search',['as' => 'tenants.search', 'uses' => 'TenantController@search']);
-
+Route::post('/tenants/add',['as' => 'tenants.add_to_lease', 'uses' => 'TenantController@addToLease']);
 
 
 //Better URLs

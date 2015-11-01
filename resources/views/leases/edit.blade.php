@@ -71,3 +71,14 @@
 	{!! Form::close() !!}
 
 @stop
+
+@section('scripts')
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+    $( "#datepicker1" ).datepicker();
+
+  });
+
+  </script>
+@stop

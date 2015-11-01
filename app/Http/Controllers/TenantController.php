@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 
 use App\Tenant;
+use App\Lease;
 use DB;
 
 
@@ -122,5 +123,17 @@ class TenantController extends Controller
 		}
 
 		return response()->json($results);	    
+    }
+    
+    public function addToLease(Request $request)
+    {
+	    $input = Request::all();
+	    $lease = Lease::find($input['lease_id']);
+	    if(!$lease->tenants->contains($input['tenant_id']))
+	    {
+		    $lease->tenants()->attach($input['tenant_id']);		    
+	    }
+	    
+	    return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name, 'id' => $lease->id]);
     }
 }

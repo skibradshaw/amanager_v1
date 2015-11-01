@@ -22,6 +22,7 @@ elixir(function(mix) {
     // Foundation Mondernizr Shim for IE8 to Public folder
     mix.copy('resources/assets/js/vendor/modernizr.js', 'public/js/modernizr.js');
 
+	
 
     mix.sass([
         // Foundation
@@ -29,6 +30,7 @@ elixir(function(mix) {
     	'normalize.scss',
         // jQuery UI
         'jquery-ui.css',
+        'responsive-tables.css',
         // App Specific Overrides and Needs
     	'app.scss'
     	]);
@@ -38,6 +40,7 @@ elixir(function(mix) {
         'datatables.js',
         'vendor/fastclick.js',
         'vendor/jquery.js',
+        'responsive-tables.js',
         // jQuery UI
         'jquery-ui.js',
 

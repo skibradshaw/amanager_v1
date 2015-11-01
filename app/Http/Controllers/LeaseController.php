@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Apartment;
 use App\Lease;
+use Carbon\Carbon;
 
 class LeaseController extends Controller
 {
@@ -47,6 +48,9 @@ class LeaseController extends Controller
     {
         //
         $input = Request::all();
+        
+        $input['startdate'] = Carbon::parse($input['startdate']);
+        $input['enddate'] = Carbon::parse($input['enddate']);
         $lease = Lease::create($input);
         $apartment = Apartment::find($lease->apartment_id);
         return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
@@ -61,7 +65,7 @@ class LeaseController extends Controller
     public function show(Apartment $apartment, Lease $lease)
     {
         //
-        $title = $lease->startdate->diffInMonths($lease->enddate)+1 . ' Month Lease: ' . $lease->apartment->name . ' ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y');
+        $title = $lease->apartment->property->name . ' Apartment #' . $lease->apartment->number . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y');
         return view('leases.show',['title' => $title, 'lease' => $lease]);
     }
 
@@ -98,4 +102,6 @@ class LeaseController extends Controller
     {
         //
     }
+    
+	
 }
