@@ -47,7 +47,9 @@ class TenantController extends Controller
     {
         //
         $input = Request::all();
-        Tenant::create($input);
+        $input['type'] = 'tenant';
+        $tenant = Tenant::create($input);
+        
         return redirect('tenants');
         
         

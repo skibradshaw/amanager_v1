@@ -7,30 +7,44 @@
   <div class="row">
 
     <div class="large-6 columns">
-    	<h3><small>Rental Info</small></h3>
+    	<h2><small>Rental Info</small></h2>
     	<div class="panel">
 	    	Lease Begin & End:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
 	    	Apartment Rent: ${{ number_format($lease->month_rent,2) }}<br>
-	    	Pet Rent: <br>
+	    	Pet Rent: ${{ number_format($lease->pet_rent,2) }}<br>
 	    	Misc Fees: <br>
 	    	Late Fees: <br>	    	
     	</div>  
     </div>
+
     <div class="large-6 columns">
-    	<h3><small>Residents</small></h3>
+    	<h2><small>Action</small></h2>
     	<div class="panel">
-	    	<ul>
+		<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>
+		<a href="#" class="button radius tiny" data-reveal-id="myModal">Assess Fees</a>
+    	</div>  
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-12 columns">
+    	<h2><small>Residents</small></h2>
+    	<div class="panel">
 		    	@foreach($lease->tenants as $tenant)
-		    	<li>{{ $tenant->firstname }} {{ $tenant->lastname }}</li>
+		    	<ul class="vcard">
+			    	<li class="fn">{{ $tenant->firstname }} {{ $tenant->lastname }}</li>
+			    	<li class="phone">{{ $tenant->phone }}</li>
+			    	<li class="email"><a href="mailto:{{ $tenant->email }}">{{ $tenant->email }}</a></li>
+			    	<li class="text-center"><a href="#" class="button radius tiny" data-reveal-id="myModal">Record Payemnt</a></li>
+		    	</ul>
 		    	@endforeach
 	    	</ul>
-    	<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>
     	</div>        
     </div>
 
   </div>
   <div class="row">
 	  <div class="large-12 columns">
+		  <h2><small>Ledger</small></h2>
 		  <table id="ledger" class="responsive ledger" width="100%">
 			<thead>
 				<tr>
