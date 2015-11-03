@@ -43,3 +43,4 @@ Route::bind('apartments',function($value,$route){
 Route::resource('apartments','ApartmentController');
 Route::resource('tenants','TenantController');
 Route::resource('apartments.lease','LeaseController');
+Route::resource('apartments.lease.payments','PaymentController');

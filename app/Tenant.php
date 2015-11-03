@@ -17,6 +17,11 @@ class Tenant extends User
 	
 	protected $fillable = ['firstname','lastname','phone','email','license_state','license_plate'];
 
+    public function getFullNameAttribute()
+    {
+	    return $this->firstname . ' ' . $this->lastname;
+    }
+    
     public function getPhoneAttribute($value) 
     {
         return "(".substr($value, 0, 3).") ".substr($value, 3, 3)."-".substr($value,6);
