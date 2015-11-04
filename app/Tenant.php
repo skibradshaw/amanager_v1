@@ -35,5 +35,10 @@ class Tenant extends User
 	{
 		return $this->belongsToMany('App\Tenant');
 	}
+	
+	public function payments()
+	{
+		return $this->hasMany('App\Payment','tenant_id');
+	}
     
 }

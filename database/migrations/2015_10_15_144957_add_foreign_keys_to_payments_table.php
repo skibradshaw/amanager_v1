@@ -15,7 +15,6 @@ class AddForeignKeysToPaymentsTable extends Migration {
 		Schema::table('payments', function(Blueprint $table)
 		{
 			$table->foreign('bank_deposits_id', 'fk_payments_bank_deposits1')->references('id')->on('bank_deposits')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('payment_types_id', 'fk_payments_payment_types1')->references('id')->on('payment_types')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('lease_id')->references('id')->on('leases')->onUpdate('RESTRICT')->onDelete('CASCADE');
 			$table->foreign('tenant_id')->references('id')->on('users')->onUpdate('RESTRICT')->onDelete('CASCADE');
 		});
@@ -32,7 +31,6 @@ class AddForeignKeysToPaymentsTable extends Migration {
 		Schema::table('payments', function(Blueprint $table)
 		{
 			$table->dropForeign('fk_payments_bank_deposits1');
-			$table->dropForeign('fk_payments_payment_types1');
 			$table->dropForeign('payments_lease_id_foreign');
 			$table->dropForeign('payments_tenant_id_foreign');
 		});

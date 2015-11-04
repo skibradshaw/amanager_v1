@@ -34,7 +34,7 @@
 			    	<li class="fn">{{ $tenant->firstname }} {{ $tenant->lastname }}</li>
 			    	<li class="phone">{{ $tenant->phone }}</li>
 			    	<li class="email"><a href="mailto:{{ $tenant->email }}">{{ $tenant->email }}</a></li>
-			    	<li class="text-center"><a href="#" class="button radius tiny" data-reveal-id="myModal">Record Payemnt</a></li>
+			    	<li class="text-center"><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="button radius tiny">Record Payemnt</a></li>
 		    	</ul>
 		    	@endforeach
 	    	</ul>
@@ -60,7 +60,7 @@
 						<td> {{ $t->lastname }} </td>
 
 						@foreach($lease->leaseMos() as $m)									
-							<td>$ </td>
+							<td>${{ $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->sum('amount') }}</td>
 						@endforeach
 					</tr>
 				@endforeach
@@ -94,7 +94,7 @@
 				<tr>
 					<td>Balance</td>
 					@foreach($lease->leaseMos() as $m)
-						<td>$0.00</td>
+						<td>${{ number_format($m['Balance'],2) }}</td>
 					@endforeach
 				</tr>
 			</tfoot>	

@@ -16,45 +16,60 @@
 				{!! Form::label('startdate','Start:',['class' => 'inline']) !!} 
 			</div>
 			<div class="small-2 columns left">
-				{!! Form::text('startdate',null,['id' => 'datepicker','placeholder' => 'mm/dd/yy']) !!}
+				{!! Form::text('startdate',null,['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}
 			</div>
 			<div class="small-1 columns">
 				{!! Form::label('enddate','End:',['class' => 'inline']) !!} 
 			</div>			
 			<div class="small-2 columns end">
-				{!! Form::text('enddate',null,['id' => 'datepicker1','placeholder' => 'mm/dd/yy']) !!}
+				{!! Form::text('enddate',null,['id' => 'datepicker1','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}
 			</div>
 
 		</div>
-		<div class="row">
+		<div class="row collapse">
+			
 			<div class="small-2 columns">
-				{!! Form::label('month_rent','Monthly Rent: ') !!}
+				{!! Form::label('monthly_rent','Monthly Rent: ') !!}
 			</div>
-			<div class="small-4 columns end">
-				{!! Form::text('month_rent') !!}
+	       <div class="small-1 columns">
+	          <span class="prefix">$</span>
+	        </div>	    
+			<div class="small-2 columns end">
+				{!! Form::text('monthly_rent') !!}
 			</div>
 		</div>
-		<div class="row">
+		<div class="row collapse">
 			<div class="small-2 columns">
 				{!! Form::label('pet_rent','Pet Rent: ') !!}
 			</div>
-			<div class="small-4 columns end">
+	       <div class="small-1 columns">
+	          <span class="prefix">$</span>
+	        </div>	    
+			<div class="small-2 columns end">
 				{!! Form::text('pet_rent') !!}
 			</div>
 		</div>
-		<div class="row">
+		<div class="row collapse">
 			<div class="small-2 columns">
 				{!! Form::label('deposit','Deposit Amount: ') !!}
 			</div>
-			<div class="small-4 columns end">
+	       <div class="small-1 columns">
+	          <span class="prefix">$</span>
+	        </div>	    
+
+			<div class="small-2 columns end">
 				{!! Form::text('deposit') !!}
 			</div>
 		</div>
-		<div class="row">
+		<div class="row collapse">
 			<div class="small-2 columns">
 				{!! Form::label('pet_deposit','Pet Deposit: ') !!}
 			</div>
-			<div class="small-4 columns end">
+	       <div class="small-1 columns">
+	          <span class="prefix">$</span>
+	        </div>	    
+
+			<div class="small-2 columns end">
 				{!! Form::text('pet_deposit') !!}
 			</div>
 		</div>

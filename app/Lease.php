@@ -20,6 +20,15 @@ class Lease extends Model
 	    return $this->belongsToMany('App\Tenant');
     }
     
+    public function fees()
+    {
+	    return $this->hasMany('App\Fee','lease_id');
+    }
+    
+    public function payments()
+    {
+	    return $this->hasMany('App\Payment','lease_id');
+    }
     
     public function getLengthAttribute()
     {
@@ -85,14 +94,21 @@ class Lease extends Model
 			 	//echo '- Full Month';
 			 	$multiplier = 1.0;
 		 	}
+		 	$amount_due = ($this->monthly_rent + $this->pet_rent)*$multiplier + $this->fees()->whereBetween('due_date', [$d_start,$d_end])->sum('amount');
+		 	$paid_to_date = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->sum('amount');
+		 	$balance = $amount_due-$paid_to_date;
+		 	
 		 	$return[] = [
 		 		'Month' => $d->format('n'),
 		 		'Year' => $d->format('Y'),
-		 		'Multiplier' => $multiplier
+		 		'Multiplier' => $multiplier,
+		 		'Due' => $amount_due,
+		 		'Balance' => $balance
 		 	];
 		 	
 		}	    
 	    
 	    return $return;
     }
+    
 }

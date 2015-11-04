@@ -17,8 +17,8 @@ class CreatePaymentsTable extends Migration {
 			$table->increments('id');
 			$table->integer('lease_id')->unsigned()->index();
 			$table->integer('tenant_id')->unsigned()->index();
-			$table->integer('payment_types_id')->unsigned()->index('fk_payments_payment_types1_idx');
-			$table->integer('bank_deposits_id')->unsigned()->index('fk_payments_bank_deposits1_idx');
+			$table->string('payment_type')->nullable();
+			$table->integer('bank_deposits_id')->nullable()->unsigned()->index('fk_payments_bank_deposits1_idx');
 			$table->string('method')->nullable();
 			$table->string('memo')->nullable();
 			$table->dateTime('paid_date')->nullable();
