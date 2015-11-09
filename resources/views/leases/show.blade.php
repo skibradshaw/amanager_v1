@@ -50,7 +50,7 @@
 				<tr>
 				  <th>Payments</th>
 				  @foreach($lease->leaseMos() as $m)
-				  	<th nowrap=""> {{ $m['Month'] }} - {{ $m['Year'] }} </th>
+				  	<th nowrap=""> {{ $m['Name'] }} </th>
 				  @endforeach
 				</tr>
 			</thead>	
@@ -60,7 +60,7 @@
 						<td> {{ $t->lastname }} </td>
 
 						@foreach($lease->leaseMos() as $m)									
-							<td>${{ $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->sum('amount') }}</td>
+							<td><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->first()['id']]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">{{ $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->sum('amount') }}</a></td>
 						@endforeach
 					</tr>
 				@endforeach
@@ -114,6 +114,11 @@
 	 <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 
+
+  <div id="allocatePayment" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+  </div>
+
 @stop
 @section('scripts')
 <script type="text/javascript">
@@ -121,7 +126,7 @@ $( document ).ready(function() {
  
     // Your code here.
 
-	//Javascript search
+	//Jquery autocomplete search
 	$(function()
 	{
 		 $( "#q" ).autocomplete({
@@ -133,9 +138,12 @@ $( document ).ready(function() {
 		  }
 		});
 	});
+
  
 });	
 
+
 </script>
+
 
 @stop

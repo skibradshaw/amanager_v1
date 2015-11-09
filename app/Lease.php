@@ -101,13 +101,15 @@ class Lease extends Model
 		 	$return[] = [
 		 		'Month' => $d->format('n'),
 		 		'Year' => $d->format('Y'),
+		 		'Name' => $d->format('M'). '-' . $d->format('y'),
 		 		'Multiplier' => $multiplier,
 		 		'Due' => $amount_due,
 		 		'Balance' => $balance
 		 	];
 		 	
+		 	
 		}	    
-	    
+	    $return = collect($return);
 	    return $return;
     }
     
