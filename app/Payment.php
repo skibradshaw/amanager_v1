@@ -16,4 +16,9 @@ class Payment extends Model
 	    return $this->belongsTo('App\Lease','lease_id');
     }
     
+    public function allocations()
+    {
+	    return $this->hasMany('App\PaymentAllocation','payment_id');
+    }
+    
 }

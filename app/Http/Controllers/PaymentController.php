@@ -11,6 +11,7 @@ use App\Tenant;
 use App\Lease;
 use App\Apartment;
 use App\Payment;
+use App\PaymentAllocation;
 
 class PaymentController extends Controller
 {
@@ -55,7 +56,8 @@ class PaymentController extends Controller
         //
         $input = Request::all();
         $input['paid_date'] = Carbon::parse($input['paid_date']);
-        Payment::create($input);
+        $payment = Payment::create($input);
+        PaymentAllocation::create(['amount' => $input['amount'], 'month' => Carbon::parse($input['paid_date'])->month, 'year' => Carbon::parse($input['paid_date'])->year, 'payment_id' => $payment->id]);
         return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'id' => $lease->id]);
     }
 
@@ -111,6 +113,17 @@ class PaymentController extends Controller
 	
     public function allocate(Apartment $apartment, Lease $lease, Payment $payment, Request $request)
     {
-	    return $lease;
+	    $input = Request::all();
+	    foreach($input as $key => $value)
+	    {
+			if($key != '_token')
+			{
+			    $d = Carbon::parse(1 . '-'. $key);
+			    $payment_allocation = PaymentAllocation::firstOrNew(['month' => $d->month, 'year' => $d->year, 'payment_id' => $payment->id]);
+			    $payment_allocation->amount = $value;
+			    $payment_allocation->save();				
+			}
+	    }
+	    //return $input;
     }
 }

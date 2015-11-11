@@ -1,18 +1,18 @@
 
-  	 <h3>Total Payment:  ${{ $payment->amount }}</h3>	
+  	 <h3>Payment {{ $payment->paid_date->format('n/d/Y') }} for ${{ $payment->amount }}</h3>	
 	 {!! Form::open(['route' => ['apartments.lease.payments.allocate','name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $payment->id], 'method' => 'post', 'id' => 'allocate']) !!}
 	 	<div class="row collapse">
 		 	@foreach($lease->leaseMos() as $m)
 		 		<div class="small-1 columns text-center">
 					{!! Form::label($m['Name']) !!}
-					{!! Form::text($m['Name'],null,['class' => 'month_allocation']) !!}			 		
+					{!! Form::text($m['Name'],$payment->allocations()->firstOrNew(['month' => $m['Month'], 'year' => $m['Year']])->amount,['class' => 'month_allocation']) !!}			 		
 		 		</div>
 			@endforeach
 		 	
 	 	</div>
 	 	<div class="row">
 		 	<div class="small-6 left">
-		 		<h4 class="small">Allocated: $<span id="total">0.00</span></h4>
+		 		<h4 class="small">Allocated: $<span id="total">{{ $payment->amount }}</span></h4>
 		 		<p>Allocation must equal the payment total</p>
 		 	</div>	
 	 	</div>
