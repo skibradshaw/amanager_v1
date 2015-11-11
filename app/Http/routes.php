@@ -15,6 +15,7 @@ Route::model('apartments','App\Apartment');
 Route::model('tenants','App\Tenant');
 Route::model('lease', 'App\Lease');
 Route::model('payments','App\Payment');
+Route::model('fees','App\Fee');
 
 
 Route::get('/', ['middleware' => 'auth',function () {
