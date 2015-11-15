@@ -10,7 +10,7 @@
 	{!! Form::open(['route' => ['apartments.lease.payments.store','name' => $lease->apartment->name, 'id' => $lease->id]]) !!}
 	@endif
 	{!! Form::hidden('lease_id',$lease->id) !!}
-  <div class="row collapse">
+
   <div class="row collapse">
     <div class="large-2 columns">
 		{!! Form::label('tenant_id','Select a Tenant',['class' => 'inline']) !!}

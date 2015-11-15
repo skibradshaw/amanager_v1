@@ -15,6 +15,7 @@ Route::model('apartments','App\Apartment');
 Route::model('tenants','App\Tenant');
 Route::model('lease', 'App\Lease');
 Route::model('payments','App\Payment');
+Route::model('fees','App\Fee');
 
 
 Route::get('/', ['middleware' => 'auth',function () {
@@ -48,3 +49,4 @@ Route::resource('apartments','ApartmentController');
 Route::resource('tenants','TenantController');
 Route::resource('apartments.lease','LeaseController');
 Route::resource('apartments.lease.payments','PaymentController');
+Route::resource('apartments.lease.fees', 'FeeController');
