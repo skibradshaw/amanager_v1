@@ -29,6 +29,9 @@ Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
+//Deposit Routes
+Route::get('/deposits/undeposited',['as' => 'undeposited','uses' => 'DepositController@undeposited']);
+
 //Tenant Routes
 Route::get('/tenants/lookup',['middleware' => 'auth',function(){
 	return view('tenants.search');
@@ -50,3 +53,4 @@ Route::resource('tenants','TenantController');
 Route::resource('apartments.lease','LeaseController');
 Route::resource('apartments.lease.payments','PaymentController');
 Route::resource('apartments.lease.fees', 'FeeController');
+Route::resource('deposits','DepositController');

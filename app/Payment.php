@@ -21,4 +21,9 @@ class Payment extends Model
 	    return $this->hasMany('App\PaymentAllocation','payment_id');
     }
     
+    public function tenant()
+    {
+	    return $this->belongsTo('App\Tenant','tenant_id');
+    }
+    
 }

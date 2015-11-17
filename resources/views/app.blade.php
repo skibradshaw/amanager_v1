@@ -11,8 +11,11 @@
          
         <div class="large-12 columns">
 	    @if(Session::has('error'))
-	        <div class="alert alert-warning">{{Session::get('error')}}</div>
+	        <div data-alert class="alert-box warning radius">{{Session::get('error')}}</div>
 	    @endif	  	
+	    @if(Session::has('status'))
+	        <div data-alert class="alert-box success radius">{{Session::get('status')}}</div>
+	    @endif
 		@yield('header')    
 
         @yield('content')

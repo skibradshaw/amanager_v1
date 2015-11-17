@@ -65,7 +65,7 @@ class LeaseController extends Controller
     public function show(Apartment $apartment, Lease $lease)
     {
         //
-        $title = $lease->apartment->property->name . ' Apartment #' . $lease->apartment->number . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y');
+        $title = $lease->apartment->property->name . ' ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/Y') . ' - ' . $lease->enddate->format('n/j/Y');
         return view('leases.show',['title' => $title, 'lease' => $lease]);
     }
 

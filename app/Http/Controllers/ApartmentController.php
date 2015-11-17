@@ -64,9 +64,10 @@ class ApartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Apartment $apartment)
     {
         //
+        return view('apartments.show',['title' => $apartment->property->name . " - " . $apartment->name, 'apartment' => $apartment]);
     }
 
     /**
@@ -102,14 +103,4 @@ class ApartmentController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

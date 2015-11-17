@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 
-Use App\Tenant;
-use App\Lease;
-use App\Apartment;
-Use App\Fee;
+use App\Payment;
 
-class FeeController extends Controller
+class DepositController extends Controller
 {
-    public function __construct()
-    {
-	    $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -33,12 +25,9 @@ class FeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Apartment $apartment, Lease $lease, Request $request)
+    public function create()
     {
         //
-        $fees = ['Miscellaneous' => 'Miscellaneous', 'Late Fee' => 'Late Fee', 'Damage Fee' => 'Damage Fee'];
-        
-        return view('fees.edit',['title' => 'Assess Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease, 'fees' => $fees]);
     }
 
     /**
@@ -47,16 +36,9 @@ class FeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Apartment $apartment, Lease $lease, Request $request)
+    public function store(Request $request)
     {
         //
-        $input = Request::all();
-        $input['due_date'] = Carbon::parse($input['due_date']);
-        $input['lease_id'] = $lease->id;
-        $input['month'] = Carbon::parse($input['due_date'])->month;
-        $input['year'] = Carbon::parse($input['due_date'])->year;
-        $fee = Fee::create($input);
-        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'id' => $lease->id])->with('status', 'Fee Added Successfully!');        
     }
 
     /**
@@ -102,5 +84,12 @@ class FeeController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function undeposited()
+    {
+	    $payments = Payment::whereRaw('bank_deposits_id IS NULL')->get();
+	    $total = $payments->sum('amount');
+	    return view('deposits.undeposited_funds',['title' => 'Undeposited Funds','payments' => $payments, 'total' => $total]);
     }
 }

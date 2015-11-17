@@ -124,6 +124,6 @@ class PaymentController extends Controller
 			    $payment_allocation->save();				
 			}
 	    }
-	    //return $input;
+	    return back();
     }
 }

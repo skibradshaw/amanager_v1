@@ -10,7 +10,7 @@
     	<h2><small>Rental Info</small></h2>
     	<div class="panel">
 	    	Lease Begin & End:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
-	    	Apartment Rent: ${{ number_format($lease->month_rent,2) }}<br>
+	    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
 	    	Pet Rent: ${{ number_format($lease->pet_rent,2) }}<br>
 	    	Misc Fees: <br>
 	    	Late Fees: <br>	    	
@@ -21,14 +21,13 @@
     	<h2><small>Action</small></h2>
     	<div class="panel">
 		<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>
-		<a href="#" class="button radius tiny" data-reveal-id="myModal">Assess Fees</a>
+		<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius tiny">Assess Fees</a>
     	</div>  
     </div>
   </div>
   <div class="row">
     <div class="large-12 columns">
     	<h2><small>Residents</small></h2>
-    	<div class="panel">
 		    	@foreach($lease->tenants as $tenant)
 		    	<ul class="vcard">
 			    	<li class="fn">{{ $tenant->firstname }} {{ $tenant->lastname }}</li>
@@ -37,8 +36,6 @@
 			    	<li class="text-center"><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="button radius tiny">Record Payemnt</a></li>
 		    	</ul>
 		    	@endforeach
-	    	</ul>
-    	</div>        
     </div>
 
   </div>
@@ -60,7 +57,9 @@
 						<td> {{ $t->lastname }} </td>
 
 						@foreach($lease->leaseMos() as $m)									
-							<td><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->first()['id']]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">{{ $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->sum('amount') }}</a></td>
+							<td><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->first()['id']]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">$
+								{{ $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->sum('amount') }}
+								</a></td>
 						@endforeach
 					</tr>
 				@endforeach
@@ -109,7 +108,7 @@
 		{!! Form::hidden('tenant_id',null,['id' => 'tenant_id']) !!}
 		{!! Form::hidden('lease_id',$lease->id) !!}
 		
-		<button type="submit" class="radius button tiny">Add to Lease</button>
+		<button type="submit" class="radius button tiny">Add to Lease</button> OR <a href="/tenants/create" class="button radius tiny">Create a New Tenant</a>
      {!! Form::close(['class' => 'close-reveal-modal']) !!} 	
 	 <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
