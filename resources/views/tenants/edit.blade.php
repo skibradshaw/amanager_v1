@@ -10,6 +10,9 @@
 		
 	@else
 		{!! Form::open(['route' => 'tenants.store']) !!}
+		@if($lease_id > 0)
+		{!! Form::hidden('lease_id',$lease_id) !!}
+		@endif
 	@endif
 	{!! Form::hidden('type','tenant') !!}
 	<div class="row collapse">
@@ -60,12 +63,7 @@
 		</div>
 		
 	</div>
-	@if(isset($tenant))
-		<button type="submit" class="radius button">Update</button>
-		
-	@else
-		<button type="submit" class="radius button">Submit</button>
-	@endif	
+	<button type="submit" class="radius button">{{ $button }}</button>
 	
 	
 	{!! Form::close() !!}

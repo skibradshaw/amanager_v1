@@ -30,6 +30,11 @@ class Lease extends Model
 	    return $this->hasMany('App\Payment','lease_id');
     }
     
+    public function getTotalfeesAttribute()
+    {
+	    return $this->fees->sum('amount');
+    }
+    
     public function getLengthAttribute()
     {
 			$a = strtotime($this->startdate);

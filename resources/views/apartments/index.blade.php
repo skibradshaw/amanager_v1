@@ -49,17 +49,24 @@
 @section('scripts')
 <script>
 $(document).ready( function () {
-    $('#apartments').DataTable({
-	    "searching": true,
-	    "lengthChange": false,
-	    "paging": false,
-	    "info": false,
-		"columnDefs": [
-		    { "targets": [5], "visible": false }
-		  ],
-		"dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
-		"order":[[0,'asc'],[5,'asc']]		    
-    });
+
+	$(document).ready(function() {
+	    $('#apartments').DataTable({
+		    "searching": true,
+		    "lengthChange": false,
+		    "paging": true,
+		    "info": true,
+/*
+			//Hides a column
+			"columnDefs": [
+			    { "targets": [4], "visible": false }
+			  ],
+*/
+			"dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+			"order":[[0,'asc'],[4,'asc']]		    
+	    });
+	} );    
+    
 } );
 </script>
 

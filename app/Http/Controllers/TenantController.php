@@ -35,10 +35,20 @@ class TenantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
-        return view('tenants.edit',['title' => 'Create New Tenant']);
+        $input = Request::all();
+        if(isset($input['lease_id']))
+        {
+	        $button = 'Create & Add Tenant';
+	        $lease_id = $input['lease_id'];	        
+        } else {
+	        $button = 'Create Tenant';
+	        $lease_id = 0;
+
+        }
+        return view('tenants.edit',['title' => 'Create New Tenant','button' => $button,'lease_id' => $lease_id]);
     }
 
     /**
@@ -52,7 +62,16 @@ class TenantController extends Controller
         //
         $input = Request::all();
         $input['type'] = 'tenant';
+        $input['username'] = $input['email'];
         $tenant = Tenant::create($input);
+        
+        if(isset($input['lease_id']))
+        {
+	        $lease = Lease::find($input['lease_id']);
+	        //$tenant->leases()->attach($lease);
+	        $lease->tenants()->attach($tenant);
+	        return redirect()->action('LeaseController@show', [$lease->apartment->name,$lease->id]);
+        }
         
         return redirect('tenants');
         
@@ -80,7 +99,8 @@ class TenantController extends Controller
     {
         //
        //$tenant = Tenant::find($id);
-       return view('tenants.edit',['title' => 'Update Tenant: ' . $tenant->lastname,'tenant' => $tenant]);
+       $button = 'Update Tenant';
+       return view('tenants.edit',['title' => 'Update Tenant: ' . $tenant->lastname,'tenant' => $tenant,'button' => $button]);
         
     }
 

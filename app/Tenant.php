@@ -15,7 +15,7 @@ class Tenant extends User
 		static::addGlobalScope(new TenantScope);
 	}
 	
-	protected $fillable = ['firstname','lastname','phone','email','license_state','license_plate'];
+	protected $fillable = ['firstname','lastname','phone','email','license_state','license_plate','type','username'];
 
     public function getFullNameAttribute()
     {
