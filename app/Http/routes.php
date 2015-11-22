@@ -42,6 +42,7 @@ Route::post('/tenants/add',['as' => 'tenants.add_to_lease', 'uses' => 'TenantCon
 //Payment Routes
 Route::get('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate',['as' => 'apartments.lease.payments.allocate', 'uses' => 'PaymentController@showAllocate']);
 Route::post('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate',['as' => 'apartments.lease.payments.allocate', 'uses' => 'PaymentController@allocate']);
+Route::get('/apartments/{apartments}/lease/{lease}/payments/choose',['as' => 'apartments.lease.payments.choose', 'uses' => 'PaymentController@choose']);
 
 //Better URLs
 Route::bind('apartments',function($value,$route){

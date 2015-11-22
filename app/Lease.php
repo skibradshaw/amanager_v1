@@ -71,6 +71,20 @@ class Lease extends Model
 	    
     }
     
+    public function monthAllocation($tenant_id, $month, $year)
+    {
+	    $return = 0;
+	    foreach($this->payments()->where('tenant_id',$tenant_id)->get() as $payment) {
+		    $return += $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
+		    //echo $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
+		    //echo $payment;
+	    }
+	    
+	    return $return;
+	    
+	    
+    }
+    
     public function leaseMos()
     {
 	    $return = [];

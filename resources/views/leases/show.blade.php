@@ -55,8 +55,8 @@
 
 						@foreach($lease->leaseMos() as $m)
 						{{-- TODO: Remove Hyperlink is Value is $0 --}}									
-							<td><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->first()['id']]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">$
-								{{ $t->payments()->where('lease_id',$lease->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->sum('amount') }}
+							<td><a href="{{ route('apartments.lease.payments.choose',['name' => $lease->apartment->name, 'lease_id' => $lease->id]) }}?tenant_id={{ $t->id }}" data-reveal-id="choosePayment" data-reveal-ajax="true">$
+								{{ $lease->monthAllocation($t->id,$m['Month'],$m['Year']) }}
 								</a></td>
 						@endforeach
 					</tr>
@@ -113,6 +113,10 @@
 
 
   <div id="allocatePayment" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+  </div>
+
+  <div id="choosePayment" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
   </div>
 
