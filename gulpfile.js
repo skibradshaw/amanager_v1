@@ -42,6 +42,7 @@ elixir(function(mix) {
         'vendor/jquery.js',
         'responsive-tables.js',
         'datatables.js',
+        'functions.js',
         // jQuery UI
         'jquery-ui.js',
 

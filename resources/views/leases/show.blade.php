@@ -4,11 +4,13 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
+	
   <div class="row">
 
     <div class="large-4 columns">
     	<h2><small>Rental Info</small></h2>
-		<div class="vcard">
+    	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance()) }}</div>
+		<div class="panel">
 		    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
 		    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
 		    	Pet Rent: ${{ number_format($lease->pet_rent,2) }}<br>
@@ -37,7 +39,7 @@
   </div>
 
   <div class="row">
-	  <div class="large-12 columns">
+	  <div class="large-{{ count($lease->leaseMos()) }} columns">
 		  <h2><small>Ledger</small></h2>
 		  <table id="ledger" class="responsive ledger" width="100%">
 			<thead>
@@ -54,10 +56,21 @@
 						<td> {{ $t->lastname }} </td>
 
 						@foreach($lease->leaseMos() as $m)
-						{{-- TODO: Remove Hyperlink is Value is $0 --}}									
-							<td><a href="{{ route('apartments.lease.payments.choose',['name' => $lease->apartment->name, 'lease_id' => $lease->id]) }}?tenant_id={{ $t->id }}" data-reveal-id="choosePayment" data-reveal-ajax="true">$
+						{{-- TODO: Remove Hyperlink is Value is $0 --}}	
+							
+							@if($lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = '. $m['Year'])->count('id') == 0)
+							
+								<td align="right" class="text-right">${{ $lease->monthAllocation($t->id,$m['Month'],$m['Year']) }}</td>
+							@elseif($lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = '. $m['Year'])->count('id') == 1)
+							<td align="right" class="text-right"><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->first()->id]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">$
 								{{ $lease->monthAllocation($t->id,$m['Month'],$m['Year']) }}
-								</a></td>
+								</a></td>							
+							@elseif($lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = '. $m['Year'])->count('id') > 1)							
+							<td align="right" class="text-right"><a href="{{ route('apartments.lease.payments.choose',['name' => $lease->apartment->name, 'lease_id' => $lease->id]) }}?tenant_id={{ $t->id }}" data-reveal-id="choosePayment" data-reveal-ajax="true">
+								${{ $lease->monthAllocation($t->id,$m['Month'],$m['Year']) }}
+								</a>
+							</td>
+							@endif
 						@endforeach
 					</tr>
 				@endforeach
@@ -71,19 +84,19 @@
 	            <tr>
 		            <td>Rent</td>
 					@foreach($lease->leaseMos() as $m)									
-		                <th>${{ $lease->monthly_rent }} </th>
+		                <th align="right" class="text-right">${{ number_format($lease->monthly_rent * $m['Multiplier'],2) }} </th>
 		            @endforeach
 	            </tr>					            
 				<tr>
 				    <th>Pet Rent</th>
 					@foreach($lease->leaseMos() as $m)									
-					    <td>${{ $lease->pet_rent }} </td>
+					    <td align="right" class="text-right">${{ number_format($lease->pet_rent * $m['Multiplier'],2) }} </td>
 					@endforeach
 				</tr>
 				<tr>
 					<td>Fees</td>
 					@foreach($lease->leaseMos() as $m)									
-					<td>$0.00</td>
+						<td align="right" class="text-right">$0.00</td>
 					@endforeach
 				</tr>					            
 			</tbody>
@@ -91,7 +104,7 @@
 				<tr>
 					<td>Balance</td>
 					@foreach($lease->leaseMos() as $m)
-						<td>${{ number_format($m['Balance'],2) }}</td>
+						<td align="right" class="text-right">${{ number_format($m['Balance'],2) }}</td>
 					@endforeach
 				</tr>
 			</tfoot>	

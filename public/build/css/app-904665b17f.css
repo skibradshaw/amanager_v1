@@ -8437,7 +8437,21 @@ table td, table th {
   background: #100f36; }
 
 table.ledger th, table.ledger td {
-  font-size: 60%;
+  font-size: 70%;
   width: 100%; }
+
+/*
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #abd;
+}
+*/
 
 /*# sourceMappingURL=app.css.map */

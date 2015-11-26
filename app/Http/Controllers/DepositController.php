@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Payment;
+use App\Deposit;
+use Carbon\Carbon;
 
 class DepositController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +25,8 @@ class DepositController extends Controller
     public function index()
     {
         //
+        $deposits = Deposit::orderBy('deposit_date','desc')->get();
+        return view('deposits.index',['title' => 'Deposit History','deposits' => $deposits]);
     }
 
     /**
@@ -25,9 +34,11 @@ class DepositController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+
+
     }
 
     /**
@@ -39,6 +50,19 @@ class DepositController extends Controller
     public function store(Request $request)
     {
         //
+        $input = Request::except(['payment_id']);
+        $payments = Request::only(['payment_id']);
+        $input['deposit_date'] = Carbon::parse($input['deposit_date']);
+        $input['user_id'] = \Auth::user()->id;
+        //Bank Transaction ID is currently a placeholder for a future need/feature
+        $deposit = Deposit::create($input);
+        foreach($payments['payment_id'] as $p)
+        {
+            Payment::where('id',$p)->update(['bank_deposits_id' => $deposit->id]);   
+        }
+
+        return redirect()->route('deposits.index');
+
     }
 
     /**
@@ -75,17 +99,28 @@ class DepositController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function confirm(Request $request)
     {
-        //
+        $input = Request::all();
+        
+        $total = $input['deposit_total'];
+        $ids = '';
+        foreach($input as $key => $value)
+        {
+            //echo strpos($key,'_');
+            if(substr($key, 0,strpos($key,'_')) == 'paymentid')
+            {
+                //echo substr($key, strpos($key,'_')+1,strlen($key));
+                $ids .= substr($key, strpos($key,'_')+1,strlen($key)) . ',';
+            }
+        }
+        $ids = rtrim($ids,',');
+        $payments = Payment::whereRaw('id IN ('.$ids.')')->get();
+        //return $payments;
+        return view('deposits.confirm_deposit',['title' => 'Confirm Bank Deposit','payments' => $payments,'total' => $total]);
     }
-    
+
+
     public function undeposited()
     {
 	    $payments = Payment::whereRaw('bank_deposits_id IS NULL')->get();

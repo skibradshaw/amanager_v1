@@ -31,6 +31,7 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 
 //Deposit Routes
 Route::get('/deposits/undeposited',['as' => 'undeposited','uses' => 'DepositController@undeposited']);
+Route::post('/deposits/confirm',['as' => 'deposit.confirm','uses' => 'DepositController@confirm']);
 
 //Tenant Routes
 Route::get('/tenants/lookup',['middleware' => 'auth',function(){

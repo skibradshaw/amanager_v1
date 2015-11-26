@@ -35,6 +35,31 @@ class Lease extends Model
 	    return $this->fees->sum('amount');
     }
     
+    /**
+     * Description: Open Balance is calculated by going through each month up through and including the current month and adding up the amount due.
+     * @return decimal for currency
+     */
+    public function openBalance()
+    {
+    	$balance = 0;
+    	foreach($this->leaseMos() as $m)
+    	{
+    		$lease_mo = Carbon::parse('first day of '.$m['Name']);
+    		$current_mo = Carbon::parse('last day of ' . Carbon::now());
+    		if($lease_mo->lt($current_mo))
+    		{
+	    		$balance += $m['Balance'];   			
+    		}
+    	}
+    	return $balance;
+
+    }
+
+    /**
+     * Description: Returns the length of the lease in months with fraction of month.
+     * @return decimal
+     * 
+     */
     public function getLengthAttribute()
     {
 			$a = strtotime($this->startdate);
@@ -71,6 +96,13 @@ class Lease extends Model
 	    
     }
     
+    /**
+     * Description: Returns the sum of payments for the given month and tenant
+     * @param  $tenant_id int
+     * @param  $month int
+     * @param  $year int
+     * @return decimal for currency
+     */
     public function monthAllocation($tenant_id, $month, $year)
     {
 	    $return = 0;
@@ -84,7 +116,13 @@ class Lease extends Model
 	    
 	    
     }
-    
+    /**
+     * Description: Returns an array for all the months on a lease that includes
+     * Month, Year, Friendly Name, Multiplier for Fractional Months, Number of Payments,
+     * Total Amount Due for the Month, Remaining Balance.  
+     * @todo : This still needs to have an fees assessed that month calculated into the balance.
+     * @return array
+     */
     public function leaseMos()
     {
 	    $return = [];
@@ -115,13 +153,15 @@ class Lease extends Model
 		 	}
 		 	$amount_due = ($this->monthly_rent + $this->pet_rent)*$multiplier + $this->fees()->whereBetween('due_date', [$d_start,$d_end])->sum('amount');
 		 	$paid_to_date = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->sum('amount');
+		 	$num_payments = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->count('id');
 		 	$balance = $amount_due-$paid_to_date;
 		 	
 		 	$return[] = [
 		 		'Month' => $d->format('n'),
 		 		'Year' => $d->format('Y'),
-		 		'Name' => $d->format('M'). '-' . $d->format('y'),
+		 		'Name' => $d->format('M'). '-' . $d->format('Y'),
 		 		'Multiplier' => $multiplier,
+		 		'Payments' => $num_payments,
 		 		'Due' => $amount_due,
 		 		'Balance' => $balance
 		 	];
