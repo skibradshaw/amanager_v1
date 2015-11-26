@@ -33,7 +33,7 @@ class Tenant extends User
 	
 	public function leases()
 	{
-		return $this->belongsToMany('App\Tenant');
+		return $this->belongsToMany('App\Lease');
 	}
 	
 	public function payments()

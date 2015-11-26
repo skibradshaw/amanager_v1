@@ -3,7 +3,7 @@
 	 {!! Form::open(['route' => ['apartments.lease.payments.allocate','name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $payment->id], 'method' => 'post', 'id' => 'allocate']) !!}
 	 	<div class="row collapse">
 		 	@foreach($lease->leaseMos() as $m)
-		 		<div class="small-1 columns text-center">
+		 		<div class="small-1 columns text-center left">
 					{!! Form::label($m['Name']) !!}
 					{!! Form::text($m['Name'],$payment->allocations()->firstOrNew(['month' => $m['Month'], 'year' => $m['Year']])->amount,['class' => 'month_allocation']) !!}			 		
 		 		</div>

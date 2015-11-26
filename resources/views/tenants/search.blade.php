@@ -21,7 +21,7 @@ $( document ).ready(function() {
 	{
 		 $( "#q" ).autocomplete({
 		  source: "/tenants/search",
-		  minLength: 3,
+		  minLength: 1,
 		  select: function(event, ui) {
 		  	$('#q').val(ui.item.value);
 		  }

@@ -152,7 +152,13 @@ class Lease extends Model
 			 	$multiplier = 1.0;
 		 	}
 		 	$amount_due = ($this->monthly_rent + $this->pet_rent)*$multiplier + $this->fees()->whereBetween('due_date', [$d_start,$d_end])->sum('amount');
-		 	$paid_to_date = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->sum('amount');
+		 	//$paid_to_date = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->sum('amount');
+		 	$paid_to_date = 0;
+		 	foreach ($this->tenants as $t) {
+		 		$paid_to_date += $this->monthAllocation($t->id,$d->month,$d->year);
+		 	}
+
+
 		 	$num_payments = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->count('id');
 		 	$balance = $amount_due-$paid_to_date;
 		 	

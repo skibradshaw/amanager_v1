@@ -20,8 +20,16 @@ Route::model('fees','App\Fee');
 
 Route::get('/', ['middleware' => 'auth',function () {
     //return Auth::user();
-    
-    return view('page_template',['title' => 'Hello World']);
+    $current_leases = App\Lease::where('enddate','>=',\Carbon\Carbon::now())->get();
+    $current_balance = 0;
+    foreach ($current_leases as $lease) {
+    	$current_balance += $lease->openBalance();
+    }
+    return view('index',[
+    	'title' => 'Happy ' . \Carbon\Carbon::now()->format('l'), 
+    	'current_leases' => $current_leases,
+    	'current_balance' => $current_balance
+    	]);
 }]);
 
 
