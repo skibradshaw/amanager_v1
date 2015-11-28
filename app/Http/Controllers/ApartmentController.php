@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+//use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -51,7 +52,13 @@ class ApartmentController extends Controller
     public function store(Request $request)
     {
         //
-        $input = Request::all();
+        //return $request->properties_id; 
+        $this->validate($request,[
+                'number' => 'required|unique:apartments,number,NULL,NULL,properties_id,'.$request->properties_id        
+            ]);
+
+        //$input = Request::all();
+        $input = $request->all();
         //return $input;
         Apartment::create($input);
         return redirect('apartments');
@@ -95,7 +102,7 @@ class ApartmentController extends Controller
     public function update(Request $request, Apartment $apartment)
     {
         //
-        $input = Request::all();
+        $input = $request->all();
         //$apartment = Apartment::find($id);
         $apartment->fill($input);
         $apartment->save();

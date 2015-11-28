@@ -11,22 +11,45 @@
 		<th align="center" style="cursor:pointer">Property</th>
 		<th align="center" style="cursor:pointer">Apartment</th>
 		<th align="center" style="cursor:pointer">Open Balance</th>
+		<th align="center" style="cursor:pointer"></th>
 		<th align="right" style="cursor:pointer" class="text-center">Current Lease</th>
+		<th align="center" style="cursor:pointer"></th>
 		<th align="left" style="cursor:pointer" class="text-center">Next Lease Starts</th>
 	</tr>
 	</thead>
 	<tbody>
 
 	@forelse($apartments as $a)
-		<tr>
-			<td><a href="{{ route('apartments.show',[$a->name]) }}">{{ $a->property->name }}</a></td>
-			<td>{{$a->name}}</td>
-			<td align="right"class="text-right">&nbsp;</td>
-			<td align="center" class="text-center">
-				@if(isset($a->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first()->id))
-					<a href="{{ route('apartments.lease.show',['name' => $a->name, 'id' => $a->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first()->id]) }} ">{{ $a->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first()->enddate->format('n/j/Y') }}</a>			
-				@endif
-			</td>
+			@if(isset($a->currentLease()->id))
+
+			<tr>
+				<td><a href="{{ route('apartments.show',[$a->name]) }}">{{ $a->property->name }}</a></td>
+				<td>{{$a->name}}</td>
+				<td align="right"class="text-right">${{ number_format($a->currentLease()->openBalance(),2) }}</td>
+				<td align="right" class="text-right">
+					{{ $a->currentLease()->startdate->format('n/j/y') }}
+				</td>
+				<td align="center" class="text-center" nowrap>
+						<a href="{{ route('apartments.lease.show',['name' => $a->name, 'id' => $a->currentLease()->id]) }} ">
+						<div class="progress small-12 round">
+							<span class="meter text-center" style="width: {{ $a->currentLease()->progress()*100 }}%"></span>
+						</div>
+						</a>
+				</td>
+				<td align="left" class="text-left">
+					{{ $a->currentLease()->enddate->format('n/j/y') }}
+				</td>
+			@else
+			<tr>
+				<td><a href="{{ route('apartments.show',[$a->name]) }}">{{ $a->property->name }}</a></td>
+				<td>{{$a->name}}</td>
+				<td align="right"class="text-right">&nbsp</td>
+				<td align="center" class="text-center">&nbsp</td>
+				<td align="center" class="text-center">&nbsp</td>
+				<td align="center" class="text-center">&nbsp</td>
+
+			@endif
+
 			<td align="center" class="text-center">
 					<a href="{{ route('apartments.lease.create',['name' => $a->name]) }}" class="btn btn-default btn-xs">Create Lease</a>		
 			</td>
@@ -68,6 +91,7 @@ $(document).ready( function () {
 	} );    
     
 } );
+
 </script>
 
 

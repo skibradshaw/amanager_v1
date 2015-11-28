@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -38,7 +38,7 @@ class TenantController extends Controller
     public function create(Request $request)
     {
         //
-        $input = Request::all();
+        $input = $request->all();
         if(isset($input['lease_id']))
         {
 	        $button = 'Create & Add Tenant';
@@ -60,7 +60,14 @@ class TenantController extends Controller
     public function store(Request $request)
     {
         //
-        $input = Request::all();
+        $this->validate($request,[
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'phone' => 'phone'
+            ]);
+
+        $input = $request->all();
         $input['type'] = 'tenant';
         $input['username'] = $input['email'];
         $tenant = Tenant::create($input);
@@ -114,8 +121,8 @@ class TenantController extends Controller
     public function update(Request $request, Tenant $tenant)
     {
         //
-        $input = Request::all();
-        //$tenant = Tenant::find($id);
+        $input = $request->all();
+        //$tenant = Tenant::find($id);¬
         $tenant->fill($input);
         $tenant->save();
         return back();

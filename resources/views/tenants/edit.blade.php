@@ -21,6 +21,7 @@
 				{!! Form::label('firstname','First Name',['id' => 'firstname','class' => 'inline']) !!}				
 			</div>
 			<div class="large-4 columns left">
+				{!! $errors->first('firstname','<span class="label alert radius">:message</span>') !!}
 				{!! Form::text('firstname') !!}
 			</div>
 		</div>
@@ -29,6 +30,7 @@
 				{!! Form::label('lastname','Last Name',['id' => 'lastname','class' => 'inline']) !!}
 			</div>
 			<div class="large-4 columns left">
+				{!! $errors->first('lastname','<span class="label alert radius">:message</span>') !!}
 				{!! Form::text('lastname') !!}
 			</div>
 		</div>
@@ -37,11 +39,13 @@
 				{!! Form::label('email','Email Address',['id' => 'email','class' => 'inline']) !!}
 			</div>
 			<div class="large-4 columns left">
+				{!! $errors->first('email','<span class="label alert radius">:message</span>') !!}
 				{!! Form::email('email') !!}
 			</div>
 		</div>
 		<div class="row collapse">
 			<div class="large-2 columns">
+				{!! $errors->first('phone','<span class="label alert radius">:message</span>') !!}
 				{!! Form::label('phone','Phone',['id' => 'phone','class' => 'inline']) !!}
 			</div>
 			<div class="large-4 columns left">

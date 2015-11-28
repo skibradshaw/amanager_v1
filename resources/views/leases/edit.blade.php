@@ -16,15 +16,19 @@
 				{!! Form::label('startdate','Start:',['class' => 'inline']) !!} 
 			</div>
 			<div class="small-2 columns left">
-				{!! Form::text('startdate',null,['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}
+				{!! Form::text('startdate',null,['id' => 'datepicker','placeholder' => 'mm/dd/yyyy', 'style' => 'position: relative; z-index: 100000;']) !!}
 			</div>
 			<div class="small-1 columns">
 				{!! Form::label('enddate','End:',['class' => 'inline']) !!} 
 			</div>			
 			<div class="small-2 columns end">
-				{!! Form::text('enddate',null,['id' => 'datepicker1','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}
+				
+				{!! Form::text('enddate',null,['id' => 'datepicker1','placeholder' => 'mm/dd/yyyy', 'style' => 'position: relative; z-index: 100000;']) !!}
 			</div>
-
+			<div class="small-6 columns">
+				 {!! $errors->first('startdate','<span class="label alert radius">:message</span>') !!}
+				 {!! $errors->first('enddate','<span class="label alert radius">:message</span>') !!}
+			</div>	
 		</div>
 		<div class="row collapse">
 			
@@ -37,6 +41,10 @@
 			<div class="small-2 columns end">
 				{!! Form::text('monthly_rent') !!}
 			</div>
+			<div class="small-7 columns end">
+				{!! $errors->first('monthly_rent','<span class="label alert radius">:message</span>') !!}
+			</div>
+
 		</div>
 		<div class="row collapse">
 			<div class="small-2 columns">
@@ -47,6 +55,9 @@
 	        </div>	    
 			<div class="small-2 columns end">
 				{!! Form::text('pet_rent') !!}
+			</div>
+			<div class="small-7 columns end">
+				{!! $errors->first('pet_rent','<span class="label alert radius">:message</span>') !!}
 			</div>
 		</div>
 		<div class="row collapse">
@@ -60,6 +71,10 @@
 			<div class="small-2 columns end">
 				{!! Form::text('deposit') !!}
 			</div>
+			<div class="small-7 columns end">
+				{!! $errors->first('deposit','<span class="label alert radius">:message</span>') !!}
+			</div>
+
 		</div>
 		<div class="row collapse">
 			<div class="small-2 columns">
@@ -71,6 +86,9 @@
 
 			<div class="small-2 columns end">
 				{!! Form::text('pet_deposit') !!}
+			</div>
+			<div class="small-7 columns end">
+				{!! $errors->first('pet_deposit','<span class="label alert radius">:message</span>') !!}
 			</div>
 		</div>
 
@@ -90,10 +108,19 @@
 @section('scripts')
   <script>
   $(function() {
-    $( "#datepicker" ).datepicker();
+    $( "#datepicker" ).datepicker({
+        dateFormat: "mm/dd/yy",
+        onSelect: function(dateText, instance) {
+            date = $.datepicker.parseDate(instance.settings.dateFormat, dateText, instance.settings);
+            date.setMonth(date.getMonth() + 12);
+            date.setDate(date.getDate() - 1);
+            $("#datepicker1").datepicker("setDate", date);
+        }
+    });
     $( "#datepicker1" ).datepicker();
-
+  
   });
+
 
   </script>
 @stop

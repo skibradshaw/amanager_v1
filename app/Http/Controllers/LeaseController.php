@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -47,7 +47,16 @@ class LeaseController extends Controller
     public function store(Request $request)
     {
         //
-        $input = Request::all();
+        $this->validate($request,[
+                'startdate' => 'required|date',
+                'enddate' => 'required|date',
+                'monthly_rent' => 'required|numeric',
+                'pet_rent' => 'numeric',
+                'deposit' => 'numeric',
+                'pet_deposit' => 'numeric'
+            ]);
+
+        $input = $request->all();
         
         $input['startdate'] = Carbon::parse($input['startdate']);
         $input['enddate'] = Carbon::parse($input['enddate']);

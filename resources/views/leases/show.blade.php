@@ -9,7 +9,7 @@
 
     <div class="large-4 columns">
     	<h2><small>Rental Info</small></h2>
-    	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance()) }}</div>
+    	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
 		<div class="panel">
 		    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
 		    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
@@ -21,7 +21,7 @@
 		</div>
 
     </div>
-    <div class="large-8 columns">
+    <div class="large-4 columns">
     	<h2><small>Residents</small></h2>
 		    	@foreach($lease->tenants as $tenant)
 		    	<ul class="vcard">
@@ -32,8 +32,18 @@
 		    	</ul>
 		    	@endforeach
     </div>
-	<div class="large-12 columns">
- 	    			    	
+	<div class="large-4 columns">
+ 	    <h2><small>Deposits</small></h2>
+	   	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance()) }}</div>
+			<div class="panel">
+			    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
+			    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
+			    	Pet Rent: ${{ number_format($lease->pet_rent,2) }}<br>
+			    	Total Fees: ${{ number_format($lease->totalfees,2) }} 
+			    	<hr>
+					<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>	
+					<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius tiny">Assess Fees</a>		    	
+			</div> 	    			    	
 	</div>
 
   </div>

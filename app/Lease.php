@@ -36,10 +36,21 @@ class Lease extends Model
     }
     
     /**
+     * Returns the number of completed months on a lease as an percentage
+     * @return decimal % of lease complete
+     */
+    public function progress()
+    {
+    	$return = 0;
+    	$complete = $this->startdate->diffInMonths(Carbon::now());
+    	$total = $this->enddate->diffInMonths($this->startdate)+1;
+    	return $complete/$total;
+    }
+    /**
      * Description: Open Balance is calculated by going through each month up through and including the current month and adding up the amount due.
      * @return decimal for currency
      */
-    public function openBalance()
+    public function openBalance($tenant_id = null)
     {
     	$balance = 0;
     	foreach($this->leaseMos() as $m)

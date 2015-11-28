@@ -16,4 +16,8 @@ class Apartment extends Model
     public function leases() {
 	    return $this->hasMany('App\Lease','apartment_id')->orderBy('startdate','DESC');
     }
+
+    public function currentLease() {
+    	return $this->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first();
+    }
 }

@@ -10,31 +10,25 @@
 	{!! Form::open(['route' => 'apartments.store']) !!}
 	@endif
 
-  <div class="row collapse">
-  <div class="row collapse">
+
+<div class="row collapse">
     <div class="large-2 columns">
       <label class="inline">Choose Property</label>
    </div>
    <div class="large-4 columns left">
       {!! Form::select('properties_id',$properties) !!}
     </div>
-  </div> 
-  <div class="row collapse">
+</div> 
+<div class="row collapse">
     <div class="large-2 columns">
       <label class="inline">Apartment #</label>
    </div>
    <div class="large-1 columns left">
+      {!! $errors->first('number','<span class="label alert radius">:message</span>') !!}
       {!! Form::text('number') !!}
     </div>
-   </div>
-    <div class="large-2 columns">
-      
-      <label class="inline">Apartment Name</label>
-   </div>
-   <div class="large-4 columns left">
-      {!! Form::text('name') !!}
-    </div>
-   </div>
+
+</div>
  
  
 
