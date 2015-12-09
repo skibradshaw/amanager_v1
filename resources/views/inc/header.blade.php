@@ -21,13 +21,7 @@
                 <li><a href="/apartments">Apartments</a></li>
                 <li><a href="/tenants">Tenants</a></li>
                 <li><a href="/deposits/undeposited">Undeposited Funds</a></li>
-                <li class="divider"></li>
-                <li><label>Current Leases</label></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li><a href="#">Dropdown Option</a></li>
-                <li class="divider"></li>
-                <li><a href="#">See all →</a></li>
+                <li><a href="/deposits">Deposits</a></li>
               </ul>
             </li>
 	        <li class="divider"></li>
