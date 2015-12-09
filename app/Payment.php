@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     //
-    protected $fillable = ['lease_id','tenant_id','method','memo','paid_date','amount','check_no'];
+    protected $fillable = ['lease_id','tenant_id','method','memo','paid_date','amount','check_no','payment_type'];
     
     protected $dates = ['paid_date'];
     

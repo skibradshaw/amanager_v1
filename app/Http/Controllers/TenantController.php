@@ -141,7 +141,7 @@ class TenantController extends Controller
     
     public function search(Request $request)
     {
-		$term = Request::get('term');
+		$term = $request->get('term');
 		
 		$results = array();
 		
@@ -160,7 +160,7 @@ class TenantController extends Controller
     
     public function addToLease(Request $request)
     {
-	    $input = Request::all();
+	    $input = $request->all();
 	    $lease = Lease::find($input['lease_id']);
 	    if(!$lease->tenants->contains($input['tenant_id']))
 	    {

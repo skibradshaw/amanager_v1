@@ -12,7 +12,7 @@
 	 	</div>
 	 	<div class="row">
 		 	<div class="small-6 left">
-		 		<h4 class="small">Allocated: $<span id="total">{{ $payment->amount }}</span></h4>
+		 		<h4 class="small">Allocated: $<span id="total">{{ $payment->amount }}</span> (Difference: $<span id="difference">0</span>)</h4>
 		 		<p>Allocation must equal the payment total</p>
 		 	</div>	
 	 	</div>
@@ -28,17 +28,20 @@ $( document ).ready(function() {
 	var $form = $('#allocate'),
 	    $summands = $form.find('.month_allocation'),
 	    $sumDisplay = $('#total');
+	    $diffDisplay = $('#difference');
 	
 	$form.delegate('.month_allocation', 'change', function ()
 	{
 	   
 	    var sum = 0;
+	    var diff = 0;
 	    $summands.each(function ()
 	    {
 	        var value = Number($(this).val());
 	        if (!isNaN(value)) sum += value;
 	    });
-
+	    diff = sum-{{ $payment->amount }};
+	    $diffDisplay.text(diff.toFixed(2));
 		$sumDisplay.text(sum.toFixed(2));
 		
 		if (sum == {{ $payment->amount }})

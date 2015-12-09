@@ -32,7 +32,7 @@
             </li>
 	        <li class="divider"></li>
 	        
-            <li><a href="#">{{ Auth::user()->firstname . ' ' . Auth::user()->lastname }}</a></li>
+            <li><a href="#">{{ Auth::user()->fullname }}</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Logout</a></li>
             @else

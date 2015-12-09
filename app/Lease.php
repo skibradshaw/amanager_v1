@@ -36,7 +36,7 @@ class Lease extends Model
     }
     
     /**
-     * Returns the number of completed months on a lease as an percentage
+     * Returns the number of completed months as a percentage of all months on a lease.
      * @return decimal % of lease complete
      */
     public function progress()
@@ -107,6 +107,11 @@ class Lease extends Model
 	    
     }
     
+    public function monthFees($month,$year)
+    {
+    	return $this->fees()->whereRaw('MONTH(due_date) = ' . $month)->whereRaw('YEAR(due_date) = ' . $year)->sum('amount');
+    }
+
     /**
      * Description: Returns the sum of payments for the given month and tenant
      * @param  $tenant_id int
@@ -117,15 +122,13 @@ class Lease extends Model
     public function monthAllocation($tenant_id, $month, $year)
     {
 	    $return = 0;
-	    foreach($this->payments()->where('tenant_id',$tenant_id)->get() as $payment) {
+	    foreach($this->payments()->where('payment_type','Rent')->where('tenant_id',$tenant_id)->get() as $payment) {
 		    $return += $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
 		    //echo $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
 		    //echo $payment;
 	    }
 	    
-	    return $return;
-	    
-	    
+	    return $return;	    
     }
     /**
      * Description: Returns an array for all the months on a lease that includes

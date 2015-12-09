@@ -41,8 +41,15 @@ class PaymentController extends Controller
         
         $tenants = $lease->tenants->lists('fullname','id');
         (Request::input('tenant_id')) ? $tenant = Tenant::find(Request::input('tenant_id')) : $tenant = new Tenant;
+        (!empty(Request::input('type'))) ? $type = Request::input('type') : $type = '';
         //return $tenant;
-        return view('payments.edit',['title' => 'Record a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,'apartment' => $apartment, 'lease' => $lease, 'tenants' => $tenants, 'tenant' => $tenant]);
+        return view('payments.edit',[
+            'title' => 'Record a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
+            'apartment' => $apartment, 'lease' => $lease, 
+            'tenants' => $tenants, 
+            'tenant' => $tenant,
+            'payment_type' => $type
+            ]);
     }
 
     /**
