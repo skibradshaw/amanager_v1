@@ -20,4 +20,21 @@ class Apartment extends Model
     public function currentLease() {
     	return $this->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first();
     }
+
+	 public function checkAvailability($start,$end)
+	{
+		// \DB::connection()->enableQueryLog();
+		$return = false;
+		$start = \Carbon\Carbon::parse($start);
+		$end = \Carbon\Carbon::parse($end);
+		$leases = \App\Lease::where('apartment_id',$this->id)->where(function($q) use ($start,$end) {
+						$q->whereRaw('"' . $start . '" <= enddate');
+						$q->whereRaw('"' . $end . '" >= startdate');
+					})
+					->get();
+		
+		($leases->count() == 0) ? $return = true : $return = false;
+		return $return;
+		
+	}
 }

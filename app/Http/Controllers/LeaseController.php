@@ -59,9 +59,15 @@ class LeaseController extends Controller
             ]);
 
         $input = $request->all();
-        
         $input['startdate'] = Carbon::parse($input['startdate']);
         $input['enddate'] = Carbon::parse($input['enddate']);
+        $apartment = Apartment::find($input['apartment_id']);
+
+        // Check for Date overlap on existing leases
+        if(!$apartment->checkAvailability($input['startdate'],$input['enddate']))
+        {
+            return back()->withInput()->with('error', 'These dates are not available!');
+        }        
         $lease = Lease::create($input);
         //Create Lease Details
         $start = $lease->startdate;
@@ -98,7 +104,7 @@ class LeaseController extends Controller
         }
 
 
-        $apartment = Apartment::find($lease->apartment_id);
+        
         return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
     }
 
