@@ -88,8 +88,8 @@
 			<thead>
 				<tr>
 				  <th>Payments</th>
-				  @foreach($lease->leaseMos() as $m)
-				  	<th nowrap=""> {{ $m['Name'] }} </th>
+				  @foreach($lease->details as $m)
+				  	<th nowrap="" align="center" class="text-center"> {{ $m->detailName() }} </th>
 				  @endforeach
 				</tr>
 			</thead>	
@@ -98,19 +98,18 @@
 					<tr>
 						<td> {{ $t->lastname }} </td>
 
-						@foreach($lease->leaseMos() as $m)
-						{{-- TODO: Remove Hyperlink is Value is $0 --}}	
+						@foreach($lease->details as $m)
+						{{-- TODO: Remove Hyperlink if Value is $0 --}}	
 							
-							@if($lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = '. $m['Year'])->count('id') == 0)
+							@if($lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') == 0)
 							
-								<td align="right" class="text-right" nowrap>${{ number_format($lease->monthAllocation($t->id,$m['Month'],$m['Year']),2) }}</td>
-							@elseif($lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = '. $m['Year'])->count('id') == 1)
-							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = ' . $m['Year'])->first()->id]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">$
-								{{ number_format($lease->monthAllocation($t->id,$m['Month'],$m['Year']),2) }}
+								<td align="right" class="text-right" nowrap>${{ number_format($m->monthAllocation($t->id),2) }}</td>
+							@elseif($lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') == 1)
+							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = ' . $m->year)->first()->id]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">${{ number_format($m->monthAllocation($t->id),2) }}
 								</a></td>							
-							@elseif($lease->payments()->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m['Month'])->whereRaw('YEAR(paid_date) = '. $m['Year'])->count('id') > 1)							
+							@elseif($lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') > 1)							
 							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.choose',['name' => $lease->apartment->name, 'lease_id' => $lease->id]) }}?tenant_id={{ $t->id }}" data-reveal-id="choosePayment" data-reveal-ajax="true">
-								${{ number_format($lease->monthAllocation($t->id,$m['Month'],$m['Year']),2) }}
+								${{ number_format($m->monthAllocation($t->id),2) }}
 								</a>
 							</td>
 							@endif
@@ -120,34 +119,34 @@
 				<tr>
 						<td> &nbsp; </td>
 
-						@foreach($lease->leaseMos() as $m)									
+						@foreach($lease->details as $m)									
 							<td>&nbsp;</td>
 						@endforeach				</tr>			
 
 	            <tr>
 		            <td>Rent</td>
-					@foreach($lease->leaseMos() as $m)									
-		                <th align="right" class="text-right" nowrap>${{ number_format($lease->monthly_rent * $m['Multiplier'],2) }} </th>
+					@foreach($lease->details as $m)									
+		                <th align="right" class="text-right" nowrap>${{ number_format($m->monthly_rent,2) }} </th>
 		            @endforeach
 	            </tr>					            
 				<tr>
 				    <th>Pet Rent</th>
-					@foreach($lease->leaseMos() as $m)									
-					    <td align="right" class="text-right" nowrap>${{ number_format($lease->pet_rent * $m['Multiplier'],2) }} </td>
+					@foreach($lease->details as $m)									
+					    <td align="right" class="text-right" nowrap>${{ number_format($m->monthly_pet_rent,2) }} </td>
 					@endforeach
 				</tr>
 				<tr>
 					<td>Fees</td>
-					@foreach($lease->leaseMos() as $m)									
-						<td align="right" class="text-right" nowrap>${{ number_format($lease->monthFees($m['Month'],$m['Year']),2) }}</td>
+					@foreach($lease->details as $m)									
+						<td align="right" class="text-right" nowrap>${{ number_format($lease->monthFees($m->month,$m->year),2) }}</td>
 					@endforeach
 				</tr>					            
 			</tbody>
 			<tfoot>
 				<tr>
 					<td>Balance</td>
-					@foreach($lease->leaseMos() as $m)
-						<td align="right" class="text-right" nowrap>${{ number_format($m['Balance'],2) }}</td>
+					@foreach($lease->details as $m)
+						<td align="right" class="text-right" nowrap>${{ number_format($m->monthBalance(),2) }}</td>
 					@endforeach
 				</tr>
 			</tfoot>	

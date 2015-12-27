@@ -2,10 +2,10 @@
   	 <h3>Payment {{ $payment->paid_date->format('n/d/Y') }} for ${{ $payment->amount }}</h3>	
 	 {!! Form::open(['route' => ['apartments.lease.payments.allocate','name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $payment->id], 'method' => 'post', 'id' => 'allocate']) !!}
 	 	<div class="row collapse">
-		 	@foreach($lease->leaseMos() as $m)
+		 	@foreach($lease->details as $m)
 		 		<div class="small-1 columns text-center left">
-					{!! Form::label($m['Name']) !!}
-					{!! Form::text($m['Name'],$payment->allocations()->firstOrNew(['month' => $m['Month'], 'year' => $m['Year']])->amount,['class' => 'month_allocation']) !!}			 		
+					{!! Form::label($m->detailName()) !!}
+					{!! Form::text($m->detailName(),$payment->allocations()->firstOrNew(['month' => $m->month, 'year' => $m->year])->amount,['class' => 'month_allocation']) !!}			 		
 		 		</div>
 			@endforeach
 		 	

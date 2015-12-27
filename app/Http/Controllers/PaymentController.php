@@ -115,7 +115,7 @@ class PaymentController extends Controller
     
 	public function showAllocate(Apartment $apartment, Lease $lease, Payment $payment)
 	{
-		return view('payments.allocate',['lease' => $lease, 'payment' => $payment]);
+        return view('payments.allocate',['lease' => $lease, 'payment' => $payment]);
 	}
 	
     public function allocate(Apartment $apartment, Lease $lease, Payment $payment, Request $request)

@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 
 use App\Apartment;
 use App\Lease;
+use App\LeaseDetail;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 class LeaseController extends Controller
 {
@@ -61,6 +63,41 @@ class LeaseController extends Controller
         $input['startdate'] = Carbon::parse($input['startdate']);
         $input['enddate'] = Carbon::parse($input['enddate']);
         $lease = Lease::create($input);
+        //Create Lease Details
+        $start = $lease->startdate;
+        $end = $lease->enddate;
+        $p = new \DatePeriod($start,CarbonInterval::months(1),$end);
+        foreach($p as $d)
+        {
+            $d = Carbon::instance($d);
+            $lease_detail = new LeaseDetail;
+            $lease_detail->month = $d->format('n');
+            $lease_detail->year = $d->format('Y');
+            //If the startdate has the same month and year as the current month, calculate a partial
+            if($start->month == $d->format('n') && $start->year == $d->format('Y')) {
+                $multiplier = round((date('t',strtotime($d->format('Y-m-d')))-($start->day-1))/date('t',strtotime($d->format('Y-m-d'))),2);
+            
+            }
+            //Else If the enddate has the same month and year as this month, calculate for partial          
+            elseif($end->month == $d->format('n') && $end->year == $d->format('Y')) {
+                $multiplier = round(($end->day)/date('t',strtotime($d->format('Y-m-d'))),2);
+            }
+            //else calculate a full month
+            else {
+                //echo '- Full Month';
+                $multiplier = 1.0;
+            }
+            $lease_detail->multiplier = $multiplier;
+            $lease_detail->monthly_rent = ($lease->monthly_rent*$multiplier);
+            $lease_detail->monthly_pet_rent = ($lease->pet_rent*$multiplier);
+
+            $lease->details()->save($lease_detail);
+
+
+
+        }
+
+
         $apartment = Apartment::find($lease->apartment_id);
         return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
     }

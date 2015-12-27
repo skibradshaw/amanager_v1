@@ -12,7 +12,7 @@
 					<a href="{{ route('apartments.lease.show',['name' => $lease->apartment->name, 'id' => $lease->id]) }} ">{{ $lease->apartment->name }} - Balance due: ${{ number_format($lease->openBalance(),2) }}</a>
 					(Paid: 
 					@foreach($lease->tenants as $t)
-						 {{ $t->lastname . ': $' . number_format($t->payments()->where('lease_id',$lease->id)->sum('amount'),2) }}
+						 {{ $t->lastname . ': $' . number_format($t->payments()->where('payment_type','Rent')->where('lease_id',$lease->id)->sum('amount'),2) }}
 					@endforeach
 					)
 					<br>

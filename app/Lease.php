@@ -16,6 +16,11 @@ class Lease extends Model
 	    return $this->belongsTo('App\Apartment');
     }
     
+    public function details()
+    {
+    	return $this->hasMany('App\LeaseDetail');
+    }
+    
     public function tenants() {
 	    return $this->belongsToMany('App\Tenant');
     }
@@ -53,13 +58,13 @@ class Lease extends Model
     public function openBalance($tenant_id = null)
     {
     	$balance = 0;
-    	foreach($this->leaseMos() as $m)
+    	foreach($this->details as $m)
     	{
-    		$lease_mo = Carbon::parse('first day of '.$m['Name']);
+    		$lease_mo = Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $m->month, 10)) . ' ' . $m->year);
     		$current_mo = Carbon::parse('last day of ' . Carbon::now());
     		if($lease_mo->lt($current_mo))
     		{
-	    		$balance += $m['Balance'];   			
+	    		$balance += $m->monthBalance();   			
     		}
     	}
     	return $balance;
@@ -112,24 +117,7 @@ class Lease extends Model
     	return $this->fees()->whereRaw('MONTH(due_date) = ' . $month)->whereRaw('YEAR(due_date) = ' . $year)->sum('amount');
     }
 
-    /**
-     * Description: Returns the sum of payments for the given month and tenant
-     * @param  $tenant_id int
-     * @param  $month int
-     * @param  $year int
-     * @return decimal for currency
-     */
-    public function monthAllocation($tenant_id, $month, $year)
-    {
-	    $return = 0;
-	    foreach($this->payments()->where('payment_type','Rent')->where('tenant_id',$tenant_id)->get() as $payment) {
-		    $return += $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
-		    //echo $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
-		    //echo $payment;
-	    }
-	    
-	    return $return;	    
-    }
+
     /**
      * Description: Returns an array for all the months on a lease that includes
      * Month, Year, Friendly Name, Multiplier for Fractional Months, Number of Payments,
@@ -140,55 +128,55 @@ class Lease extends Model
     public function leaseMos()
     {
 	    $return = [];
-	    $start = $this->startdate;
-	    $end = $this->enddate;
+	 //    $start = $this->startdate;
+	 //    $end = $this->enddate;
 
-		$inc = \DateInterval::createFromDateString('first day of next month');
-		$p = new \DatePeriod($this->startdate,$inc,$this->enddate);
+		// $inc = \DateInterval::createFromDateString('first day of next month');
+		// $p = new \DatePeriod($this->startdate,$inc,$this->enddate);
 		
-		foreach($p as $d){
-			$d = Carbon::instance($d);
-			$d_start = Carbon::parse('first day of '.$d->format('M').' '.$d->format('Y'));
-			$d_end = Carbon::parse('last day of '.$d->format('M').' '.$d->format('Y'));			
+		// foreach($p as $d){
+		// 	$d = Carbon::instance($d);
+		// 	$d_start = Carbon::parse('first day of '.$d->format('M').' '.$d->format('Y'));
+		// 	$d_end = Carbon::parse('last day of '.$d->format('M').' '.$d->format('Y'));			
 
-			//If the startdate has the same month and year as the current month, calculate a partial
-			if($start->month == $d->format('n') && $start->year == $d->format('Y')) {
-				$multiplier = round((date('t',strtotime($d->format('Y-m-d')))-($start->day-1))/date('t',strtotime($d->format('Y-m-d'))),2);
+		// 	//If the startdate has the same month and year as the current month, calculate a partial
+		// 	if($start->month == $d->format('n') && $start->year == $d->format('Y')) {
+		// 		$multiplier = round((date('t',strtotime($d->format('Y-m-d')))-($start->day-1))/date('t',strtotime($d->format('Y-m-d'))),2);
 			
-			}
-			//Else If the enddate has the same month and year as this month, calculate for partial			
-			elseif($end->month == $d->format('n') && $end->year == $d->format('Y')) {
-				$multiplier = round(($end->day)/date('t',strtotime($d->format('Y-m-d'))),2);
-			}
-			//else calculate a full month
-		 	else {
-			 	//echo '- Full Month';
-			 	$multiplier = 1.0;
-		 	}
-		 	$amount_due = ($this->monthly_rent + $this->pet_rent)*$multiplier + $this->fees()->whereBetween('due_date', [$d_start,$d_end])->sum('amount');
-		 	//$paid_to_date = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->sum('amount');
-		 	$paid_to_date = 0;
-		 	foreach ($this->tenants as $t) {
-		 		$paid_to_date += $this->monthAllocation($t->id,$d->month,$d->year);
-		 	}
+		// 	}
+		// 	//Else If the enddate has the same month and year as this month, calculate for partial			
+		// 	elseif($end->month == $d->format('n') && $end->year == $d->format('Y')) {
+		// 		$multiplier = round(($end->day)/date('t',strtotime($d->format('Y-m-d'))),2);
+		// 	}
+		// 	//else calculate a full month
+		//  	else {
+		// 	 	//echo '- Full Month';
+		// 	 	$multiplier = 1.0;
+		//  	}
+		//  	$amount_due = ($this->monthly_rent + $this->pet_rent)*$multiplier + $this->fees()->whereBetween('due_date', [$d_start,$d_end])->sum('amount');
+		//  	//$paid_to_date = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->sum('amount');
+		//  	$paid_to_date = 0;
+		//  	foreach ($this->tenants as $t) {
+		//  		$paid_to_date += $this->monthAllocation($t->id,$d->month,$d->year);
+		//  	}
 
 
-		 	$num_payments = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->count('id');
-		 	$balance = $amount_due-$paid_to_date;
+		//  	$num_payments = $this->payments()->whereBetween('paid_date',[$d_start,$d_end])->count('id');
+		//  	$balance = $amount_due-$paid_to_date;
 		 	
-		 	$return[] = [
-		 		'Month' => $d->format('n'),
-		 		'Year' => $d->format('Y'),
-		 		'Name' => $d->format('M'). '-' . $d->format('Y'),
-		 		'Multiplier' => $multiplier,
-		 		'Payments' => $num_payments,
-		 		'Due' => $amount_due,
-		 		'Balance' => $balance
-		 	];
+		//  	$return[] = [
+		//  		'Month' => $d->format('n'),
+		//  		'Year' => $d->format('Y'),
+		//  		'Name' => $d->format('M'). '-' . $d->format('Y'),
+		//  		'Multiplier' => $multiplier,
+		//  		'Payments' => $num_payments,
+		//  		'Due' => $amount_due,
+		//  		'Balance' => $balance
+		//  	];
 		 	
 		 	
-		}	    
-	    $return = collect($return);
+		// }	    
+	 //    $return = collect($return);
 	    return $return;
     }
     
