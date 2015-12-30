@@ -15,7 +15,7 @@
 		<div class="panel">
 		    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
 		    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
-		    	Pet Rent: ${{ number_format($lease->pet_rent,2) }}<br>
+		    	Pet Rent: ${{ number_format($lease->pet_rent,2) }} <br>
 		    	Total Fees: ${{ number_format($lease->totalfees,2) }} 
 		    	<hr>
 				<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>	
@@ -82,7 +82,7 @@
     </div>  	
   </div>
   <div class="row">
-	  <div class="large-{{ count($lease->leaseMos()) }} columns">
+	  <div class="large-{{ $lease->details->count() }} columns">
 		  <h2><small>Ledger</small></h2>
 		  <table id="ledger" class="responsive ledger" width="100%">
 			<thead>
@@ -130,9 +130,9 @@
 		            @endforeach
 	            </tr>					            
 				<tr>
-				    <th>Pet Rent</th>
+				    <th>Pet Rent <a href="{{ route('apartments.lease.petrent',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" data-reveal-id="changePetRent" data-reveal-ajax="true">edit</a></th>
 					@foreach($lease->details as $m)									
-					    <td align="right" class="text-right" nowrap>${{ number_format($m->monthly_pet_rent,2) }} </td>
+					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap>{{ number_format($m->monthly_pet_rent,2) }}</td>
 					@endforeach
 				</tr>
 				<tr>
@@ -146,7 +146,7 @@
 				<tr>
 					<td>Balance</td>
 					@foreach($lease->details as $m)
-						<td align="right" class="text-right" nowrap>${{ number_format($m->monthBalance(),2) }}</td>
+						<td align="right" class="text-right" nowrap>$<span id="balance{{$m->id}}">{{ number_format($m->monthBalance(),2) }}</span></td>
 					@endforeach
 				</tr>
 			</tfoot>	
@@ -175,11 +175,20 @@
 
   </div>
 
+  <div id="changePetRent" class="reveal-modal medium" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+  </div>
+
+
 @stop
 @section('scripts')
 <script type="text/javascript">
 $( document ).ready(function() {
- 
+	 $.ajaxSetup({
+	        headers: {
+	            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	        }
+	});
     // Your code here.
 
 	//Jquery autocomplete search
@@ -195,6 +204,26 @@ $( document ).ready(function() {
 		});
 	});
 
+	//JQuery Inline Edit Script: http://www.appelsiini.net/projects/jeditable
+	$('.edit').editable('/apartments/{{$lease->apartment->name}}/lease/{{$lease->id}}/single_pet_rent',{
+		style: 'font-size: 70%',
+		//onblur: 'ignore',
+		callback: function (value, settings) { 
+      		$(this).html(settings.data[value].toFixed(2));
+ 		},
+ 		onblur: "submit",
+ 		height: "5px",
+ 		width: "70px"
+	});
+
+	// $('th').click(function(e) {
+	//     var allEditables = $(this).closest('table').find('td:not(.edit)').get();
+	//     $.each(allEditables, function(i, elm) {
+	//         elm.reset();
+	//     });
+	    
+	//     $(this).parent().children(':not(.edit)').trigger('edit');
+	// });	
  
 });	
 

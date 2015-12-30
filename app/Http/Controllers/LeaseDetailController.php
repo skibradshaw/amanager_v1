@@ -6,9 +6,41 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Apartment;
+use App\Lease;
+use App\LeaseDetail;
 
 class LeaseDetailController extends Controller
 {
+    public function showPetRent(Apartment $apartment, Lease $lease)
+    {
+        return view('leases.petrent',['apartment' => $apartment,'lease' => $lease]);
+    }
+
+    public function storePetRent(Apartment $apartment, Lease $lease, Request $request)
+    {
+        $input = $request->all();
+        foreach($input as $key => $value)
+        {
+            if($key != '_token' && $key != 'monthly_pet_rent')
+            {
+                //echo $key . ": " . $value . "<br>";
+                $detail = LeaseDetail::find($key);
+                $detail->monthly_pet_rent = $value;
+                $detail->save();            
+
+            }
+        } 
+        return back();
+    }
+
+    public function storeSinglePetRent(Apartment $apartment, Lease $lease, Request $request)
+    {
+        $detail = LeaseDetail::find($request->id);
+        $detail->monthly_pet_rent = $request->value;
+        $detail->save();
+        return number_format($detail->monthly_pet_rent,2);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -53,6 +53,10 @@ Route::get('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate'
 Route::post('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate',['as' => 'apartments.lease.payments.allocate', 'uses' => 'PaymentController@allocate']);
 Route::get('/apartments/{apartments}/lease/{lease}/payments/choose',['as' => 'apartments.lease.payments.choose', 'uses' => 'PaymentController@choose']);
 
+//Lease Routes
+Route::get('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@showPetRent']);
+Route::post('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@storePetRent']);
+Route::post('/apartments/{apartments}/lease/{lease}/single_pet_rent',['as' => 'apartments.lease.singlepetrent', 'uses' => 'LeaseDetailController@storeSinglePetRent']);
 //Better URLs
 Route::bind('apartments',function($value,$route){
 	return App\Apartment::where('name',$value)->first();

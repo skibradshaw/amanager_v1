@@ -43,6 +43,7 @@ elixir(function(mix) {
         'responsive-tables.js',
         'datatables.js',
         'functions.js',
+        'jeditable.js',
         // jQuery UI
         'jquery-ui.js',
 
