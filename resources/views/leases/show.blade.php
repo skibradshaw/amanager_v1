@@ -58,7 +58,10 @@
 								<td><strong>Total Paid:</strong></td>
 								<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
 							</tr>
-						</tfoot>
+							<tr>
+								<td><strong>Balance Due:</strong></td>
+								<td align="right" class="text-right"><strong>${{ number_format($lease->depositBalance(),2) }}</strong></td>
+							</tr>						</tfoot>
 					</table>
 				</div>
 					

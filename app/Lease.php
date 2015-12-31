@@ -71,6 +71,16 @@ class Lease extends Model
 
     }
 
+    public function depositBalance()
+    {
+        $deposit_amount = $this->deposit + $this->pet_deposit;
+        $deposit_payments = $this->payments()->where('payment_type','Deposit')->sum('amount');
+        $deposit_balance = $deposit_amount - $deposit_payments;
+        return $deposit_balance;
+
+
+    }
+
     /**
      * Description: Returns the length of the lease in months with fraction of month.
      * @return decimal

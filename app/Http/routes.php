@@ -18,23 +18,7 @@ Route::model('payments','App\Payment');
 Route::model('fees','App\Fee');
 
 
-Route::get('/', ['middleware' => 'auth',function () {
-    //return Auth::user();
-    $current_leases = App\Lease::where('enddate','>=',\Carbon\Carbon::now())->get();
-    $current_balance = 0;
-    foreach ($current_leases as $lease) {
-    	$current_balance += $lease->openBalance();
-    }
-    $tenants = App\Tenant::all()->count();
-    $apartments = App\Apartment::all()->count();
-    return view('index',[
-    	'title' => 'Happy ' . \Carbon\Carbon::now()->format('l'), 
-    	'current_leases' => $current_leases,
-    	'current_balance' => $current_balance,
-        'tenants' => $tenants,
-        'apartments' => $apartments
-    	]);
-}]);
+Route::get('/','HomeController@index');
 
 
 Route::get('/login', 'Auth\AuthController@getLogin');
@@ -61,6 +45,11 @@ Route::get('/apartments/{apartments}/lease/{lease}/payments/choose',['as' => 'ap
 Route::get('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@showPetRent']);
 Route::post('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@storePetRent']);
 Route::post('/apartments/{apartments}/lease/{lease}/single_pet_rent',['as' => 'apartments.lease.singlepetrent', 'uses' => 'LeaseDetailController@storeSinglePetRent']);
+
+//Reports
+Route::get('/reports/rents_due',['as' => 'reports.rentsdue', 'uses' => 'ReportController@rentsDue']);
+Route::get('/reports/deposits_due',['as' => 'reports.depositsdue', 'uses' => 'ReportController@depositsDue']);
+
 //Better URLs
 Route::bind('apartments',function($value,$route){
 	return App\Apartment::where('name',$value)->first();
