@@ -25,10 +25,14 @@ Route::get('/', ['middleware' => 'auth',function () {
     foreach ($current_leases as $lease) {
     	$current_balance += $lease->openBalance();
     }
+    $tenants = App\Tenant::all()->count();
+    $apartments = App\Apartment::all()->count();
     return view('index',[
     	'title' => 'Happy ' . \Carbon\Carbon::now()->format('l'), 
     	'current_leases' => $current_leases,
-    	'current_balance' => $current_balance
+    	'current_balance' => $current_balance,
+        'tenants' => $tenants,
+        'apartments' => $apartments
     	]);
 }]);
 

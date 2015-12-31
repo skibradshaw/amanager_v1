@@ -15,6 +15,8 @@ elixir(function(mix) {
     // Copy Foundation Elements from Bower to Assets.
     //mix.copy('vendor/bower_components/foundation/scss', 'resources/assets/sass');
     //mix.copy('vendor/bower_components/foundation/js', 'resources/assets/js');
+    mix.copy('vendor/bower_components/font-awesome/fonts', 'public/fonts');
+    mix.copy('vendor/bower_components/font-awesome/scss', 'resources/assets/sass/font-awesome');
     mix.copy('vendor/bower_components/jquery-ui/jquery-ui.js', 'resources/assets/js');
     mix.copy('vendor/bower_components/jquery-ui/themes/redmond/jquery-ui.css', 'resources/assets/sass');
     // Foundation Core and all JavaScript Plugins to Public folder
@@ -27,6 +29,7 @@ elixir(function(mix) {
     mix.sass([
         // Foundation
     	'foundation.scss',
+        'font-awesome/font-awesome.scss',
     	'normalize.scss',
         // jQuery UI
         'jquery-ui.css',
