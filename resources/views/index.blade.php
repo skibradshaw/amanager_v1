@@ -10,14 +10,14 @@
 			<a href="#">
 			<div class="panel text-center radius" style="background-color: #0abaef">
 				<h1 style="color: #fff"><i class="fa fa-usd fa-2x" style="color:#fff"></i></h1>
-				<h4 style="color: #fff">Rents Due ${{ number_format($current_balance) }}</h4>
+				<h4 style="color: #fff">Rents Due<br>${{ number_format($current_balance) }}</h4>
 			</div>
 			</a>
 		</div>
 		<div class="large-3 columns">
 			<div class="panel text-center radius" style="background-color: #92cd19">
 				<h1 style="color: #fff"><i class="fa fa-lock fa-2x" style="color:#fff"></i></h1>
-				<h4 style="color: #fff">Deposits Due ${{ number_format($current_balance) }}</h4>
+				<h4 style="color: #fff">Deposits Due<br>${{ number_format($current_balance) }}</h4>
 			</div>
 		</div>
 		<div class="large-3 columns end">
