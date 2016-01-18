@@ -9,6 +9,8 @@
 	{!! Form::text('name',null,['id' => 'q']) !!}
 
 {!! Form::close() !!}
+
+
 @stop
 @section('scripts')
 <script type="text/javascript">
@@ -19,8 +21,15 @@ $( document ).ready(function() {
 	//Javascript search
 	$(function()
 	{
+		  
+
 		 $( "#q" ).autocomplete({
-		  source: "/tenants/search",
+		  //source: "/tenants/search",
+		  source: [
+		  	@foreach($tenants as $tenant)
+		  	{!! '"' . $tenant->fullname . '",' !!}
+		  	@endforeach
+		  ],
 		  minLength: 1,
 		  select: function(event, ui) {
 		  	$('#q').val(ui.item.value);

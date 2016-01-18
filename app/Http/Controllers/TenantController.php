@@ -64,7 +64,7 @@ class TenantController extends Controller
                 'firstname' => 'required',
                 'lastname' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'phone' => 'phone'
+                'phone' => 'phone:US'
             ]);
 
         $input = $request->all();
@@ -91,9 +91,11 @@ class TenantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Tenant $tenant)
     {
         //
+        return view('tenants.show',['title' => $tenant->fullname,'tenant' => $tenant]);
+
      }
 
     /**

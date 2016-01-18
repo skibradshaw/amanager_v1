@@ -160,11 +160,11 @@
   <div id="myModal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 	 {!! Form::open(['route' => 'tenants.add_to_lease']) !!}
 		{!! Form::label('name','Search Tenant Name') !!}
-		{!! Form::text('name',null,['id' => 'q']) !!}
+		<input id="q" name="name" autofocus type="text">
 		{!! Form::hidden('tenant_id',null,['id' => 'tenant_id']) !!}
 		{!! Form::hidden('lease_id',$lease->id) !!}
 		
-		<button type="submit" class="radius button tiny">Add to Lease</button> OR <a href="/tenants/create?lease_id={{ $lease->id }}" class="button radius tiny">Create a New Tenant</a>
+		<button type="submit" id="add" class="radius button tiny" disabled>Add to Lease</button> OR <a href="/tenants/create?lease_id={{ $lease->id }}" class="button radius tiny">Create a New Tenant</a>
      {!! Form::close(['class' => 'close-reveal-modal']) !!} 	
 	 <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
@@ -186,6 +186,11 @@
 @stop
 @section('scripts')
 <script type="text/javascript">
+
+$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+  var modal = $(this);
+  modal.find('[autofocus]').focus();
+});
 $( document ).ready(function() {
 	 $.ajaxSetup({
 	        headers: {
@@ -198,11 +203,27 @@ $( document ).ready(function() {
 	$(function()
 	{
 		 $( "#q" ).autocomplete({
-		  source: "/tenants/search",
-		  minLength: 3,
+		  //source: "/tenants/search",
+		  source: [
+		  	@foreach($tenants as $tenant)
+		  	{!! '{label: "' . $tenant->fullname . '", value: "'. $tenant->id . '"},' !!}
+		  	@endforeach
+		  ],		  
+		  minLength: 0,
 		  appendTo: "#myModal",
+		  focus: function(event, ui) {
+			// prevent autocomplete from updating the textbox
+			event.preventDefault();
+			// manually update the textbox
+			$(this).val(ui.item.label);
+			},
 		  select: function(event, ui) {
-		  	$('#tenant_id').val(ui.item.id);
+		  	// prevent autocomplete from updating the textbox
+			event.preventDefault();
+			// manually update the textbox and hidden field
+			$(this).val(ui.item.label);
+		  	$('#tenant_id').val(ui.item.value);
+		  	$('#add').removeAttr('disabled');
 		  }
 		});
 	});

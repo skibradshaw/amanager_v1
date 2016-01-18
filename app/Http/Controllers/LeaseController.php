@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Apartment;
 use App\Lease;
+use App\Tenant;
 use App\LeaseDetail;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
@@ -118,7 +119,8 @@ class LeaseController extends Controller
     {
         //
         $title = $lease->apartment->property->name . ' ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/Y') . ' - ' . $lease->enddate->format('n/j/Y');
-        return view('leases.show',['title' => $title, 'lease' => $lease]);
+        $tenants = Tenant::all();
+        return view('leases.show',['title' => $title, 'lease' => $lease, 'tenants' => $tenants]);
     }
 
     /**

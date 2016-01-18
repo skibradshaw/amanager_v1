@@ -31,7 +31,8 @@ Route::post('/deposits/confirm',['as' => 'deposit.confirm','uses' => 'DepositCon
 
 //Tenant Routes
 Route::get('/tenants/lookup',['middleware' => 'auth',function(){
-	return view('tenants.search');
+	$tenants = App\Tenant::all();
+    return view('tenants.search',['tenants' => $tenants]);
 }]);
 Route::get('/tenants/search',['as' => 'tenants.search', 'uses' => 'TenantController@search']);
 Route::post('/tenants/add',['as' => 'tenants.add_to_lease', 'uses' => 'TenantController@addToLease']);

@@ -45,10 +45,10 @@
 		</div>
 		<div class="row collapse">
 			<div class="large-2 columns">
-				{!! $errors->first('phone','<span class="label alert radius">:message</span>') !!}
 				{!! Form::label('phone','Phone',['id' => 'phone','class' => 'inline']) !!}
 			</div>
 			<div class="large-4 columns left">
+				{!! $errors->first('phone','<span class="label alert radius">:message</span>') !!}
 				{!! Form::text('phone') !!}
 			</div>
 		</div>

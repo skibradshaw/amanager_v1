@@ -6,6 +6,6 @@
 @section('content')
 	<p><a href="/tenants/create" class="button radius">Add a Tenant</a></p>
 	@foreach($tenants as $tenant)
-		<a href="/tenants/{{ $tenant->id }}/edit">{{ $tenant->firstname . " " . $tenant->lastname }}</a><br>
+		<a href="/tenants/{{ $tenant->id }}">{{ $tenant->firstname . " " . $tenant->lastname }}</a><br>
 	@endforeach
 @stop
