@@ -22,7 +22,7 @@ class Lease extends Model
     }
     
     public function tenants() {
-	    return $this->belongsToMany('App\Tenant');
+	    return $this->belongsToMany('App\Tenant')->withPivot('sublessor_name')->withTimestamps();
     }
     
     public function fees()

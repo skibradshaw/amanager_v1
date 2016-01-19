@@ -36,6 +36,8 @@ Route::get('/tenants/lookup',['middleware' => 'auth',function(){
 }]);
 Route::get('/tenants/search',['as' => 'tenants.search', 'uses' => 'TenantController@search']);
 Route::post('/tenants/add',['as' => 'tenants.add_to_lease', 'uses' => 'TenantController@addToLease']);
+Route::post('/tenants/add_sublease',['as' => 'tenants.add_sublease','uses' => 'TenantController@addSublease']);
+Route::get('/apartments/{apartments}/lease/{lease}/tenants/{tenant_id}','TenantController@showSublease');
 
 //Payment Routes
 Route::get('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate',['as' => 'apartments.lease.payments.allocate', 'uses' => 'PaymentController@showAllocate']);
@@ -46,6 +48,9 @@ Route::get('/apartments/{apartments}/lease/{lease}/payments/choose',['as' => 'ap
 Route::get('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@showPetRent']);
 Route::post('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@storePetRent']);
 Route::post('/apartments/{apartments}/lease/{lease}/single_pet_rent',['as' => 'apartments.lease.singlepetrent', 'uses' => 'LeaseDetailController@storeSinglePetRent']);
+Route::get('/apartments/{apartments}/lease/{lease}/terminate',['as' => 'apartments.lease.terminate','uses' => 'LeaseController@showTerminate']);
+Route::post('/apartments/{apartments}/lease/{lease}/terminate',['as' => 'apartments.lease.terminate','uses' => 'LeaseController@terminate']);
+
 
 //Reports
 Route::get('/reports/rents_due',['as' => 'reports.rentsdue', 'uses' => 'ReportController@rentsDue']);

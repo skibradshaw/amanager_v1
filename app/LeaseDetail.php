@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LeaseDetail extends Model
 {
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
     //
     /**
      * Returns a name for the month i format Dec 15

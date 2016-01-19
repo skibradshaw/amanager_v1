@@ -123,39 +123,43 @@ class LeaseController extends Controller
         return view('leases.show',['title' => $title, 'lease' => $lease, 'tenants' => $tenants]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function showTerminate(Apartment $apartment, Lease $lease)
     {
-        //
+        return view('leases.terminate',['title' => $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/Y') . ' - ' . $lease->enddate->format('n/j/Y'),'lease' => $lease]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function terminate(Apartment $apartment, Lease $lease, Request $request)
     {
-        //
+        $input = $request->all();
+        //Set the End Date
+        $lease->enddate = Carbon::parse($input['enddate']);
+        $lease->save();
+        
+        foreach($lease->details as $detail)
+        {
+            $detail_first_day = Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $detail->month, 10)) . ' ' . $detail->year);
+            $detail_last_day = Carbon::parse('last day of ' . date("F", mktime(0, 0, 0, $detail->month, 10)) . ' ' . $detail->year);
+            echo $detail_last_day . ": ";
+            if($detail_last_day >= Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $lease->enddate->month, 10)) . " " . $lease->enddate->year))
+            {
+                if($detail_last_day <= Carbon::parse('last day of '. date("F", mktime(0, 0, 0, $lease->enddate->month, 10)) . " " . $lease->enddate->year))
+                {
+                    //Modify Mulitiplier on Last Month
+                    $multiplier = round(($lease->enddate->day)/date('t',strtotime($lease->enddate->format('Y-m-d'))),2);
+                    echo "Modify Multiplier: " . $multiplier . "<br>";
+                    $detail->multiplier = $multiplier;
+                    $detail->save();
+                } else {
+                    //Delete Future Lease Details
+                    echo "Delete Future Details<br>";
+                    $detail->delete();
+                }
+            } else {
+                echo "Do Nothing<br>";
+            }
+        }
+        
+        
+                    
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-    
-	
 }

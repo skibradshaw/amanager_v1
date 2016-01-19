@@ -8,82 +8,83 @@
 @stop
 @section('content')
 	
-  <div class="row">
-
-    <div class="large-4 columns">
-    	<h2><small>Rental Info</small></h2>
-		<div class="panel">
-		    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
-		    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
-		    	Pet Rent: ${{ number_format($lease->pet_rent,2) }} <br>
-		    	Total Fees: ${{ number_format($lease->totalfees,2) }} 
-		    	<hr>
-				<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>	
-				<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius tiny">Assess Fees</a>		    	
-		</div>
-
-    </div>
-	<div class="large-8 columns">
- 	    <h2><small>Deposits</small></h2>
-			<div class="panel">
+   <div class="row" data-equalizer>
+	    <div class="large-4 columns" data-equalizer-watch>
+	    	<h2><small>Rental Info</small></h2>
+			    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
+			    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
+			    	Pet Rent: ${{ number_format($lease->pet_rent,2) }} <br>
+			    	Total Fees: ${{ number_format($lease->totalfees,2) }} 
+			    	<hr>
+					<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>	
+					<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius tiny">Assess Fees</a>		    	
+	    </div>
+		<div class="large-8 columns" data-equalizer-watch>
+	 	    <h2><small>Deposits</small></h2>
 				<div class="row">
-				<div class="large-4 columns">
-					Rent Deposit: ${{ number_format($lease->deposit,2) }}<br>
-					Pet Deposit: ${{ number_format($lease->pet_deposit,2) }}<br> 
-					<strong>Total: ${{ number_format($lease->deposit+$lease->pet_deposit,2) }}</strong>	<br>
-					<p>
-						<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
-					</p>
+					<div class="large-4 columns">
+						Rent Deposit: ${{ number_format($lease->deposit,2) }}<br>
+						Pet Deposit: ${{ number_format($lease->pet_deposit,2) }}<br> 
+						<strong>Total: ${{ number_format($lease->deposit+$lease->pet_deposit,2) }}</strong>	<br>
+						<p>
+							<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
+						</p>
 
-				</div>
-				<div class="large-8 columns right">
-					  <table id="deposit" class="responsive" width="100%">
-						<thead>
-							<tr>
-							  <th>Tenant</th>
-							  <th nowrap="" align="right" class="text-right">Deposit Payments</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($lease->tenants as $t)
-							<tr>
-								<td>{{ $t->fullname }}</td>
-								<td align="right" class="text-right">${{ number_format($lease->payments()->where('tenant_id',$t->id)->where('payment_type','Deposit')->sum('amount'),2) }}</td>
-							</tr>
-							@endforeach
+					</div>
+					<div class="large-8 columns right">
+						  <table id="deposit" class="responsive" width="100%">
+							<thead>
+								<tr>
+								  <th>Tenant</th>
+								  <th nowrap="" align="right" class="text-right">Deposit Payments</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($lease->tenants as $t)
+								<tr>
+									<td>{{ $t->fullname }}</td>
+									<td align="right" class="text-right">${{ number_format($lease->payments()->where('tenant_id',$t->id)->where('payment_type','Deposit')->sum('amount'),2) }}</td>
+								</tr>
+								@endforeach
 
-						</tbody>
-						<tfoot>
-							<tr>
-								<td><strong>Total Paid:</strong></td>
-								<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
-							</tr>
-							<tr>
-								<td><strong>Balance Due:</strong></td>
-								<td align="right" class="text-right"><strong>${{ number_format($lease->depositBalance(),2) }}</strong></td>
-							</tr>						</tfoot>
-					</table>
-				</div>
-					
-				</div>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td><strong>Total Paid:</strong></td>
+									<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
+								</tr>
+								<tr>
+									<td><strong>Balance Due:</strong></td>
+									<td align="right" class="text-right"><strong>${{ number_format($lease->depositBalance(),2) }}</strong></td>
+								</tr>						</tfoot>
+						</table>
+					</div>
+						
 
-			</div> 	    			    	
-	</div>
+				</div> 	    			    	
+		</div>
   </div>
   <div class="row">
-    <div class="large-12 columns">
+     <div class="large-12 columns">
     	<h2><small>Residents</small></h2>
 	    	@foreach($lease->tenants as $tenant)
 			<ul class="vcard">
 			  <li class="fn">{{ $tenant->fullname }}</li>
 			  <li class="fn">{{ $tenant->phone }}</li>
 			  <li class="email"><a href="mailto:{{ $tenant->email }}">{{ $tenant->email }}</a></li>
-			  <li><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="label radius">Record Payemnt</a></li>
+			  @if($lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name)
+			  <span class="label warning radius">Sub-Lease:</span> <a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" data-reveal-id="addSubLease" data-reveal-ajax="true"><span style="font-size: 0.6875rem;">{{ $lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name }}</span></a></li>
+			  @else
+			  <li><a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" class="label radius warning" data-reveal-id="addSubLease" data-reveal-ajax="true">Add SubLease</a></li>
+			  @endif
+			  <li><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="label radius">Record Payemnt</a></li>			  
 			</ul>			    	
     		  
 	    	@endforeach	    			    	
-    </div>  	
+     	
+     </div>	
   </div>
+
   <div class="row">
 	  <div class="large-{{ $lease->details->count() }} columns">
 		  <h2><small>Ledger</small></h2>
@@ -129,13 +130,13 @@
 	            <tr>
 		            <td>Rent</td>
 					@foreach($lease->details as $m)									
-		                <th align="right" class="text-right" nowrap>${{ number_format($m->monthly_rent,2) }} </th>
+		                <th align="right" class="text-right" nowrap>${{ number_format(($m->monthly_rent*$m->multiplier),2) }} </th>
 		            @endforeach
 	            </tr>					            
 				<tr>
 				    <th>Pet Rent <a href="{{ route('apartments.lease.petrent',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" data-reveal-id="changePetRent" data-reveal-ajax="true">edit</a></th>
 					@foreach($lease->details as $m)									
-					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap>{{ number_format($m->monthly_pet_rent,2) }}</td>
+					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap>{{ number_format(($m->monthly_pet_rent*$m->multiplier),2) }}</td>
 					@endforeach
 				</tr>
 				<tr>
@@ -156,14 +157,17 @@
 		  </table>
 	  </div>
   </div>
-
+  <div class="row">
+  	<div class="large-12 columns">
+  		<a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/terminate" class="button radius alert" data-reveal-id="terminateLease" data-reveal-ajax="true">Terminate Lease</a>
+  	</div>
+  </div>
   <div id="myModal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 	 {!! Form::open(['route' => 'tenants.add_to_lease']) !!}
 		{!! Form::label('name','Search Tenant Name') !!}
 		<input id="q" name="name" autofocus type="text">
 		{!! Form::hidden('tenant_id',null,['id' => 'tenant_id']) !!}
 		{!! Form::hidden('lease_id',$lease->id) !!}
-		
 		<button type="submit" id="add" class="radius button tiny" disabled>Add to Lease</button> OR <a href="/tenants/create?lease_id={{ $lease->id }}" class="button radius tiny">Create a New Tenant</a>
      {!! Form::close(['class' => 'close-reveal-modal']) !!} 	
 	 <a class="close-reveal-modal" aria-label="Close">&#215;</a>
@@ -182,6 +186,13 @@
 
   </div>
 
+  <div id="addSubLease" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+  </div> 
+  
+  <div id="terminateLease" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+  </div>
 
 @stop
 @section('scripts')
@@ -228,26 +239,20 @@ $( document ).ready(function() {
 		});
 	});
 
-	//JQuery Inline Edit Script: http://www.appelsiini.net/projects/jeditable
-	$('.edit').editable('/apartments/{{$lease->apartment->name}}/lease/{{$lease->id}}/single_pet_rent',{
-		style: 'font-size: 70%',
-		//onblur: 'ignore',
-		callback: function (value, settings) { 
-      		$(this).html(settings.data[value].toFixed(2));
- 		},
- 		onblur: "submit",
- 		height: "5px",
- 		width: "70px"
-	});
+	//Jquery for SubLessor Name must have text to submit
+    $('#subleasetenant').keyup(function() {
 
-	// $('th').click(function(e) {
-	//     var allEditables = $(this).closest('table').find('td:not(.edit)').get();
-	//     $.each(allEditables, function(i, elm) {
-	//         elm.reset();
-	//     });
-	    
-	//     $(this).parent().children(':not(.edit)').trigger('edit');
-	// });	
+        var empty = false;
+        if ($(this).val().length == 0) {
+            empty = true;
+        }
+
+        if (empty) {
+            $('#add_sublease').attr('disabled', 'disabled');
+        } else {
+            $('#add_sublease').removeAttr('disabled');
+        }
+    });
  
 });	
 

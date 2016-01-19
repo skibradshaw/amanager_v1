@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Tenant;
 use App\Lease;
+use App\Apartment;
 use DB;
 
 
@@ -170,5 +171,24 @@ class TenantController extends Controller
 	    }
 	    
 	    return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name, 'id' => $lease->id]);
+    }
+
+    public function showSublease(Apartment $apartment, Lease $lease, $tenant_id)
+    {
+        $tenant = Tenant::find($tenant_id);
+        $sublessor_name = $lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name;
+        return view('tenants.sublease',['lease' => $lease, 'tenant' => $tenant, 'sublessor_name' => $sublessor_name]);
+    }
+
+    public function addSublease(Request $request)
+    {
+        $input = $request->all();
+        $tenant = Tenant::find($input['tenant_id']);
+        $lease = Lease::find($input['lease_id']);
+        // lease->tenants()->where('tenant_id',$tenant->id)->sync([$tenant->id => ['sublessor_name' => $input['sublessor_name']]]);
+        $lease_tenant = $lease->tenants()->where('tenant_id',$tenant->id)->first();
+        $lease_tenant->pivot->sublessor_name = $input['sublessor_name'];
+        $lease_tenant->pivot->save();
+        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name, 'id' => $lease->id]);
     }
 }

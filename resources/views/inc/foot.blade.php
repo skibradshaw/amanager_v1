@@ -6,12 +6,12 @@
               <p>© {{ \Carbon\Carbon::now()->year }} A-Manager.</p>
             </div>
             <div class="large-6 columns">
-              <ul class="inline-list right">
+<!--               <ul class="inline-list right">
                 <li><a href="#">Link 1</a></li>
                 <li><a href="#">Link 2</a></li>
                 <li><a href="#">Link 3</a></li>
                 <li><a href="#">Link 4</a></li>
-              </ul>
+              </ul> -->
             </div>
           </div>
         </div>
