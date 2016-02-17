@@ -139,27 +139,26 @@ class LeaseController extends Controller
         {
             $detail_first_day = Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $detail->month, 10)) . ' ' . $detail->year);
             $detail_last_day = Carbon::parse('last day of ' . date("F", mktime(0, 0, 0, $detail->month, 10)) . ' ' . $detail->year);
-            echo $detail_last_day . ": ";
+            // echo $detail_last_day . ": ";
             if($detail_last_day >= Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $lease->enddate->month, 10)) . " " . $lease->enddate->year))
             {
                 if($detail_last_day <= Carbon::parse('last day of '. date("F", mktime(0, 0, 0, $lease->enddate->month, 10)) . " " . $lease->enddate->year))
                 {
                     //Modify Mulitiplier on Last Month
                     $multiplier = round(($lease->enddate->day)/date('t',strtotime($lease->enddate->format('Y-m-d'))),2);
-                    echo "Modify Multiplier: " . $multiplier . "<br>";
+                    // echo "Modify Multiplier: " . $multiplier . "<br>";
                     $detail->multiplier = $multiplier;
                     $detail->save();
                 } else {
                     //Delete Future Lease Details
-                    echo "Delete Future Details<br>";
+                    // echo "Delete Future Details<br>";
                     $detail->delete();
                 }
-            } else {
-                echo "Do Nothing<br>";
             }
+
         }
         
-        
+        return redirect('/')->with('status','Lease Deleted!');
                     
     }
 }
