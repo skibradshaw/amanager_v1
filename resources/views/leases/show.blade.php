@@ -8,86 +8,96 @@
 @stop
 @section('content')
 	
-   <div class="row" data-equalizer>
-	    <div class="large-4 columns" data-equalizer-watch>
-	    	<h2><small>Rental Info</small></h2>
-			    	Lease:  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}<br>
-			    	Apartment Rent: ${{ number_format($lease->monthly_rent,2) }}<br>
-			    	Pet Rent: ${{ number_format($lease->pet_rent,2) }} <br>
-			    	Total Fees: ${{ number_format($lease->totalfees,2) }} 
-			    	<hr>
-					<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>	
-					<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius tiny">Assess Fees</a>		    	
-	    </div>
-		<div class="large-8 columns" data-equalizer-watch>
-	 	    <h2><small>Deposits</small></h2>
-				<div class="row">
-					<div class="large-4 columns">
-						Rent Deposit: ${{ number_format($lease->deposit,2) }}<br>
-						Pet Deposit: ${{ number_format($lease->pet_deposit,2) }}<br> 
-						<strong>Total: ${{ number_format($lease->deposit+$lease->pet_deposit,2) }}</strong>	<br>
-						<p>
-							<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
-						</p>
+	<div class="row" data-equalizer>
+	<h2><small>Rental Info</small></h2>
+		    <div class="large-12 columns panel" data-equalizer-watch>
+		    	
+		    		<div class="large-3 columns text-center">
+				    	<h5>Lease:<br>  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}</h5>
+				    </div>
+				    <div class="large-3 columns text-center">
+				    	<h5>Apartment Rent:<br> ${{ number_format($lease->monthly_rent,2) }}</h5>
+				    </div>
+				    <div class="large-3 columns text-center">
+				    	<h5>Pet Rent:<br> ${{ number_format($lease->pet_rent,2) }}</h5>
+				    </div>
+				    <div class="large-3 columns text-center">
+				    	<h5>Total Fees:<br> ${{ number_format($lease->totalfees,2) }} </h5>
+				    </div>
+			</div>
+	</div>
 
-					</div>
-					<div class="large-8 columns right">
-						  <table id="deposit" class="responsive" width="100%">
-							<thead>
-								<tr>
-								  <th>Tenant</th>
-								  <th nowrap="" align="right" class="text-right">Deposit Payments</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach($lease->tenants as $t)
-								<tr>
-									<td>{{ $t->fullname }}</td>
-									<td align="right" class="text-right">${{ number_format($lease->payments()->where('tenant_id',$t->id)->where('payment_type','Deposit')->sum('amount'),2) }}</td>
-								</tr>
-								@endforeach
+	<div class="row" data-equalizer>
+	<h2><small>Residents</small></h2>
+	     <div class="large-12 columns">
+		    	@foreach($lease->tenants as $tenant)
+				<ul class="vcard">
+				  <li class="fn">{{ $tenant->fullname }}</li>
+				  <li class="fn">{{ $tenant->phone }}</li>
+				  <li class="email"><a href="mailto:{{ $tenant->email }}">{{ $tenant->email }}</a></li>
+				  @if($lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name)
+				  <span class="label warning radius">Sub-Lease:</span> <a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" data-reveal-id="addSubLease" data-reveal-ajax="true"><span style="font-size: 0.6875rem;">{{ $lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name }}</span></a></li>
+				  @else
+				  <li><a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" class="label radius warning" data-reveal-id="addSubLease" data-reveal-ajax="true">Add SubLease</a></li>
+				  @endif
+				  <li><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="label success radius">Record Payemnt</a></li>			  
+				</ul>			    	
+	    		  
+		    	@endforeach
+		    <p>		    			    	
+	     	<a href="#" class="button radius tiny" data-reveal-id="myModal">Add Tenant</a>	<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius tiny">Assess Fees</a>
+	     	</p>
+	     </div>	
+    </div>
+	<div class="row" data-equalizer>
+	<h2><small>Deposit Info</small></h2>
+{{--	     <div class="large-12 columns panel">
+							<div class="large-4 columns text-center">
+								<h5>Rent Deposit: ${{ number_format($lease->deposit,2) }}</h5>
+							</div>
+							<div class="large-4 columns text-center">
+								<h5>Pet Deposit: ${{ number_format($lease->pet_deposit,2) }}</h5>
+							</div>
+							<div class="large-4 columns text-center">
+								<h5>Total: ${{ number_format($lease->deposit+$lease->pet_deposit,2) }}</h5>
+							</div>	 
+		</div>--}}
+		<div class="large-12 columns">    
+					<table id="deposit" class="responsive" width="100%">
+						<thead>
+							<tr>
+							  <th>Tenant</th>
+							  <th nowrap="" align="right" class="text-right">Deposit Payments</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($lease->tenants as $t)
+							<tr>
+								<td>{{ $t->fullname }}</td>
+								<td align="right" class="text-right">${{ number_format($lease->payments()->where('tenant_id',$t->id)->where('payment_type','Deposit')->sum('amount'),2) }}</td>
+							</tr>
+							@endforeach
 
-							</tbody>
-							<tfoot>
-								<tr>
-									<td><strong>Total Paid:</strong></td>
-									<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
-								</tr>
-								<tr>
-									<td><strong>Balance Due:</strong></td>
-									<td align="right" class="text-right"><strong>${{ number_format($lease->depositBalance(),2) }}</strong></td>
-								</tr>						</tfoot>
-						</table>
-					</div>
-						
+						</tbody>
+						<tfoot>
+							<tr>
+								<td><strong>Total Paid:</strong></td>
+								<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
+							</tr>
+							<tr>
+								<td><strong>Balance Due:</strong></td>
+								<td align="right" class="text-right"><strong>${{ number_format($lease->depositBalance(),2) }}</strong></td>
+							</tr>						</tfoot>
+					</table>
+					<p>
+						<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
+					</p>
+	     </div>	
+    </div>
 
-				</div> 	    			    	
-		</div>
-  </div>
   <div class="row">
-     <div class="large-12 columns">
-    	<h2><small>Residents</small></h2>
-	    	@foreach($lease->tenants as $tenant)
-			<ul class="vcard">
-			  <li class="fn">{{ $tenant->fullname }}</li>
-			  <li class="fn">{{ $tenant->phone }}</li>
-			  <li class="email"><a href="mailto:{{ $tenant->email }}">{{ $tenant->email }}</a></li>
-			  @if($lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name)
-			  <span class="label warning radius">Sub-Lease:</span> <a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" data-reveal-id="addSubLease" data-reveal-ajax="true"><span style="font-size: 0.6875rem;">{{ $lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name }}</span></a></li>
-			  @else
-			  <li><a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" class="label radius warning" data-reveal-id="addSubLease" data-reveal-ajax="true">Add SubLease</a></li>
-			  @endif
-			  <li><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="label radius">Record Payemnt</a></li>			  
-			</ul>			    	
-    		  
-	    	@endforeach	    			    	
-     	
-     </div>	
-  </div>
-
-  <div class="row">
+  <h2><small>Ledger</small></h2>
 	  <div class="large-{{ $lease->details->count() }} columns">
-		  <h2><small>Ledger</small></h2>
 		  <table id="ledger" class="responsive ledger" width="100%">
 			<thead>
 				<tr>

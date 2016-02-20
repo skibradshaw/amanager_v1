@@ -15,7 +15,7 @@
 	</thead>
 	<tbody>
 			@foreach($current_leases as $lease)
-				@if($lease->openBalance() != 0)
+				@if($lease->depositBalance() != 0)
 				<tr>
 					<td>
 						{{ $lease->apartment->property->name . " " . $lease->apartment->name }}

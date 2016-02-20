@@ -18,7 +18,9 @@ class Apartment extends Model
     }
 
     public function currentLease() {
-    	return $this->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first();
+    	$lease = $this->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first();
+    	(empty($lease)) ? $lease = $this->leases()->whereRaw('DATE(NOW()) <= startdate')->first() : null;
+    	return $lease;
     }
 
 	 public function checkAvailability($start,$end)

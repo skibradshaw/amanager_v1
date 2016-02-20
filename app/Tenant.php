@@ -30,7 +30,12 @@ class Tenant extends User
     {
         $this->attributes['phone'] = preg_replace('/[^0-9]/i', '', trim($value));
     }
-	
+    public function currentLease() {
+    	$lease = $this->leases()->whereRaw('DATE(NOW()) BETWEEN startdate AND enddate')->first();
+    	(empty($lease)) ? $lease = $this->leases()->whereRaw('DATE(NOW()) <= startdate')->first() : null;
+    	return $lease;
+    }	
+
 	public function leases()
 	{
 		return $this->belongsToMany('App\Lease');
