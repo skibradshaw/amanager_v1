@@ -29,5 +29,6 @@ class Payment extends Model
     public function deposit()
     {
         return $this->belongsTo('App\Deposit','bank_deposits_id');
-    }    
+    }
+  
 }

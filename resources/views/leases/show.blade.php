@@ -2,7 +2,7 @@
 @extends('app')
 @section('header')
 	@if($lease->openBalance() != 0)
-	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
+	<div class="alert-box success radius">Open Balance: ${{-- number_format($lease->openBalance(),2) --}}</div>
 	@endif
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
@@ -51,17 +51,17 @@
     </div>
 	<div class="row" data-equalizer>
 	<h2><small>Deposit Info</small></h2>
-{{--	     <div class="large-12 columns panel">
+	     <div class="large-12 columns panel">
 							<div class="large-4 columns text-center">
-								<h5>Rent Deposit: ${{ number_format($lease->deposit,2) }}</h5>
+								<h5>Rent Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Damage Deposit')->sum('amount'),2) }}</h5>
 							</div>
 							<div class="large-4 columns text-center">
-								<h5>Pet Deposit: ${{ number_format($lease->pet_deposit,2) }}</h5>
+								<h5>Pet Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Pet Deposit')->sum('amount'),2) }}</h5>
 							</div>
 							<div class="large-4 columns text-center">
-								<h5>Total: ${{ number_format($lease->deposit+$lease->pet_deposit,2) }}</h5>
+								<h5>Total: ${{ number_format($lease->leaseDeposits()->sum('amount'),2) }}</h5>
 							</div>	 
-		</div>--}}
+		</div>
 		<div class="large-12 columns">    
 					<table id="deposit" class="responsive" width="100%">
 						<thead>

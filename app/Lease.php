@@ -12,6 +12,7 @@ class Lease extends Model
     protected $fillable = ['apartment_id','startdate','enddate','monthly_rent','pet_rent','deposit','pet_deposit'];
     protected $dates = ['startdate','enddate'];
     
+    //Relationships
     public function apartment() {
 	    return $this->belongsTo('App\Apartment');
     }
@@ -21,10 +22,15 @@ class Lease extends Model
     	return $this->hasMany('App\LeaseDetail');
     }
     
+    public function leaseDeposits()
+    {
+        return $this->hasMany('App\LeaseDeposit');
+    }
+
     public function tenants() {
 	    return $this->belongsToMany('App\Tenant')->withPivot('sublessor_name')->withTimestamps();
     }
-    
+
     public function fees()
     {
 	    return $this->hasMany('App\Fee','lease_id');
@@ -73,7 +79,7 @@ class Lease extends Model
 
     public function depositBalance()
     {
-        $deposit_amount = $this->deposit + $this->pet_deposit;
+        $deposit_amount = $this->leaseDeposits()->sum('amount');
         $deposit_payments = $this->payments()->where('payment_type','Deposit')->sum('amount');
         $deposit_balance = $deposit_amount - $deposit_payments;
         return $deposit_balance;

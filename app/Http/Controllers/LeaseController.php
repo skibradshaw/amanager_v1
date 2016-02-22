@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Apartment;
 use App\Lease;
+use App\LeaseDeposit;
 use App\Tenant;
 use App\LeaseDetail;
 use Carbon\Carbon;
@@ -69,7 +70,14 @@ class LeaseController extends Controller
         {
             return back()->withInput()->with('error', 'These dates are not available!');
         }        
-        $lease = Lease::create($input);
+        $lease = Lease::create([
+            'apartment_id' => $input['apartment_id'],
+            'startdate' => $input['startdate'],
+            'enddate' => $input['enddate'],
+            'monthly_rent' => $input['monthly_rent'],
+            'pet_rent' => $input['pet_rent']
+            ]);
+        
         //Create Lease Details
         $start = $lease->startdate;
         $end = $lease->enddate;
@@ -99,11 +107,23 @@ class LeaseController extends Controller
             $lease_detail->monthly_pet_rent = ($lease->pet_rent*$multiplier);
 
             $lease->details()->save($lease_detail);
-
-
-
         }
 
+        //Create Lease Deposits
+        if(!empty($input['deposit']))
+        {
+            $ld = new LeaseDeposit;
+            $ld->amount = $input['deposit'];
+            $ld->deposit_type = 'Damage Deposit';
+            $lease->leaseDeposits()->save($ld);
+        }
+        if(!empty($input['pet_deposit']))
+        {
+            $pd = new LeaseDeposit;
+            $pd->amount = $input['pet_deposit'];
+            $pd->deposit_type = 'Pet Deposit';
+            $lease->leaseDeposits()->save($pd);
+        }
 
         
         return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
