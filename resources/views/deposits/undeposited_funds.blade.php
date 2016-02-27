@@ -46,7 +46,7 @@
 		</tfoot>
 	</table> 
 	<h3 class="text-right">Selected Total: $<span id="total">{{ number_format($total,2) }}</span></h3>
-	<button type="submit" class="radius button right">Make Deposit</button>
+	<button type="submit" class="radius button right"{{ ($total == 0) ? ' disabled ' : null }}>Create a Deposit</button>
 	{!! Form::hidden('deposit_total',$total,['id' => 'deposit_total']) !!}
 	{!! Form::close() !!}
 

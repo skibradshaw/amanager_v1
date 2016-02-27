@@ -48,8 +48,11 @@
 			{!! Form::text('note') !!}	      
 	    </div>
    </div>
-   <button type="submit" class="radius button">Asses Fee</button>
-	
+	@if(isset($fee))
+		<button type="submit" class="radius button">Edit Fee</button> or <a href="{{ URL::previous() }}">Go Back ></a>
+	@else
+		<button type="submit" class="radius button">Asses Fee</button>
+	@endif	
   {!! Form::close() !!}
 	
 

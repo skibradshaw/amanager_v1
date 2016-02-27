@@ -99,15 +99,15 @@
 		            @endforeach
 	            </tr>					            
 				<tr>
-				    <th>Pet Rent <a href="{{ route('apartments.lease.petrent',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" data-reveal-id="changePetRent" data-reveal-ajax="true">edit</a></th>
+				    <th>Pet Rent</th>
 					@foreach($lease->details as $m)									
-					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap>{{ number_format(($m->monthly_pet_rent),2) }}</td>
+					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap><a href="{{ route('apartments.lease.petrent',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" data-reveal-id="changePetRent" data-reveal-ajax="true">{{ number_format(($m->monthly_pet_rent),2) }}</a></td>
 					@endforeach
 				</tr>
 				<tr>
 					<td>Fees</td>
 					@foreach($lease->details as $m)									
-						<td align="right" class="text-right" nowrap>${{ number_format($lease->monthFees($m->month,$m->year),2) }}</td>
+						<td align="right" class="text-right" nowrap><a href="#"> ${{ number_format($lease->monthFees($m->month,$m->year),2) }}</a></td>
 					@endforeach
 				</tr>					            
 			</tbody>
