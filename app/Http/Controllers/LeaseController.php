@@ -178,7 +178,7 @@ class LeaseController extends Controller
 
         }
         
-        return redirect('/')->with('status','Lease Deleted!');
+        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'id' => $lease->id]);
                     
     }
 }
