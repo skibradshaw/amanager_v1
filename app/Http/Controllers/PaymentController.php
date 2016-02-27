@@ -85,9 +85,17 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Apartment $apartment, Lease $lease, $payment)
     {
         //
+       $tenants = $lease->tenants->lists('fullname','id');
+        return view('payments.edit',[
+            'title' => 'Edit a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
+            'apartment' => $apartment, 
+            'lease' => $lease, 
+            'tenants' => $tenants,
+            'payment_type' => $payment->payment_type
+            ]);
     }
 
     /**

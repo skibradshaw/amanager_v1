@@ -49,51 +49,6 @@
 	     	</p>
 	     </div>	
     </div>
-	<div class="row" data-equalizer>
-	<h2><small>Deposit Info</small></h2>
-	     <div class="large-12 columns panel">
-							<div class="large-4 columns text-center">
-								<h5>Rent Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Damage Deposit')->sum('amount'),2) }}</h5>
-							</div>
-							<div class="large-4 columns text-center">
-								<h5>Pet Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Pet Deposit')->sum('amount'),2) }}</h5>
-							</div>
-							<div class="large-4 columns text-center">
-								<h5>Total: ${{ number_format($lease->leaseDeposits()->sum('amount'),2) }}</h5>
-							</div>	 
-		</div>
-		<div class="large-12 columns">    
-					<table id="deposit" class="responsive" width="100%">
-						<thead>
-							<tr>
-							  <th>Tenant</th>
-							  <th nowrap="" align="right" class="text-right">Deposit Payments</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($lease->tenants as $t)
-							<tr>
-								<td>{{ $t->fullname }}</td>
-								<td align="right" class="text-right">${{ number_format($lease->payments()->where('tenant_id',$t->id)->where('payment_type','Deposit')->sum('amount'),2) }}</td>
-							</tr>
-							@endforeach
-
-						</tbody>
-						<tfoot>
-							<tr>
-								<td><strong>Total Paid:</strong></td>
-								<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
-							</tr>
-							<tr>
-								<td><strong>Balance Due:</strong></td>
-								<td align="right" class="text-right"><strong>${{ number_format($lease->depositBalance(),2) }}</strong></td>
-							</tr>						</tfoot>
-					</table>
-					<p>
-						<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
-					</p>
-	     </div>	
-    </div>
 
   <div class="row">
   <h2><small>Ledger</small></h2>
@@ -165,6 +120,9 @@
 				</tr>
 			</tfoot>	
 		  </table>
+		@if($lease->openBalance() != 0)
+		<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
+		@endif		  
 	  </div>
   </div>
   <div class="row">
@@ -173,6 +131,64 @@
   	</div>
   </div>
   <hr>
+	<div class="row" data-equalizer>
+	<h2><small>Deposit Info</small></h2>
+	     <div class="large-12 columns panel">
+							<div class="large-4 columns text-center">
+								<h5>Rent Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Damage Deposit')->sum('amount'),2) }}</h5>
+							</div>
+							<div class="large-4 columns text-center">
+								<h5>Pet Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Pet Deposit')->sum('amount'),2) }}</h5>
+							</div>
+							<div class="large-4 columns text-center">
+								<h5>Total: ${{ number_format($lease->leaseDeposits()->sum('amount'),2) }}</h5>
+							</div>	 
+		</div>
+		<div class="large-12 columns">    
+					<table id="deposit" class="responsive" width="100%">
+						<thead>
+							<tr>
+							  <th>Tenant</th>
+							  <th nowrap="" align="right" class="text-right">Deposit Payments</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($lease->tenants as $t)
+							<tr>
+								<td>{{ $t->fullname }}</td>
+								<td align="right" class="text-right">${{ number_format($lease->payments()->where('tenant_id',$t->id)->where('payment_type','Deposit')->sum('amount'),2) }}</td>
+							</tr>
+							@endforeach
+
+						</tbody>
+						<tfoot>
+							<tr>
+								<td><strong>Total Paid:</strong></td>
+								<td align="right" class="text-right"><strong>${{ number_format($lease->payments()->where('payment_type','Deposit')->sum('amount'),2) }}</strong></td>
+							</tr>
+							<tr>
+								<td><strong>Balance Due:</strong></td>
+								<td align="right" class="text-right">
+									<strong>
+									@if($lease->depositBalance()<>0)
+										<span class="label alert" style="font-size: 0.875rem"> ${{ number_format($lease->depositBalance(),2) }}</span>
+									@else
+										<span> ${{ number_format($lease->depositBalance(),2) }}</span>
+									@endif
+									</strong>
+								</td>
+							</tr>						
+						</tfoot>
+					</table>
+					<p>
+						<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
+					</p>
+	     </div>	
+    </div>
+
+
+
+
   <div class="row" data-equalizer>
 	<h2><small>Rent Payment History</small></h2>
 	<div class="large-12 columns"> 
@@ -189,7 +205,7 @@
 			<tbody>
 				@forelse($lease->payments()->where('payment_type','<>','Deposit')->get() as $p)
 					<tr>
-						<td><a href="#">{{$p->paid_date->format('n/d/Y') }} </a></td>
+						<td><a href="{{ route('apartments.lease.payments.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $p->id]) }} ">{{$p->paid_date->format('n/d/Y') }} </a></td>
 						<td>{{ $p->tenant->fullname }}</td>
 						<td>{{ number_format($p->amount,2) }} </td>
 						<td>{{ $p->payment_type }}</td>

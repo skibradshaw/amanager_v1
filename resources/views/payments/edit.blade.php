@@ -16,7 +16,7 @@
 		{!! Form::label('tenant_id','Select a Tenant',['class' => 'inline']) !!}
     </div>
    <div class="large-4 columns left">
-        {!! Form::select('tenant_id',$tenants,$tenant->id) !!}
+        {!! Form::select('tenant_id',$tenants,(isset($tenant->id)) ? $tenant->id : ((isset($payment->tenant->id)) ? $payment->tenant->id : null)) !!}
     </div>
   </div> 
   <div class="row collapse">
@@ -32,7 +32,7 @@
 			{!! Form::label('payment_type','Payment Type',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-4 columns left">
-	        {!! Form::select('payment_type',['Rent' => 'Rent', 'Fee' => 'Fee', 'Deposit' => 'Deposit'], $payment_type) !!}
+	        {!! Form::select('payment_type',['Rent' => 'Rent', 'Fee' => 'Fee', 'Deposit' => 'Deposit'], (isset($payment_type)) ? $payment_type : $payment->payment_type) !!}
 	    </div>
    </div>
   <div class="row collapse">
@@ -51,7 +51,7 @@
 			{!! Form::label('method','Method',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-4 columns left">
-	        {!! Form::select('method',['Cash' => 'Cash', 'Check' => 'Check', 'Credit Card' => 'Credit Card']) !!}
+	        {!! Form::select('method',['Cash' => 'Cash', 'Check' => 'Check', 'Credit Card' => 'Credit Card'],'Check') !!}
 	    </div>
    </div>
   <div class="row collapse">
@@ -72,7 +72,7 @@
 	    </div>
    </div>
  
-   <button type="submit" class="radius button">Record Payment</button>
+   <button type="submit" class="radius button">Record Payment</button> or <a href="{{ URL::previous() }}">Go Back ></a>
 	
   {!! Form::close() !!}
 
