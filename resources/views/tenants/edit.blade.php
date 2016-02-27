@@ -67,7 +67,7 @@
 		</div>
 		
 	</div>
-	<button type="submit" class="radius button">{{ $button }}</button>
+	<button type="submit" class="radius button">{{ $button }}</button> or <a href="{{ URL::previous() }}">Go Back ></a>
 	
 	
 	{!! Form::close() !!}

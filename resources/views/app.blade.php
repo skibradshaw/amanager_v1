@@ -10,6 +10,7 @@
      
          
         <div class="large-12 columns">
+        
 	    @if(Session::has('error'))
 	        <div data-alert class="alert-box alert radius">{{Session::get('error')}}</div>
 	    @endif	  	

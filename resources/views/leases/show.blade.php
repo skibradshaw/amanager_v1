@@ -32,7 +32,7 @@
 	     <div class="large-12 columns">
 		    	@foreach($lease->tenants as $tenant)
 				<ul class="vcard">
-				  <li class="fn">{{ $tenant->fullname }}</li>
+				  <li class="fn"><a href='{{ route('tenants.edit',['id' => $tenant->id]) }}'>{{ $tenant->fullname }}</a></li>
 				  <li class="fn">{{ $tenant->phone }}</li>
 				  <li class="email"><a href="mailto:{{ $tenant->email }}">{{ $tenant->email }}</a></li>
 				  @if($lease->tenants()->where('tenant_id',$tenant->id)->first()->pivot->sublessor_name)
