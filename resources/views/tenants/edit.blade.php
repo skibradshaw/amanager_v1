@@ -15,6 +15,7 @@
 		@endif
 	@endif
 	{!! Form::hidden('type','tenant') !!}
+	{!! Form::hidden('redirect',URL::previous()) !!}
 	<div class="row collapse">
 		<div class="row collapse">
 			<div class="large-2 columns">

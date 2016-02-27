@@ -123,12 +123,12 @@ class TenantController extends Controller
      */
     public function update(Request $request, Tenant $tenant)
     {
-        //
+        // return $request->all();
         $input = $request->all();
         //$tenant = Tenant::find($id);¬
         $tenant->fill($input);
         $tenant->save();
-        return back();
+        return redirect((!empty($request->input('redirect'))) ? $request->input('redirect') : redirect('tenants'));
     }
 
     /**
