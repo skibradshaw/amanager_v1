@@ -2,7 +2,7 @@
 @extends('app')
 @section('header')
 	@if($lease->openBalance() != 0)
-	<div class="alert-box success radius">Open Balance: ${{-- number_format($lease->openBalance(),2) --}}</div>
+	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
 	@endif
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
@@ -172,6 +172,37 @@
   		<a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/terminate" class="button radius alert" data-reveal-id="terminateLease" data-reveal-ajax="true">Terminate Lease</a>
   	</div>
   </div>
+  <hr>
+  <div class="row" data-equalizer>
+	<h2><small>Rent Payment History</small></h2>
+	<div class="large-12 columns"> 
+		<table class="table table-striped table-condensed" id="payments" width="100%">
+			<thead>
+			<tr>
+				<th align="center" style="cursor:pointer">Date</th>
+				<th align="center" style="cursor:pointer">Name</th>
+				<th align="center" style="cursor:pointer">Amount</th>
+				<th align="center" style="cursor:pointer">Type</th>
+				<th align="center" style="cursor:pointer">Delete</th>
+			</tr>
+			</thead>
+			<tbody>
+				@forelse($lease->payments()->where('payment_type','<>','Deposit')->get() as $p)
+					<tr>
+						<td><a href="#">{{$p->paid_date->format('n/d/Y') }} </a></td>
+						<td>{{ $p->tenant->fullname }}</td>
+						<td>{{ number_format($p->amount,2) }} </td>
+						<td>{{ $p->payment_type }}</td>
+						<td><a href="#">Delete</a></td>
+					</tr>
+				@empty
+				@endforelse		
+			</tbody>
+		</table>
+	</div>
+  </div>
+
+
   <div id="myModal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 	 {!! Form::open(['route' => 'tenants.add_to_lease']) !!}
 		{!! Form::label('name','Search Tenant Name') !!}
