@@ -1,7 +1,7 @@
   <!--- FOUNDATION Template: Contact Page Template http://foundation.zurb.com/templates.html -->
 @extends('app')
 @section('header')
-<h1>{{ $title or 'A Manager' }}</h1>
+<h1> <i class="fa fa-building-o fa-1x"></i> {{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
 <p><a href="apartments/create" class="button radius">Create a New Apartment</a></p>

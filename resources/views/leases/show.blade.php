@@ -120,10 +120,15 @@
 				</tr>
 			</tfoot>	
 		  </table>
-		@if($lease->openBalance() != 0)
-		<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
-		@endif		  
+		  
 	  </div>
+  </div>
+  <div class="row">
+  	<div class="large-12 columns">
+  		@if($lease->openBalance() != 0)
+		<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
+		@endif
+	</div>
   </div>
   <div class="row">
   	<div class="large-12 columns">

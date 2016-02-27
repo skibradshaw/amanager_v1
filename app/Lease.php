@@ -53,8 +53,8 @@ class Lease extends Model
     public function progress()
     {
     	$return = 0;
-    	$complete = $this->startdate->diffInMonths(Carbon::now());
-    	$total = $this->enddate->diffInMonths($this->startdate)+1;
+    	$complete = $this->startdate->diffInDays(Carbon::now());
+    	$total = $this->enddate->diffInDays($this->startdate);
     	return $complete/$total;
     }
     /**
