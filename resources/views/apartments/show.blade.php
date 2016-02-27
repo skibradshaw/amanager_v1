@@ -5,6 +5,7 @@
 @stop
 @section('content')
 	<h3 class="small">Leases</h3>
+	<p><a href="{{ route('apartments.lease.create',['apartment' => $apartment->name]) }}" class="button radius">Create a New Lease</a></p>
 	@foreach($apartment->leases as $lease)
 		<hr/>
 		<h4 class="subheader"><a href="{{ route('apartments.lease.show',['name' => $apartment->name, 'id' => $lease->id]) }}">{{ $lease->startdate->format('n/j/Y') }} - {{ $lease->enddate->format('n/j/Y') }} - ${{ number_format($lease->monthly_rent,2) }} / mo</a></h4>
