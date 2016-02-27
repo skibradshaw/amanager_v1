@@ -21,7 +21,7 @@
 						{{ $lease->apartment->property->name . " " . $lease->apartment->name }}
 					</td>
 					<td align="right" class="text-right">
-						${{ number_format($lease->deposit + $lease->pet_deposit,2) }}
+						${{ number_format($lease->leaseDeposits()->sum('amount'),2) }}
 					</td>
 					<td align="center" class="text-center">
 						${{ number_format($lease->depositBalance(),2) }}

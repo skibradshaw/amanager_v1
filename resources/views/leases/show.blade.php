@@ -336,6 +336,22 @@ $( document ).ready(function() {
 	       window.location = $(this).attr('href');
 	    }
    });
+
+   //Sort Payments Table
+    $('#payments').DataTable({
+	    "searching": false,
+	    "lengthChange": false,
+	    "paging": false,
+	    "info": true,
+/*
+		//Hides a column
+		"columnDefs": [
+		    { "targets": [4], "visible": false }
+		  ],
+*/
+		"dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+		//"order":[[0,'asc'],[4,'asc']]		    
+    });   
 });	
 
 
