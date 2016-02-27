@@ -85,15 +85,16 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Apartment $apartment, Lease $lease, $payment)
+    public function edit(Apartment $apartment, Lease $lease, Payment $payment)
     {
         //
        $tenants = $lease->tenants->lists('fullname','id');
-        return view('payments.edit',[
+       return view('payments.edit',[
             'title' => 'Edit a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
             'apartment' => $apartment, 
             'lease' => $lease, 
             'tenants' => $tenants,
+            'payment' => $payment,
             'payment_type' => $payment->payment_type
             ]);
     }
@@ -105,9 +106,14 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Apartment $apartment, Lease $lease, Payment $payment, Request $request)
     {
         //
+        // return Request::all();
+        $payment->update(Request::except('paid_date'));
+        $payment->paid_date = Carbon::parse(Request::input('paid_date'));
+        $payment->save();
+        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'lease' => $lease->id]);
     }
 
     /**
@@ -116,9 +122,16 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Apartment $apartment, Lease $lease, Payment $payment)
     {
-        //
+        //Business Rule - Do not allow delete of Payment that has been deposited
+        if(!empty($payment->bank_deposits_id))
+        {
+            return redirect()->back();
+        }
+        \App\PaymentAllocation::destroy($payment->allocations()->lists('id')->toArray());
+        $payment->delete();
+        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'lease' => $lease->id]);
     }
     
 	public function showAllocate(Apartment $apartment, Lease $lease, Payment $payment)

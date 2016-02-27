@@ -43,6 +43,7 @@ Route::get('/apartments/{apartments}/lease/{lease}/tenants/{tenant_id}','TenantC
 Route::get('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate',['as' => 'apartments.lease.payments.allocate', 'uses' => 'PaymentController@showAllocate']);
 Route::post('/apartments/{apartments}/lease/{lease}/payments/{payments}/allocate',['as' => 'apartments.lease.payments.allocate', 'uses' => 'PaymentController@allocate']);
 Route::get('/apartments/{apartments}/lease/{lease}/payments/choose',['as' => 'apartments.lease.payments.choose', 'uses' => 'PaymentController@choose']);
+Route::get('/apartments/{apartments}/lease/{lease}/{payments}/delete',['as' => 'apartments.lease.payments.delete', 'uses' => 'PaymentController@destroy']);
 
 //Lease Routes
 Route::get('/apartments/{apartments}/lease/{lease}/pet_rent',['as' => 'apartments.lease.petrent', 'uses' => 'LeaseDetailController@showPetRent']);

@@ -5,7 +5,7 @@
 @stop
 @section('content')
 	@if(isset($payment))
-	{!! Form::model($payment,['route' => ['apartments.lease.payments.update','name' => $lease->apartment->name, 'id' => $lease->id, 'id' => $payment->id],'method' => 'put']) !!}
+	{!! Form::model($payment,['route' => ['apartments.lease.payments.update','name' => $lease->apartment->name, 'lease' => $lease->id, 'payment' => $payment->id],'method' => 'put']) !!}
 	@else
 	{!! Form::open(['route' => ['apartments.lease.payments.store','name' => $lease->apartment->name, 'id' => $lease->id]]) !!}
 	@endif
@@ -24,7 +24,7 @@
 			{!! Form::label('paid_date','Payment Date',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-2 columns left">
-			{!! Form::text('paid_date',null,['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
+			{!! Form::text('paid_date',(isset($payment->paid_date)) ? $payment->paid_date->format('n/d/Y') : null,['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
 	    </div>
    </div>
   <div class="row collapse">

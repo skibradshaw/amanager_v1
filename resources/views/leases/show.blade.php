@@ -205,11 +205,23 @@
 			<tbody>
 				@forelse($lease->payments()->where('payment_type','<>','Deposit')->get() as $p)
 					<tr>
-						<td><a href="{{ route('apartments.lease.payments.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $p->id]) }} ">{{$p->paid_date->format('n/d/Y') }} </a></td>
+						<td>
+							@if(empty($p->bank_deposits_id))
+								<a href="{{ route('apartments.lease.payments.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $p->id]) }} ">{{$p->paid_date->format('n/d/Y') }} </a>
+							@else
+								{{$p->paid_date->format('n/d/Y') }}
+							@endif
+						</td>
 						<td>{{ $p->tenant->fullname }}</td>
 						<td>{{ number_format($p->amount,2) }} </td>
 						<td>{{ $p->payment_type }}</td>
-						<td><a href="#">Delete</a></td>
+						<td>
+							@if(empty($p->bank_deposits_id))
+								<a href="{{ route('apartments.lease.payments.delete',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $p->id]) }}" class="del">Delete</a>
+							@else
+								Deposited
+							@endif
+						</td>
 					</tr>
 				@empty
 				@endforelse		
@@ -310,7 +322,15 @@ $( document ).ready(function() {
             $('#add_sublease').removeAttr('disabled');
         }
     });
- 
+ 	
+ 	//JQuery Confirm Payment Delete
+   $(".del").click(function(){
+	    event.preventDefault();
+	    var r=confirm("Are you sure you want to delete?");
+	    if (r==true)   {  
+	       window.location = $(this).attr('href');
+	    }
+   });
 });	
 
 
