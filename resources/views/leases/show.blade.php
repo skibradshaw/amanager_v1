@@ -146,7 +146,7 @@
 				<tr>
 				    <th>Pet Rent <a href="{{ route('apartments.lease.petrent',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" data-reveal-id="changePetRent" data-reveal-ajax="true">edit</a></th>
 					@foreach($lease->details as $m)									
-					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap>{{ number_format(($m->monthly_pet_rent*$m->multiplier),2) }}</td>
+					    <td align="right" class="text-right edit" id="{{$m->id}}" nowrap>{{ number_format(($m->monthly_pet_rent),2) }}</td>
 					@endforeach
 				</tr>
 				<tr>
