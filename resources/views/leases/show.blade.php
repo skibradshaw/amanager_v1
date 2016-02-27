@@ -140,7 +140,7 @@
 	            <tr>
 		            <td>Rent</td>
 					@foreach($lease->details as $m)									
-		                <th align="right" class="text-right" nowrap>${{ number_format(($m->monthly_rent*$m->multiplier),2) }} </th>
+		                <th align="right" class="text-right" nowrap>${{ number_format(($m->monthly_rent),2) }} </th>
 		            @endforeach
 	            </tr>					            
 				<tr>
