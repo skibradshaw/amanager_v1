@@ -45,7 +45,7 @@
 			{!! Form::text('note') !!}	      
 	    </div>
    </div>
-   <button type="submit" class="radius button">Record Payment</button>
+   <button type="submit" class="radius button">Asses Fee</button>
 	
   {!! Form::close() !!}
 	
