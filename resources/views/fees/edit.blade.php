@@ -15,7 +15,7 @@
 		{!! Form::label('item_name','Fee for:',['class' => 'inline']) !!}
     </div>
    <div class="large-4 columns left">
-        {!! Form::select('item_name',$fees) !!}
+        {!! Form::select('item_name',$fees,'Late Fee') !!}
     </div>
   </div> 
   <div class="row collapse">
@@ -34,14 +34,17 @@
           <span class="prefix">$</span>
         </div>	    
 	   <div class="small-2 columns left">
-	        {!! Form::text('amount') !!}
+	        {!! Form::text('amount',number_format($lease->monthly_rent*.10,2)) !!}
 	    </div>
+	    <div class="small-1 columns left">
+          <span class="postfix"><h5><small>(default 10%)</small></h5></span>
+        </div>
    </div>
   <div class="row collapse">
 	    <div class="large-2 columns">
 			{!! Form::label('note','Notes:',['class' => 'inline']) !!}
 	    </div>   
-	    <div class="large-2 columns left">
+	    <div class="large-4 columns left">
 			{!! Form::text('note') !!}	      
 	    </div>
    </div>
