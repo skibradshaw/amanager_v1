@@ -38,7 +38,7 @@ class Tenant extends User
 
 	public function leases()
 	{
-		return $this->belongsToMany('App\Lease');
+		return $this->belongsToMany('App\Lease')->withPivot('sublessor_name')->withTimestamps();
 	}
 	
 	public function payments()

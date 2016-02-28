@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+// use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -38,10 +39,10 @@ class PaymentController extends Controller
     public function create(Apartment $apartment, Lease $lease, Request $request)
     {
         //
-        
+      
         $tenants = $lease->tenants->lists('fullname','id');
-        (Request::input('tenant_id')) ? $tenant = Tenant::find(Request::input('tenant_id')) : $tenant = new Tenant;
-        (!empty(Request::input('type'))) ? $type = Request::input('type') : $type = '';
+        ($request->input('tenant_id')) ? $tenant = Tenant::find($request->input('tenant_id')) : $tenant = new Tenant;
+        (!empty($request->input('type'))) ? $type = $request->input('type') : $type = '';
         //return $tenant;
         return view('payments.edit',[
             'title' => 'Record a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
@@ -61,7 +62,10 @@ class PaymentController extends Controller
     public function store(Apartment $apartment, Lease $lease, Request $request)
     {
         //
-        $input = Request::all();
+         $this->validate($request,[
+                'amount' => 'required | numeric'        
+            ]);  
+        $input = $request->all();
         $input['paid_date'] = Carbon::parse($input['paid_date']);
         $payment = Payment::create($input);
         PaymentAllocation::create(['amount' => $input['amount'], 'month' => Carbon::parse($input['paid_date'])->month, 'year' => Carbon::parse($input['paid_date'])->year, 'payment_id' => $payment->id]);
@@ -89,11 +93,13 @@ class PaymentController extends Controller
     {
         //
        $tenants = $lease->tenants->lists('fullname','id');
+       $tenant = $payment->tenant;
        return view('payments.edit',[
             'title' => 'Edit a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
             'apartment' => $apartment, 
             'lease' => $lease, 
             'tenants' => $tenants,
+            'tenant' => $tenant,
             'payment' => $payment,
             'payment_type' => $payment->payment_type
             ]);
@@ -109,10 +115,18 @@ class PaymentController extends Controller
     public function update(Apartment $apartment, Lease $lease, Payment $payment, Request $request)
     {
         //
-        // return Request::all();
-        $payment->update(Request::except('paid_date'));
-        $payment->paid_date = Carbon::parse(Request::input('paid_date'));
+        // return $request->all();
+        $this->validate($request,[
+            'amount' => 'required | numeric'        
+        ]);  
+        $input = $request->all();
+        $payment->update($request->except('paid_date'));
+        $payment->paid_date = Carbon::parse($request->input('paid_date'));
         $payment->save();
+        //Remove Current Allocations for a Payment and Create 1 Allocation for the Edited Payment
+        \App\PaymentAllocation::destroy($payment->allocations()->lists('id')->toArray());
+        PaymentAllocation::create(['amount' => $input['amount'], 'month' => Carbon::parse($input['paid_date'])->month, 'year' => Carbon::parse($input['paid_date'])->year, 'payment_id' => $payment->id]);
+
         return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'lease' => $lease->id]);
     }
 
@@ -141,7 +155,7 @@ class PaymentController extends Controller
 	
     public function allocate(Apartment $apartment, Lease $lease, Payment $payment, Request $request)
     {
-	    $input = Request::all();
+	    $input = $request->all();
 	    foreach($input as $key => $value)
 	    {
 			if($key != '_token' && $value != 0)
@@ -157,7 +171,7 @@ class PaymentController extends Controller
     
     public function choose(Apartment $apartment, Lease $lease, Request $request)
     {
-	    $input = Request::all();
+	    $input = $request->all();
 	    $tenant = Tenant::with('payments')->find($input['tenant_id']);
 	    //$payments = $lease->payments()->where('tenant_id',$input['tenant_id']->get());
 	    return view('payments.choose',['title' => $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/Y') . ' - ' . $lease->enddate->format('n/j/Y'),'lease' => $lease,'tenant' => $tenant ]);

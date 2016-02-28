@@ -45,6 +45,7 @@
 	   <div class="large-3 columns left">
 	        {!! Form::text('amount') !!}
 	    </div>
+	    <div class="large-2 columns left">{!! $errors->first('amount','<span class="label alert radius">:message</span>') !!}</div>
    </div>
   <div class="row collapse">
 	    <div class="large-2 columns">
@@ -68,7 +69,7 @@
 			{!! Form::label('memo','Note',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-4 columns left">
-	        {!! Form::text('memo') !!}
+	        {!! Form::text('memo',(isset($tenant->leases()->where('leases.id',$lease->id)->first()->pivot->sublessor_name)) ? 'Currently subleased to: ' . $tenant->leases()->where('leases.id',$lease->id)->first()->pivot->sublessor_name : null) !!}
 	    </div>
    </div>
  
