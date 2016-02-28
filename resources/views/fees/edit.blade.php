@@ -5,7 +5,7 @@
 @stop
 @section('content')
 	@if(isset($fee))
-		{!! Form::model($fee,['route' => ['apartments.lease.fees.update','name' => $lease->apartment->name, 'id' => $lease->id], 'method' => 'Put'])  !!}
+		{!! Form::model($fee,['route' => ['apartments.lease.fees.update','name' => $lease->apartment->name, 'lease' => $lease->id, 'fee' => $fee], 'method' => 'Put'])  !!}
 	@else
 		{!! Form::open(['route' => ['apartments.lease.fees.store','name' => $lease->apartment->name, 'id' => $lease->id]]) !!}
 	@endif
@@ -15,7 +15,7 @@
 		{!! Form::label('item_name','Fee for:',['class' => 'inline']) !!}
     </div>
    <div class="large-4 columns left">
-        {!! Form::select('item_name',$fees,'Late Fee') !!}
+        {!! Form::select('item_name',$fees,(isset($fee)) ? null : 'Late Fee') !!}
     </div>
   </div> 
   <div class="row collapse">
@@ -23,7 +23,7 @@
 			{!! Form::label('due_date','Due Date:',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-2 columns left">
-			{!! Form::text('due_date',null,['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
+			{!! Form::text('due_date',(isset($fee)) ? $fee->due_date->format('n/d/Y') : \Carbon\Carbon::now()->format('n/d/Y'),['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
 	    </div>
    </div>
   <div class="row collapse">

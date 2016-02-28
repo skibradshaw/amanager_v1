@@ -52,6 +52,8 @@ Route::post('/apartments/{apartments}/lease/{lease}/single_pet_rent',['as' => 'a
 Route::get('/apartments/{apartments}/lease/{lease}/terminate',['as' => 'apartments.lease.terminate','uses' => 'LeaseController@showTerminate']);
 Route::post('/apartments/{apartments}/lease/{lease}/terminate',['as' => 'apartments.lease.terminate','uses' => 'LeaseController@terminate']);
 
+//Fees Routes
+Route::get('/apartments/{apartments}/lease/{lease}/{fees}/delete',['as' => 'apartments.lease.fees.delete', 'uses' => 'FeeController@destroy']);
 
 //Reports
 Route::get('/reports/rents_due',['as' => 'reports.rentsdue', 'uses' => 'ReportController@rentsDue']);

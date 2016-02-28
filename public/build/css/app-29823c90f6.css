@@ -7042,7 +7042,7 @@ meta.foundation-mq-topbar {
 
 .contain-to-grid {
   width: 100%;
-  background: #333333;
+  background: #100F36;
 }
 
 .contain-to-grid .top-bar {
@@ -7076,7 +7076,7 @@ meta.foundation-mq-topbar {
 }
 
 .top-bar {
-  background: #333333;
+  background: #100F36;
   height: 2.8125rem;
   line-height: 2.8125rem;
   margin-bottom: 0;
@@ -7211,7 +7211,7 @@ meta.foundation-mq-topbar {
 }
 
 .top-bar.expanded .title-area {
-  background: #333333;
+  background: #100F36;
 }
 
 .top-bar.expanded .toggle-topbar a {
@@ -7251,7 +7251,7 @@ meta.foundation-mq-topbar {
 
 .top-bar-section .divider,
 .top-bar-section [role="separator"] {
-  border-top: solid 1px #1a1a1a;
+  border-top: solid 1px #08081b;
   clear: both;
   height: 1px;
   width: 100%;
@@ -7472,9 +7472,9 @@ meta.foundation-mq-topbar {
 }
 
 .top-bar-section ul li:hover:not(.has-form) > a {
-  background-color: #555555;
+  background-color: #008CBA;
   color: #FFFFFF;
-  background: #222222;
+  background: #008CBA;
 }
 
 .top-bar-section ul li.active > a {
@@ -7599,7 +7599,7 @@ meta.foundation-mq-topbar {
 
 @media only screen and (min-width: 40.0625em) {
   .top-bar {
-    background: #333333;
+    background: #100F36;
     overflow: visible;
   }
 
@@ -7649,7 +7649,7 @@ meta.foundation-mq-topbar {
   }
 
   .top-bar.expanded {
-    background: #333333;
+    background: #100F36;
   }
 
   .contain-to-grid .top-bar {
@@ -7678,20 +7678,20 @@ meta.foundation-mq-topbar {
   }
 
   .top-bar-section li.hover > a:not(.button) {
-    background-color: #555555;
-    background: #222222;
+    background-color: #008CBA;
+    background: #008CBA;
     color: #FFFFFF;
   }
 
   .top-bar-section li:not(.has-form) a:not(.button) {
-    background: #333333;
+    background: #100F36;
     line-height: 2.8125rem;
     padding: 0 0.9375rem;
   }
 
   .top-bar-section li:not(.has-form) a:not(.button):hover {
-    background-color: #555555;
-    background: #222222;
+    background-color: #008CBA;
+    background: #008CBA;
   }
 
   .top-bar-section li.active:not(.has-form) a:not(.button) {
@@ -7784,7 +7784,7 @@ meta.foundation-mq-topbar {
   }
 
   .top-bar-section .dropdown li:not(.has-form):not(.active):hover > a:not(.button) {
-    background-color: #555555;
+    background-color: #008CBA;
     color: #FFFFFF;
     background: #222222;
   }
@@ -7801,7 +7801,7 @@ meta.foundation-mq-topbar {
 
   .top-bar-section > ul > .divider,
   .top-bar-section > ul > [role="separator"] {
-    border-right: solid 1px #4e4e4e;
+    border-right: solid 1px #1d1b63;
     border-bottom: none;
     border-top: none;
     clear: none;
@@ -7810,7 +7810,7 @@ meta.foundation-mq-topbar {
   }
 
   .top-bar-section .has-form {
-    background: #333333;
+    background: #100F36;
     height: 2.8125rem;
     padding: 0 0.9375rem;
   }
@@ -7834,8 +7834,8 @@ meta.foundation-mq-topbar {
   }
 
   .no-js .top-bar-section ul li:hover > a {
-    background-color: #555555;
-    background: #222222;
+    background-color: #008CBA;
+    background: #008CBA;
     color: #FFFFFF;
   }
 

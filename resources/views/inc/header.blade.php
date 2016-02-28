@@ -15,17 +15,28 @@
            
           <ul class="right">
             @if(Auth::check())
-            <li class="has-dropdown">
+            <li><a href="/apartments">Apartments</a></li>
+            <li class="divider"></li>
+            <li><a href="/tenants">Tenants</a></li>
+            <li class="divider"></li>
+            @if(!empty($undepositedfunds) && $undepositedfunds <> 0)
+            <li><a href="/deposits/undeposited" style="background-color: #43AC6A">Undeposited Funds ({{ number_format($undepositedfunds,2)}})</a></li>
+            @else
+            <li><a href="/deposits/undeposited">Undeposited Funds</a></li>
+            @endif
+            <li class="divider"></li>
+            <li><a href="/deposits">Deposits</a></li>
+<!--             <li class="has-dropdown">
               <a href="#">Navigation</a>
               <ul class="dropdown">
-                <li><a href="/apartments">Apartments</a></li>
-                <li><a href="/tenants">Tenants</a></li>
-                <li><a href="/deposits/undeposited">Undeposited Funds</a></li>
-                <li><a href="/deposits">Deposits</a></li>
+                
+                
+                
+                
               </ul>
             </li>
+ -->
 	        <li class="divider"></li>
-	        
             <li><a href="#">{{ Auth::user()->fullname }}</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Logout</a></li>

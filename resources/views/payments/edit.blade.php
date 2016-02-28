@@ -24,7 +24,7 @@
 			{!! Form::label('paid_date','Payment Date',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-2 columns left">
-			{!! Form::text('paid_date',(isset($payment->paid_date)) ? $payment->paid_date->format('n/d/Y') : null,['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
+			{!! Form::text('paid_date',(isset($payment->paid_date)) ? $payment->paid_date->format('n/d/Y') : \Carbon\Carbon::now()->format('n/d/Y'),['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
 	    </div>
    </div>
   <div class="row collapse">

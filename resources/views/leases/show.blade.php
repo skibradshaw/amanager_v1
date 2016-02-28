@@ -1,9 +1,6 @@
   <!--- FOUNDATION Template: Contact Page Template http://foundation.zurb.com/templates.html -->
 @extends('app')
 @section('header')
-	@if($lease->openBalance() != 0)
-	<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
-	@endif
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
@@ -24,9 +21,13 @@
 				    <div class="large-3 columns text-center">
 				    	<h5>Total Fees:<br> ${{ number_format($lease->totalfees,2) }} </h5>
 				    </div>
-			</div>
+			</div>			
 	</div>
-
+	@if($lease->openBalance() != 0)
+	<div class="row">
+		<div class="alert-box success radius">Open Balance: ${{ number_format($lease->openBalance(),2) }}</div>
+	</div>
+	@endif	
 	<div class="row" data-equalizer>
 	<h2><small>Residents</small></h2>
 	     <div class="large-12 columns">
@@ -107,7 +108,7 @@
 				<tr>
 					<td>Fees</td>
 					@foreach($lease->details as $m)									
-						<td align="right" class="text-right" nowrap><a href="#"> ${{ number_format($lease->monthFees($m->month,$m->year),2) }}</a></td>
+						<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.fees.index',['name' => $lease->apartment->name, 'id' => $lease->id])}} "> ${{ number_format($lease->monthFees($m->month,$m->year),2) }}</a></td>
 					@endforeach
 				</tr>					            
 			</tbody>

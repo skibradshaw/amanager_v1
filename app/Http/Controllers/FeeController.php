@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -23,9 +23,11 @@ class FeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Apartment $apartment, Lease $lease)
     {
         //
+        $fees = $lease->fees;
+        return view('fees.index',['title' => 'All Fees For: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'),'fees' => $fees,'apartment' => $apartment, 'lease' => $lease]);
     }
 
     /**
@@ -50,7 +52,7 @@ class FeeController extends Controller
     public function store(Apartment $apartment, Lease $lease, Request $request)
     {
         //
-        $input = Request::all();
+        $input = $request->all();
         $input['due_date'] = Carbon::parse($input['due_date']);
         $input['lease_id'] = $lease->id;
         $input['month'] = Carbon::parse($input['due_date'])->month;
@@ -81,12 +83,13 @@ class FeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Apartment $apartment, Lease $lease, $id)
+    public function edit(Apartment $apartment, Lease $lease, Fee $fee)
     {
         //
         $fees = ['Miscellaneous' => 'Miscellaneous', 'Late Fee' => 'Late Fee', 'Damage Fee' => 'Damage Fee'];
-        $fee = Fee::find($id);
-        return view('fees.edit',['title' => 'Assess Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease,'fee' => $fee, 'fees' => $fees]);
+        // return $id;
+        
+        return view('fees.edit',['title' => 'Edit Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease,'fee' => $fee, 'fees' => $fees]);
     }
 
     /**
@@ -96,9 +99,13 @@ class FeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Apartment $apartment, Lease $lease, Fee $fee, Request $request)
     {
         //
+        $fee->update($request->except('due_date'));
+        $fee->due_date = Carbon::parse($request->input('due_date'));
+        $fee->save();
+        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'lease' => $lease->id]);
     }
 
     /**
