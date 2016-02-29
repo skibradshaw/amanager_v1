@@ -285,11 +285,11 @@ $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
   modal.find('[autofocus]').focus();
 });
 $( document ).ready(function() {
-	 $.ajaxSetup({
-	        headers: {
-	            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	        }
-	});
+	//  $.ajaxSetup({
+	//         headers: {
+	//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	//         }
+	// });
     // Your code here.
 
 	//Jquery autocomplete search
