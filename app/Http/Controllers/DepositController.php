@@ -123,8 +123,9 @@ class DepositController extends Controller
 
     public function undeposited()
     {
-	    $payments = Payment::whereRaw('bank_deposits_id IS NULL')->get();
-	    $total = $payments->sum('amount');
-	    return view('deposits.undeposited_funds',['title' => 'Undeposited Funds','payments' => $payments, 'total' => $total]);
+	    $rentpayments = Payment::where('payment_type','<>','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();
+        $depositpayments = Payment::where('payment_type','=','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();
+
+	    return view('deposits.undeposited_funds',['title' => 'Undeposited Funds','rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
     }
 }
