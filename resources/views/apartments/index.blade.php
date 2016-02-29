@@ -5,7 +5,7 @@
 @stop
 @section('content')
 <p><a href="apartments/create" class="button radius">Create a New Apartment</a></p>
-	<table class="table table-striped table-condensed" id="apartments" width="100%">
+	<table class="table table-striped table-condensed responsive" id="apartments" width="100%">
 	<thead>
 	<tr>
 		<th align="center" style="cursor:pointer">Property</th>

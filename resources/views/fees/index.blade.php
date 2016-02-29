@@ -3,7 +3,7 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
-		<table class="table table-striped table-condensed" id="Fees" width="100%">
+		<table class="table table-striped table-condensed responsive" id="Fees" width="100%">
 			<thead>
 			<tr>
 				<th align="center" style="cursor:pointer">Date</th>

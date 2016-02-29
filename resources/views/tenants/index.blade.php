@@ -5,7 +5,7 @@
 @stop
 @section('content')
 	<p><a href="/tenants/create" class="button radius">Add a Tenant</a></p>
-	<table class="table table-striped table-condensed" id="tenants" width="100%">
+	<table class="table table-striped table-condensed responsive" id="tenants" width="100%">
 		<thead>
 		<tr>
 			<th align="center" style="cursor:pointer">Name</th>
