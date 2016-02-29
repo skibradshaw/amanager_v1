@@ -16,6 +16,15 @@ class AppServiceProvider extends ServiceProvider
         // Load Undeposited Payments to Nav Bar
         view()->composer('inc.header',function($view){
             $view->with('undepositedfunds',\App\Payment::whereRaw('bank_deposits_id IS NULL')->get()->sum('amount'));
+            $current_leases = \App\Lease::get();
+            $rents_due = 0;
+            $deposits_due = 0;
+            foreach ($current_leases as $lease) {
+                $rents_due += $lease->openBalance();
+                $deposits_due += $lease->depositBalance();
+            }            
+            $view->with('rents_due',$rents_due);
+            $view->with('deposits_due',$deposits_due);
         });
     }
 

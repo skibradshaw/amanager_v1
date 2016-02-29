@@ -187,7 +187,7 @@
 						</tfoot>
 					</table>
 					<p>
-						<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Add Deposit Payment</a>
+						<a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?type=Deposit" class="button radius tiny">Collect a Deposit Payment</a> <a href="#" class="button radius tiny">Create a New Deposit</a>
 					</p>
 	     </div>	
     </div>

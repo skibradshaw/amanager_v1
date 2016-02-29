@@ -12,7 +12,17 @@
         </ul>
      
         <section class="top-bar-section">
-           
+          <ul class="left">
+            @if(!empty($rents_due) && $rents_due <> 0)
+            <li><a href="http://foundation.zurb.com/docs" style="background-color: #f04124"><i class="fa fa-usd" style="color:#fff"></i> Rents Due: ${{ number_format($rents_due,2)}}</a>
+            </li>
+            @endif
+            @if(!empty($deposits_due) && $deposits_due <> 0)
+            <li>
+              <a href="http://foundation.zurb.com/docs" style="background-color: #f08a24"><i class="fa fa-lock" style="color:#fff"></i> Deposits Due: ${{ number_format($deposits_due,2)}}</a>
+            </li>  
+            @endif        
+          </ul> 
           <ul class="right">
             @if(Auth::check())
             <li><a href="/apartments">Apartments</a></li>
@@ -20,7 +30,7 @@
             <li><a href="/tenants">Tenants</a></li>
             <li class="divider"></li>
             @if(!empty($undepositedfunds) && $undepositedfunds <> 0)
-            <li><a href="/deposits/undeposited" style="background-color: #43AC6A">Undeposited Funds ({{ number_format($undepositedfunds,2)}})</a></li>
+            <li><a href="/deposits/undeposited" style="background-color: #43AC6A">Undeposited Funds (${{ number_format($undepositedfunds,2)}})</a></li>
             @else
             <li><a href="/deposits/undeposited">Undeposited Funds</a></li>
             @endif

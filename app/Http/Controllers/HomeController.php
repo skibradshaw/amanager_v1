@@ -22,7 +22,7 @@ class HomeController extends Controller
     //
     public function index()
     {
-	    $current_leases = Lease::where('enddate','>=',\Carbon\Carbon::now())->get();
+	    $current_leases = Lease::get();
 	    $current_balance = 0;
 	    $deposit_balance = 0;
 	    foreach ($current_leases as $lease) {

@@ -49,7 +49,7 @@
 		</tfoot>
 	</table> 
 	<h3 class="text-right">Selected Total: $<span id="rtotal">{{ number_format($rentpayments->sum('amount'),2) }}</span></h3>
-	<button type="submit" class="radius button right"{{ ($rentpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
+	<button type="submit" id="rentsubmit" class="radius button right"{{ ($rentpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
 	{!! Form::hidden('deposit_total',$rentpayments->sum('amount'),['id' => 'rent_total']) !!}
 	{!! Form::close() !!}
 @else
@@ -100,7 +100,7 @@
 		</tfoot>
 	</table> 
 	<h3 class="text-right">Selected Total: $<span id="dtotal">{{ number_format($depositpayments->sum('amount'),2) }}</span></h3>
-	<button type="submit" class="radius button right"{{ ($depositpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
+	<button type="submit" id="depositsubmit" class="radius button right"{{ ($depositpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
 	{!! Form::hidden('deposit_total',$depositpayments->sum('amount'),['id' => 'ddeposit_total']) !!}
 	{!! Form::close() !!}
 @else
@@ -140,6 +140,10 @@ $(document).ready( function () {
 			total += parseInt($(this).val());
 		});
 		//alert(total);
+		if(total == 0)
+			$('#rentsubmit').attr('disabled',true);
+		else
+			$('#rentsubmit').attr('disabled',false);
 		$('#rent_total').val(total);
 		total = numberWithCommas(total.toFixed(2))
 		$('#rtotal').text(total);
@@ -153,6 +157,10 @@ $(document).ready( function () {
 			total += parseInt($(this).val());
 		});
 		//alert(total);
+		if(total == 0)
+			$('#depositsubmit').attr('disabled',true);
+		else
+			$('#depositsubmit').attr('disabled',false);
 		$('#ddeposit_total').val(total);
 		total = numberWithCommas(total.toFixed(2))
 		$('#dtotal').text(total);
