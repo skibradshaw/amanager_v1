@@ -198,7 +198,7 @@
 
 
   <div class="row" data-equalizer>
-	<h2><small>Rent Payment History</small></h2>
+	<h2><small>Rents & Fees Payment History</small></h2>
 	<div class="large-12 columns"> 
 		<table class="table table-striped table-condensed" id="payments" width="100%">
 			<thead>

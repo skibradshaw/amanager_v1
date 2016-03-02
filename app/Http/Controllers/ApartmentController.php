@@ -25,7 +25,8 @@ class ApartmentController extends Controller
     public function index()
     {
         //
-        $apartments = Apartment::with('property')->orderBy('name','asc')->get();
+        $apartments = Apartment::with(['property' => function($q){$q->orderBy('name');}])->orderBy('number')->get();
+        //$apartments = $apartments->property()->orderBy('properties.name')->get();
         return view('apartments.index',['title' => 'Apartments','apartments' => $apartments]);
         
     }
