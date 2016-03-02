@@ -19,9 +19,19 @@ class Tenant extends User
 
     public function getFullNameAttribute()
     {
-	    return $this->firstname . ' ' . $this->lastname;
+	    return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
     }
-    
+
+    public function setFirstnameAttribute($value)
+    {
+    	$this->attributes['firstname'] = ucfirst($value);
+    }
+ 
+     public function setLastnameAttribute($value)
+    {
+    	$this->attributes['lastname'] = ucfirst($value);
+    }
+
     public function getPhoneAttribute($value) 
     {
         return "(".substr($value, 0, 3).") ".substr($value, 3, 3)."-".substr($value,6);
