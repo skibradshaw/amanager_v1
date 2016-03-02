@@ -31,7 +31,7 @@ class LeaseDetail extends Model
     public function monthAllocation($tenant_id)
     {
 	    $return = 0;
-	    foreach($this->lease->payments()->where('payment_type','Rent')->where('tenant_id',$tenant_id)->get() as $payment) {
+	    foreach($this->lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$tenant_id)->get() as $payment) {
 		    $return += $payment->allocations()->whereRaw('month = ' . $this->month)->whereRaw('year = ' . $this->year)->sum('amount');
 		    //echo $payment->allocations()->whereRaw('month = ' . $month)->whereRaw('year = ' . $year)->sum('amount');
 		    //echo $payment;

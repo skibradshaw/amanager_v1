@@ -69,17 +69,19 @@
 						<td> {{ $t->lastname }} </td>
 
 						@foreach($lease->details as $m)
-						{{-- TODO: Remove Hyperlink if Value is $0 --}}	
+
 							
-							@if($lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') == 0)
+							
+
+							@if($lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') == 0)
 							
 								<td align="right" class="text-right" nowrap>${{ number_format($m->monthAllocation($t->id),2) }}</td>
-							@elseif($lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') == 1)
-							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = ' . $m->year)->first()->id]) }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">${{ number_format($m->monthAllocation($t->id),2) }}
+							@elseif($lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') == 1)
+							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.allocate',['name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = ' . $m->year)->first()->id]) }}?leasemonth={{ $m->year . "-" . $m->month . "-01" }}" data-reveal-id="allocatePayment" data-reveal-ajax="true">${{ number_format($m->monthAllocation($t->id),2) }} ({{$lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id')}})
 								</a></td>							
-							@elseif($lease->payments()->where('payment_type','Rent')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') > 1)							
-							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.choose',['name' => $lease->apartment->name, 'lease_id' => $lease->id]) }}?tenant_id={{ $t->id }}" data-reveal-id="choosePayment" data-reveal-ajax="true">
-								${{ number_format($m->monthAllocation($t->id),2) }}
+							@elseif($lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id') > 1)							
+							<td align="right" class="text-right" nowrap><a href="{{ route('apartments.lease.payments.choose',['name' => $lease->apartment->name, 'lease_id' => $lease->id]) }}?tenant_id={{ $t->id }}&leasemonth={{ $m->year . "-" . $m->month . "-01" }}" data-reveal-id="choosePayment" data-reveal-ajax="true">
+								${{ number_format($m->monthAllocation($t->id),2) }} ({{$lease->payments()->where('payment_type','<>', 'Deposit')->where('tenant_id',$t->id)->whereRaw('MONTH(paid_date) = ' . $m->month)->whereRaw('YEAR(paid_date) = '. $m->year)->count('id')}})
 								</a>
 							</td>
 							@endif

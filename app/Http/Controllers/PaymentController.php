@@ -148,14 +148,16 @@ class PaymentController extends Controller
         return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'lease' => $lease->id]);
     }
     
-	public function showAllocate(Apartment $apartment, Lease $lease, Payment $payment)
+	public function showAllocate(Apartment $apartment, Lease $lease, Payment $payment, Request $request)
 	{
+        // return $request->all();
         return view('payments.allocate',['lease' => $lease, 'payment' => $payment]);
 	}
 	
     public function allocate(Apartment $apartment, Lease $lease, Payment $payment, Request $request)
     {
-	    $input = $request->all();
+	    
+        $input = $request->all();
 	    foreach($input as $key => $value)
 	    {
 			if($key != '_token' && $value != 0)
@@ -171,9 +173,11 @@ class PaymentController extends Controller
     
     public function choose(Apartment $apartment, Lease $lease, Request $request)
     {
-	    $input = $request->all();
+	    
+        $leasemonth = Carbon::parse($request->input('leasemonth'));
+        $input = $request->all();
 	    $tenant = Tenant::with('payments')->find($input['tenant_id']);
 	    //$payments = $lease->payments()->where('tenant_id',$input['tenant_id']->get());
-	    return view('payments.choose',['title' => $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/Y') . ' - ' . $lease->enddate->format('n/j/Y'),'lease' => $lease,'tenant' => $tenant ]);
+	    return view('payments.choose',['title' => $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/Y') . ' - ' . $lease->enddate->format('n/j/Y'),'lease' => $lease,'tenant' => $tenant,'leasemonth' => $leasemonth ]);
     }
 }

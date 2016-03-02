@@ -1,5 +1,5 @@
 
-  	 <h3>Payment {{ $payment->paid_date->format('n/d/Y') }} for ${{ $payment->amount }}</h3>	
+  	 <h3>{{ $payment->payment_type }} Payment {{ $payment->paid_date->format('n/d/Y') }} for ${{ $payment->amount }}</h3>	
 	 {!! Form::open(['route' => ['apartments.lease.payments.allocate','name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $payment->id], 'method' => 'post', 'id' => 'allocate']) !!}
 	 	<div class="row collapse">
 		 	@foreach($lease->details as $m)
@@ -30,7 +30,7 @@ $( document ).ready(function() {
 	    $sumDisplay = $('#total');
 	    $diffDisplay = $('#difference');
 	
-	$form.delegate('.month_allocation', 'change', function ()
+	$form.delegate('.month_allocation', 'keyup', function ()
 	{
 	   
 	    var sum = 0;
