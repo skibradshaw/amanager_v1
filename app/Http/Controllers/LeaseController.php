@@ -81,13 +81,18 @@ class LeaseController extends Controller
         //Create Lease Details
         $start = $lease->startdate;
         $end = $lease->enddate;
-        $p = new \DatePeriod($start,CarbonInterval::months(1),$end);
+        $inc = \DateInterval::createFromDateString('first day of next month');
+        $p = new \DatePeriod($start,$inc,$end);
+        
         foreach($p as $d)
         {
+            // echo $p . " - " . $d . "<br>";
+            // dd($p);
             $d = Carbon::instance($d);
             $lease_detail = new LeaseDetail;
             $lease_detail->month = $d->format('n');
             $lease_detail->year = $d->format('Y');
+            // echo $end->month . " " . $end->year . " + " . $d->format('n') . " " . $d->format('Y');
             //If the startdate has the same month and year as the current month, calculate a partial
             if($start->month == $d->format('n') && $start->year == $d->format('Y')) {
                 $multiplier = round((date('t',strtotime($d->format('Y-m-d')))-($start->day-1))/date('t',strtotime($d->format('Y-m-d'))),2);
@@ -102,6 +107,7 @@ class LeaseController extends Controller
                 //echo '- Full Month';
                 $multiplier = 1.0;
             }
+            //echo $multiplier . "<br>";
             $lease_detail->multiplier = $multiplier;
             $lease_detail->monthly_rent = ($lease->monthly_rent*$multiplier);
             $lease_detail->monthly_pet_rent = ($lease->pet_rent*$multiplier);
@@ -109,7 +115,7 @@ class LeaseController extends Controller
             $lease->details()->save($lease_detail);
         }
 
-        //Create Lease Deposits
+        // Create Lease Deposits
         if(!empty($input['deposit']))
         {
             $ld = new LeaseDeposit;
@@ -126,7 +132,7 @@ class LeaseController extends Controller
         }
 
         
-        return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
+        // return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
     }
 
     /**
