@@ -16,7 +16,7 @@ class ApartmentsTableSeeder extends Seeder {
 			Apartment::create([
 				'name' => 'CS' . $index,
 				'number' => $index,
-				'properties_id' => 1
+				'property_id' => 1
 
 			]);
 			
@@ -27,7 +27,7 @@ class ApartmentsTableSeeder extends Seeder {
 			Apartment::create([
 				'name' => 'SG' . $index,
 				'number' => $index,
-				'properties_id' => 2
+				'property_id' => 2
 
 			]);
 		}		

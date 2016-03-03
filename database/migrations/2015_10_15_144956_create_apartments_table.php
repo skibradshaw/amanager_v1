@@ -15,7 +15,7 @@ class CreateApartmentsTable extends Migration {
 		Schema::create('apartments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('properties_id')->unsigned()->index('fk_apartments_properties1_idx');
+			$table->integer('property_id')->unsigned()->index('fk_apartments_properties1_idx');
 			$table->string('name')->nullable();
 			$table->integer('number')->nullable();
 			$table->boolean('active')->default(1);

@@ -53,9 +53,9 @@ class ApartmentController extends Controller
     public function store(Request $request)
     {
         //
-        //return $request->properties_id; 
+        //return $request->property_id; 
         $this->validate($request,[
-                'number' => 'required|unique:apartments,number,NULL,NULL,properties_id,'.$request->properties_id        
+                'number' => 'required|unique:apartments,number,NULL,NULL,property_id,'.$request->property_id        
             ]);
 
         //$input = Request::all();

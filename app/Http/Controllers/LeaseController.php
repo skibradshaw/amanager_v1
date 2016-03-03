@@ -132,7 +132,7 @@ class LeaseController extends Controller
         }
 
         
-        // return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
+        return redirect()->action('LeaseController@show', [$apartment->name,$lease->id]);
     }
 
     /**

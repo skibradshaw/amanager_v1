@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Payment;
 use App\Deposit;
+use App\Property;
 use Carbon\Carbon;
 
 class DepositController extends Controller
@@ -50,8 +51,8 @@ class DepositController extends Controller
     public function store(Request $request)
     {
         //
-        $input = Request::except(['payment_id']);
-        $payments = Request::only(['payment_id']);
+        $input = $request->except(['payment_id']);
+        $payments = $request->only(['payment_id']);
         $input['deposit_date'] = Carbon::parse($input['deposit_date']);
         $input['user_id'] = \Auth::user()->id;
         //Bank Transaction ID is currently a placeholder for a future need/feature
@@ -101,7 +102,7 @@ class DepositController extends Controller
 
     public function confirm(Request $request)
     {
-        $input = Request::all();
+        $input = $request->all();
         
         $total = $input['deposit_total'];
         $ids = '';
@@ -121,11 +122,38 @@ class DepositController extends Controller
     }
 
 
-    public function undeposited()
+    public function undeposited(Request $request)
     {
-	    $rentpayments = Payment::where('payment_type','<>','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();
-        $depositpayments = Payment::where('payment_type','=','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();
+	    $propertyid = $request->input('propertyid');
+        // return $propertyid;
+        (isset($propertyid)) ? $property = Property::find($propertyid) : $property = null;
+        if(isset($propertyid))
+        {
+            $rentpayments = Payment::where('payment_type','<>','Deposit')
+                    ->whereRaw('bank_deposits_id IS NULL')
+                    ->whereHas('lease',function($q) use ($propertyid){
+                        $q->join('apartments',function($join) use ($propertyid){
+                            $join->on('apartments.id','=','leases.apartment_id')
+                                ->where('property_id','=',$propertyid);
+                        });
+                    })->get();
+            $depositpayments = Payment::where('payment_type','=','Deposit')
+                    ->whereRaw('bank_deposits_id IS NULL')
+                    ->whereHas('lease',function($q) use ($propertyid){
+                        $q->join('apartments',function($join) use ($propertyid){
+                            $join->on('apartments.id','=','leases.apartment_id')
+                                ->where('property_id','=',$propertyid);
+                        });
+                    })->get();
+        } else {
+            $rentpayments = Payment::where('payment_type','<>','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();
+            $depositpayments = Payment::where('payment_type','=','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();            
+        }
+        $properties = Property::all();
+        $title = 'Undeposited Funds'; 
+        (!is_null($property)) ? $title = $title . ": " . $property->name : $title;
 
-	    return view('deposits.undeposited_funds',['title' => 'Undeposited Funds','rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
+
+	    return view('deposits.undeposited_funds',['title' => $title,'properties' => $properties, 'rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
     }
 }

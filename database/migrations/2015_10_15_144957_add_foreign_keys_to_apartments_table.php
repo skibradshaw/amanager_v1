@@ -14,7 +14,7 @@ class AddForeignKeysToApartmentsTable extends Migration {
 	{
 		Schema::table('apartments', function(Blueprint $table)
 		{
-			$table->foreign('properties_id', 'fk_apartments_properties1')->references('id')->on('properties')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('property_id', 'fk_apartments_properties1')->references('id')->on('properties')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 

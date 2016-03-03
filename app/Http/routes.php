@@ -16,6 +16,7 @@ Route::model('tenants','App\Tenant');
 Route::model('lease', 'App\Lease');
 Route::model('payments','App\Payment');
 Route::model('fees','App\Fee');
+Route::model('properties','App\Property');
 
 
 Route::get('/','HomeController@index');
@@ -69,4 +70,5 @@ Route::resource('tenants','TenantController');
 Route::resource('apartments.lease','LeaseController');
 Route::resource('apartments.lease.payments','PaymentController');
 Route::resource('apartments.lease.fees', 'FeeController');
-Route::resource('deposits','DepositController');
+Route::resource('properties','PropertyController');
+Route::resource('properties.deposits','DepositController');

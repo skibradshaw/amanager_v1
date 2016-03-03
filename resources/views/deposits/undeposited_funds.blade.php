@@ -4,109 +4,132 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
+	<div class="row">
+		<div class="large-12 columns">
+			<a data-dropdown="drop1" class="radius button">Choose Property</a>
+			<ul id="drop1" class="large f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+			<li><h4><a href="{{ route('undeposited') }}">Show All Properties</a></h4></li>
+		    @foreach($properties as $p)
+		    	<li><h4><a href="{{ route('undeposited') }}?propertyid={{$p->id}}">{{ $p->name }}</a></h4></li>
+		    @endforeach
+			</ul>						
+		</div>
+	</div>
+
+	<div class="row">
+	
 @if($rentpayments->sum('amount') <> 0)
 	<h2><small>Undeposited Rent & Fee Payments</small></h2>
-	{!! Form::open(['route' => ['deposit.confirm'], 'method' => 'post', 'id' => 'rentdeposit']) !!}
-	<table role="grid" class="table table-striped table-condensed responsive" id="rentpayments" width="100%">
-	<thead>
-	<tr>
-		<th align="right" style="cursor:pointer">Apartment</th>
-		<th align="center" style="cursor:pointer">Tenant</th>
-		<th align="center" class="text-center" style="cursor:pointer">Payment Date</th>
-		<th align="right" style="cursor:pointer" class="text-center">Amount</th>
-<!-- 		<th align="right" class="text-right switch">{!! Form::checkbox('selectall',0,true,['id' => 'selectallrent','class' => ' rentpayment']) !!} <label class="switch-paddle" for="selectallrent"><span class="show-for-sr">All</span></label></th> -->
-		<th align="right" class="text-right">Include?</th>
-	</tr>
-	</thead>
-		<tbody>
-		@forelse($rentpayments as $r)
+		<div class="large-12 columns">
+			{!! Form::open(['route' => ['deposit.confirm'], 'method' => 'post', 'id' => 'rentdeposit']) !!}
+			<table role="grid" class="table table-striped table-condensed responsive" id="rentpayments" width="100%">
+			<thead>
 			<tr>
-				<td>{{ $r->lease->apartment->property->name . ' ' . $r->lease->apartment->name }} {!! Form::hidden('payment_id[]',$r->id) !!}</td>
-				<td>{{ $r->tenant->fullname }}</td>
-				<td align="center" class="text-center">{{ $r->paid_date->format('n/j/Y') }}</td>
-				<td align="right" class="text-right">${{ number_format($r->amount,2) }}</td>
-				<td class="switch text-right" align="right">{!! Form::checkbox('paymentid_'.$r->id,$r->amount,true,['class' => 'rentpayment switch-input', 'id' => 'paymentid_'.$r->id]) !!} <label class="switch-paddle" for="paymentid_{{$r->id}}"><span class="show-for-sr">Select</span></label> 
-				</td>				
-			</tr>			
-		@empty
-			<tr>
-				<td>No Undeposited Payments Found</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<th align="right" style="cursor:pointer">Apartment</th>
+				<th align="center" style="cursor:pointer">Tenant</th>
+				<th align="center" class="text-center" style="cursor:pointer">Payment Date</th>
+				<th align="right" style="cursor:pointer" class="text-center">Amount</th>
+		<!-- 		<th align="right" class="text-right switch">{!! Form::checkbox('selectall',0,true,['id' => 'selectallrent','class' => ' rentpayment']) !!} <label class="switch-paddle" for="selectallrent"><span class="show-for-sr">All</span></label></th> -->
+				<th align="right" class="text-right">Include?</th>
 			</tr>
-		@endforelse
-		</tbody>
-		<tfoot>
-			<tr>
-				<td><strong>Undeposited Rents & Feess:</strong></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td align="right" class="text-right">${{ number_format($rentpayments->sum('amount'),2) }}</td>
-			</tr>
-		</tfoot>
-	</table> 
-	<h3 class="text-right">Selected Total: $<span id="rtotal">{{ number_format($rentpayments->sum('amount'),2) }}</span></h3>
-	<button type="submit" id="rentsubmit" class="radius button right"{{ ($rentpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
-	{!! Form::hidden('deposit_total',$rentpayments->sum('amount'),['id' => 'rent_total']) !!}
-	{!! Form::close() !!}
-@else
-	<h2><small>There are no Undeposited Rent or Fee Payments</small></h2>
-@endif
-	<hr>
-@if($depositpayments->sum('amount') <> 0)
- 	<h2><small>Undeposited Deposit Payments</small></h2>
-	{!! Form::open(['route' => ['deposit.confirm'], 'method' => 'post', 'id' => 'depositdeposit']) !!}
-	<table role="grid" class="table table-striped table-condensed responsive" id="depositpayments" width="100%">
-	<thead>
-	<tr>
-		<th align="right" style="cursor:pointer">Apartment</th>
-		<th align="center" style="cursor:pointer">Tenant</th>
-		<th align="center" class="text-center" style="cursor:pointer">Payment Date</th>
-		<th align="right" style="cursor:pointer" class="text-center">Amount</th>
-<!-- 		<th align="right" class="text-right switch">{!! Form::checkbox('selectall',null,false,['id' => 'selectalldeposit']) !!} <label class="switch-paddle" for="selectalldeposit"><span class="show-for-sr">All</span></label></th> -->
-		<th align="right" class="text-right">Include?</th>
-	</tr>
-	</thead>
-		<tbody>
-		@forelse($depositpayments as $d)
-			<tr>
-				<td>{{ $d->lease->apartment->property->name . ' ' . $d->lease->apartment->name }} {!! Form::hidden('payment_id[]',$d->id) !!}</td>
-				<td>{{ $d->tenant->fullname }}</td>
-				<td align="center" class="text-center">{{ $d->paid_date->format('n/j/Y') }}</td>
-				<td align="right" class="text-right">${{ number_format($d->amount,2) }}</td>
-				<td class="switch text-right" align="right">{!! Form::checkbox('paymentid_'.$d->id,$d->amount,true,['class' => 'depositpayment switch-input', 'id' => 'paymentid_'.$d->id]) !!} <label class="switch-paddle" for="paymentid_{{$d->id}}"><span class="show-for-sr">Select</span></label> </td>				
-			</tr>			
-		@empty
-			<tr>
-				<td>No Undeposited Payments Found</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		@endforelse
-		</tbody>
-		<tfoot>
-			<tr>
-				<td><strong>Undeposited Rents & Feess:</strong></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td align="right" class="text-right">${{ number_format($depositpayments->sum('amount'),2) }}</td>
-			</tr>
-		</tfoot>
-	</table> 
-	<h3 class="text-right">Selected Total: $<span id="dtotal">{{ number_format($depositpayments->sum('amount'),2) }}</span></h3>
-	<button type="submit" id="depositsubmit" class="radius button right"{{ ($depositpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
-	{!! Form::hidden('deposit_total',$depositpayments->sum('amount'),['id' => 'ddeposit_total']) !!}
-	{!! Form::close() !!}
-@else
-	<h2><small>There are no Undeposited Deposit Payments</small></h2>
-@endif
+			</thead>
+				<tbody>
+				@forelse($rentpayments as $r)
+					<tr>
+						<td>{{ $r->lease->apartment->property->name . ' ' . $r->lease->apartment->name }} {!! Form::hidden('payment_id[]',$r->id) !!}</td>
+						<td>{{ $r->tenant->fullname }}</td>
+						<td align="center" class="text-center">{{ $r->paid_date->format('n/j/Y') }}</td>
+						<td align="right" class="text-right">${{ number_format($r->amount,2) }}</td>
+						<td class="switch text-right" align="right">{!! Form::checkbox('paymentid_'.$r->id,$r->amount,true,['class' => 'rentpayment switch-input', 'id' => 'paymentid_'.$r->id]) !!} <label class="switch-paddle" for="paymentid_{{$r->id}}"><span class="show-for-sr">Select</span></label> 
+						</td>				
+					</tr>			
+				@empty
+					<tr>
+						<td>No Undeposited Payments Found</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				@endforelse
+				</tbody>
+				<tfoot>
+					<tr>
+						<td><strong>Undeposited Rents & Feess:</strong></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td align="right" class="text-right">${{ number_format($rentpayments->sum('amount'),2) }}</td>
+					</tr>
+				</tfoot>
+			</table> 
+			<h3 class="text-right">Selected Total: $<span id="rtotal">{{ number_format($rentpayments->sum('amount'),2) }}</span></h3>
+			<button type="submit" id="rentsubmit" class="radius button right"{{ ($rentpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
+			{!! Form::hidden('deposit_total',$rentpayments->sum('amount'),['id' => 'rent_total']) !!}
+			{!! Form::close() !!}
+		@else
+			<h2><small>There are no Undeposited Rent or Fee Payments</small></h2>
+		@endif			
+		</div>
+		<hr>
+	</div> 
 
+
+@if($depositpayments->sum('amount') <> 0)
+ 	
+	<div class="row">
+		<div class="large-12 columns"> 	
+		<h2><small>Undeposited Deposit Payments</small></h2>
+			{!! Form::open(['route' => ['deposit.confirm'], 'method' => 'post', 'id' => 'depositdeposit']) !!}
+			<table role="grid" class="table table-striped table-condensed responsive" id="depositpayments" width="100%">
+			<thead>
+			<tr>
+				<th align="right" style="cursor:pointer">Apartment</th>
+				<th align="center" style="cursor:pointer">Tenant</th>
+				<th align="center" class="text-center" style="cursor:pointer">Payment Date</th>
+				<th align="right" style="cursor:pointer" class="text-center">Amount</th>
+		<!-- 		<th align="right" class="text-right switch">{!! Form::checkbox('selectall',null,false,['id' => 'selectalldeposit']) !!} <label class="switch-paddle" for="selectalldeposit"><span class="show-for-sr">All</span></label></th> -->
+				<th align="right" class="text-right">Include?</th>
+			</tr>
+			</thead>
+				<tbody>
+				@forelse($depositpayments as $d)
+					<tr>
+						<td>{{ $d->lease->apartment->property->name . ' ' . $d->lease->apartment->name }} {!! Form::hidden('payment_id[]',$d->id) !!}</td>
+						<td>{{ $d->tenant->fullname }}</td>
+						<td align="center" class="text-center">{{ $d->paid_date->format('n/j/Y') }}</td>
+						<td align="right" class="text-right">${{ number_format($d->amount,2) }}</td>
+						<td class="switch text-right" align="right">{!! Form::checkbox('paymentid_'.$d->id,$d->amount,true,['class' => 'depositpayment switch-input', 'id' => 'paymentid_'.$d->id]) !!} <label class="switch-paddle" for="paymentid_{{$d->id}}"><span class="show-for-sr">Select</span></label> </td>				
+					</tr>			
+				@empty
+					<tr>
+						<td>No Undeposited Payments Found</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				@endforelse
+				</tbody>
+				<tfoot>
+					<tr>
+						<td><strong>Undeposited Rents & Feess:</strong></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td align="right" class="text-right">${{ number_format($depositpayments->sum('amount'),2) }}</td>
+					</tr>
+				</tfoot>
+			</table> 
+			<h3 class="text-right">Selected Total: $<span id="dtotal">{{ number_format($depositpayments->sum('amount'),2) }}</span></h3>
+			<button type="submit" id="depositsubmit" class="radius button right"{{ ($depositpayments->sum('amount') == 0) ? ' disabled ' : null }}>Create a Deposit</button>
+			{!! Form::hidden('deposit_total',$depositpayments->sum('amount'),['id' => 'ddeposit_total']) !!}
+			{!! Form::close() !!}
+		@else
+			<h2><small>There are no Undeposited Deposit Payments</small></h2>
+		@endif
+	</div>
+  </div>
   <div id="makeDeposit" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
   </div>
@@ -174,7 +197,10 @@ $(document).ready( function () {
       $(".depositpayment").prop('checked', $(this).prop("checked"));
      });
 
-
+	  $("#property").change(function(){
+	    // window.location='http://www.domain.com/mypage?id=' + this.value;
+	    window.location.href = window.location.pathname+"?"+$.param({'propertyid':this.value});
+	  });
 
 
 
