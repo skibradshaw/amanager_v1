@@ -73,10 +73,10 @@ class ApartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Apartment $apartment)
+    public function show(Property $property, Apartment $apartment)
     {
         //
-        return view('apartments.show',['title' => $apartment->property->name . " - " . $apartment->name, 'apartment' => $apartment]);
+        return view('apartments.show',['title' => $property->name . " - " . $apartment->name,'property' => $property, 'apartment' => $apartment]);
     }
 
     /**

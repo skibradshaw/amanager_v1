@@ -39,6 +39,9 @@
             <li class="divider"></li>
             @if(!empty($undepositedfunds) && $undepositedfunds <> 0)
              <li class="has-dropdown"><a href="#" style="background-color: #43AC6A">Undeposited Funds (${{ number_format($undepositedfunds,2)}})</a>
+            @else
+            <li class="has-dropdown"><a href="#">Undeposited Funds</a>
+            @endif
                 <ul class="dropdown">
                   @foreach($properties as $property)
                   <li><a href="{{route('undeposited',['id' => $property->id])}}">{{$property->name}}: ${{number_format($property->undeposited(),0)}} </a></li>
@@ -46,9 +49,6 @@
                   @endforeach                  
                 </ul>
              </li>
-            @else
-            <li><a href="/deposits/undeposited">Undeposited Funds</a></li>
-            @endif
             <li class="divider"></li>
             <li><a href="/deposits">Deposits</a></li>
 <!--             <li class="has-dropdown">
