@@ -122,13 +122,11 @@ class DepositController extends Controller
     }
 
 
-    public function undeposited(Request $request)
+    public function undeposited(Property $property, Request $request)
     {
-	    $propertyid = $request->input('propertyid');
+        $propertyid = $property->id;
         // return $propertyid;
-        (isset($propertyid)) ? $property = Property::find($propertyid) : $property = null;
-        if(isset($propertyid))
-        {
+        // (isset($propertyid)) ? $property = Property::find($propertyid) : $property = null;
             $rentpayments = Payment::where('payment_type','<>','Deposit')
                     ->whereRaw('bank_deposits_id IS NULL')
                     ->whereHas('lease',function($q) use ($propertyid){
@@ -145,13 +143,10 @@ class DepositController extends Controller
                                 ->where('property_id','=',$propertyid);
                         });
                     })->get();
-        } else {
-            $rentpayments = Payment::where('payment_type','<>','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();
-            $depositpayments = Payment::where('payment_type','=','Deposit')->whereRaw('bank_deposits_id IS NULL')->get();            
-        }
+
         $properties = Property::all();
         $title = 'Undeposited Funds'; 
-        (!is_null($property)) ? $title = $title . ": " . $property->name : $title;
+        $title = $title . ": " . $property->name;
 
 
 	    return view('deposits.undeposited_funds',['title' => $title,'properties' => $properties, 'rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);

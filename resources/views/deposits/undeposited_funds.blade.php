@@ -4,17 +4,6 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
-	<div class="row">
-		<div class="large-12 columns">
-			<a data-dropdown="drop1" class="radius button">Choose Property</a>
-			<ul id="drop1" class="large f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-			<li><h4><a href="{{ route('undeposited') }}">Show All Properties</a></h4></li>
-		    @foreach($properties as $p)
-		    	<li><h4><a href="{{ route('undeposited') }}?propertyid={{$p->id}}">{{ $p->name }}</a></h4></li>
-		    @endforeach
-			</ul>						
-		</div>
-	</div>
 
 	<div class="row">
 	

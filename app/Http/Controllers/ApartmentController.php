@@ -22,12 +22,12 @@ class ApartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Property $property)
     {
         //
-        $apartments = Apartment::with(['property' => function($q){$q->orderBy('name');}])->orderBy('number')->get();
+        $apartments = Apartment::with(['property' => function($q){$q->orderBy('name');}])->where('property_id',$property->id)->orderBy('number')->get();
         //$apartments = $apartments->property()->orderBy('properties.name')->get();
-        return view('apartments.index',['title' => 'Apartments','apartments' => $apartments]);
+        return view('apartments.index',['title' => $property->name . ': Apartments','property' => $property,'apartments' => $apartments]);
         
     }
 
@@ -36,12 +36,12 @@ class ApartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Property $property)
     {
         //
         $properties = Property::lists('abbreviation','id');
         
-        return view('apartments.edit',['title' => 'Create Apartment','properties' => $properties]);
+        return view('apartments.edit',['title' => 'Create Apartment: ' . $property->name,'property' => $property, 'properties' => $properties]);
     }
 
     /**
@@ -50,19 +50,20 @@ class ApartmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Property $property, Request $request)
     {
         //
         //return $request->property_id; 
         $this->validate($request,[
-                'number' => 'required|unique:apartments,number,NULL,NULL,property_id,'.$request->property_id        
+                'number' => 'required|unique:apartments,number,NULL,NULL,property_id,'.$request->input('property_id')        
             ]);
 
         //$input = Request::all();
         $input = $request->all();
+        $input['name'] = $property->abbreviation . $input['number'];
         //return $input;
         Apartment::create($input);
-        return redirect('apartments');
+        return redirect()->route('properties.apartments.index',['id' => $property->id]);
         
     }
 

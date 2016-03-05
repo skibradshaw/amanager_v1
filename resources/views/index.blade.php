@@ -30,14 +30,14 @@
 			</div>
 			</a>
 		</div>
-		<div class="large-3 columns end">
-			<a href="{{ route('apartments.index') }}">
+<!-- 		<div class="large-3 columns end">
+			<a href="{{ route('properties.apartments.index') }}">
 			<div class="panel text-center radius" style="background-color: #f20456">
 				<h1 style="color: #fff"><i class="fa fa-building-o fa-2x" style="color:#fff"></i></h1>
 				<h4 style="color: #fff">Apartments<br>{{ number_format($apartments) }}</h4>
 			</div>
 			</a>
-		</div>
+		</div> -->
 	</div>
 
 

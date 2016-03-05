@@ -18,7 +18,7 @@ class PropertiesTableSeeder extends Seeder {
 			]);
 			Property::create([
 				'name' => '1807 House',
-				'abbreviation' => 'H1807'
+				'abbreviation' => '1807H'
 			]);
 	}
 

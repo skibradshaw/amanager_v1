@@ -31,6 +31,12 @@ class ApartmentsTableSeeder extends Seeder {
 
 			]);
 		}		
+		Apartment::create([
+			'name' => '1807H1',
+			'number' => 1,
+			'property_id' => 3
+
+		]);
 	}
 
 }

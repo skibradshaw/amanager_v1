@@ -12,7 +12,9 @@
         </ul>
      
         <section class="top-bar-section">
+          @if(Auth::check())
           <ul class="left">
+
             @if(!empty($rents_due) && $rents_due <> 0)
             <li><a href="{{ route('reports.rentsdue') }}" style="background-color: #f04124"><i class="fa fa-usd" style="color:#fff"></i> Rents Due: ${{ number_format($rents_due,2)}}</a>
             </li>
@@ -24,13 +26,26 @@
             @endif        
           </ul> 
           <ul class="right">
-            @if(Auth::check())
-            <li><a href="/apartments">Apartments</a></li>
+            <li class="has-dropdown"><a href="#">Apartments</a>
+              <ul class="dropdown">
+                  @foreach($properties as $property)
+                  <li><a href="{{route('properties.apartments.index',['id' => $property->id])}}">{{$property->name}}</a></li>
+                  <li class="divider"></li>
+                  @endforeach
+              </ul>
+            </li>
             <li class="divider"></li>
             <li><a href="/tenants">Tenants</a></li>
             <li class="divider"></li>
             @if(!empty($undepositedfunds) && $undepositedfunds <> 0)
-            <li><a href="/deposits/undeposited" style="background-color: #43AC6A">Undeposited Funds (${{ number_format($undepositedfunds,2)}})</a></li>
+             <li class="has-dropdown"><a href="#" style="background-color: #43AC6A">Undeposited Funds (${{ number_format($undepositedfunds,2)}})</a>
+                <ul class="dropdown">
+                  @foreach($properties as $property)
+                  <li><a href="{{route('undeposited',['id' => $property->id])}}">{{$property->name}}: ${{number_format($property->undeposited(),0)}} </a></li>
+                  <li class="divider"></li>
+                  @endforeach                  
+                </ul>
+             </li>
             @else
             <li><a href="/deposits/undeposited">Undeposited Funds</a></li>
             @endif
@@ -47,11 +62,17 @@
             </li>
  -->
 	        <li class="divider"></li>
-            <li><a href="#">{{ Auth::user()->fullname }}</a></li>
-            <li class="divider"></li>
-            <li><a href="/logout">Logout</a></li>
+
+            <li class="has-dropdown" style="background-color: ##008CBA"><a href="#">{{ Auth::user()->fullname }}</a>
+              <ul class="dropdown">
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
             @else
+            <ul class="right">
             <li><a href="/login">Login</a></li>
+            </ul>
             @endif
             
 <!--

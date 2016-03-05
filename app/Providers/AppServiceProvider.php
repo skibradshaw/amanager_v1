@@ -23,8 +23,10 @@ class AppServiceProvider extends ServiceProvider
                 $rents_due += $lease->openBalance();
                 $deposits_due += $lease->depositBalance();
             }            
+            $properties = \App\Property::all();
             $view->with('rents_due',$rents_due);
             $view->with('deposits_due',$deposits_due);
+            $view->with('properties',$properties);
         });
     }
 

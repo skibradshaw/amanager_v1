@@ -23,7 +23,7 @@
 			@forelse($apartments as $a)
 				<tr>
 					@if(isset($a->currentLease()->id))
-						<td><a href="{{ route('apartments.show',[$a->name]) }}">{{ $a->property->name }}</a></td>
+						<td><a href="{{ route('properties.apartments.show',[$a->name]) }}">{{ $a->property->name }}</a></td>
 						<td>{{$a->name}}</td>
 						<td>{{$a->number}}</td>
 						<td align="right"class="text-right">${{ number_format($a->currentLease()->openBalance(),2) }}</td>
@@ -37,7 +37,7 @@
 						</td>
 						<td align="left" class="text-left">{{$a->currentLease()->enddate->diffForHumans()}}</td>
 					@else
-						<td><a href="{{ route('apartments.show',[$a->name]) }}">{{ $a->property->name }}</a></td>
+						<td><a href="{{ route('properties.apartments.show',[$property->id,$a->name]) }}">{{ $a->property->name }}</a></td>
 						<td>{{$a->name}}</td>
 						<td>{{$a->number}}</td>
 						<td align="right"class="text-right">&nbsp</td>

@@ -1,24 +1,15 @@
   <!--- FOUNDATION Template: Contact Page Template http://foundation.zurb.com/templates.html -->
 @extends('app')
 @section('header')
-<h1>Apartment</h1>
+<h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
 	@if(isset($apartment))
-	{!! Form::model($apartment,['route' => ['apartments.update',$apartment->id],'method' => 'put']) !!}
+	{!! Form::model($apartment,['route' => ['properties.apartments.update',$property->id,$apartment->id],'method' => 'put']) !!}
 	@else
-	{!! Form::open(['route' => 'apartments.store']) !!}
+	{!! Form::open(['route' => ['properties.apartments.store',$property->id]]) !!}
 	@endif
-
-
-<div class="row collapse">
-    <div class="large-2 columns">
-      <label class="inline">Choose Property</label>
-   </div>
-   <div class="large-4 columns left">
-      {!! Form::select('properties_id',$properties) !!}
-    </div>
-</div> 
+  {!! Form::hidden('property_id',$property->id) !!}
 <div class="row collapse">
     <div class="large-2 columns">
       <label class="inline">Apartment #</label>

@@ -19,6 +19,7 @@ Route::model('fees','App\Fee');
 Route::model('properties','App\Property');
 
 
+
 Route::get('/','HomeController@index');
 
 
@@ -27,8 +28,8 @@ Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
 
 //Deposit Routes
-Route::get('/deposits/undeposited',['as' => 'undeposited','uses' => 'DepositController@undeposited']);
-Route::post('/deposits/confirm',['as' => 'deposit.confirm','uses' => 'DepositController@confirm']);
+Route::get('/properties/{properties}/deposits/undeposited',['as' => 'undeposited','uses' => 'DepositController@undeposited']);
+Route::post('/properties/{properties}/deposits/confirm',['as' => 'deposit.confirm','uses' => 'DepositController@confirm']);
 
 //Tenant Routes
 Route::get('/tenants/lookup',['middleware' => 'auth',function(){
@@ -65,7 +66,7 @@ Route::bind('apartments',function($value,$route){
 	return App\Apartment::where('name',$value)->first();
 });
 
-Route::resource('apartments','ApartmentController');
+Route::resource('properties.apartments','ApartmentController');
 Route::resource('tenants','TenantController');
 Route::resource('apartments.lease','LeaseController');
 Route::resource('apartments.lease.payments','PaymentController');

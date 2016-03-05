@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Apartment extends Model
 {
     //
-    protected $fillable = ['name','number','properties_id','active'];
+    protected $fillable = ['name','number','property_id','active'];
     
     public function property() {
 	    return $this->belongsTo('App\Property','property_id');
@@ -23,7 +23,8 @@ class Apartment extends Model
     	return $lease;
     }
 
-	 public function checkAvailability($start,$end)
+
+	public function checkAvailability($start,$end)
 	{
 		// \DB::connection()->enableQueryLog();
 		$return = false;
