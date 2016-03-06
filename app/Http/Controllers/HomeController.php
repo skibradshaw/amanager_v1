@@ -22,23 +22,10 @@ class HomeController extends Controller
     //
     public function index()
     {
-	    $current_leases = Lease::get();
-	    $current_balance = 0;
-	    $deposit_balance = 0;
-	    foreach ($current_leases as $lease) {
-	    	$current_balance += $lease->openBalance();
-	    	$deposit_balance += $lease->depositBalance();
-	    }
-
-	    $tenants = Tenant::all()->count();
-	    $apartments = Apartment::all()->count();
+	    $properties = \App\Property::all();
 	    return view('index',[
 	    	'title' => 'Happy ' . \Carbon\Carbon::now()->format('l'), 
-	    	'current_leases' => $current_leases,
-	    	'current_balance' => $current_balance,
-	    	'deposit_balance' => $deposit_balance,
-	        'tenants' => $tenants,
-	        'apartments' => $apartments
+	    	'properties' => $properties,
 	    	]);   	
     }
 }

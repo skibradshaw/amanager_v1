@@ -16,12 +16,24 @@
           <ul class="left">
 
             @if(!empty($rents_due) && $rents_due <> 0)
-            <li><a href="{{ route('reports.rentsdue') }}" style="background-color: #f04124"><i class="fa fa-usd" style="color:#fff"></i> Rents Due: ${{ number_format($rents_due,2)}}</a>
+            <li class="has-dropdown"><a href="#" style="background-color: #f04124"><i class="fa fa-usd" style="color:#fff"></i> Rents Due: ${{ number_format($rents_due,2)}}</a>
+              <ul class="dropdown">
+                  @foreach($properties as $property)
+                  <li><a href="{{ route('reports.rentsdue',['id' => $property->id]) }}">{{$property->name}} - {{number_format($property->rentBalance(),2)}} </a></li>
+                  <li class="divider"></li>
+                  @endforeach
+              </ul>
             </li>
             @endif
             @if(!empty($deposits_due) && $deposits_due <> 0)
-            <li>
-              <a href="{{ route('reports.depositsdue') }}" style="background-color: #f08a24"><i class="fa fa-lock" style="color:#fff"></i> Deposits Due: ${{ number_format($deposits_due,2)}}</a>
+            <li class="has-dropdown">
+              <a href="#" style="background-color: #f08a24"><i class="fa fa-lock" style="color:#fff"></i> Deposits Due: ${{ number_format($deposits_due,2)}}</a>
+              <ul class="dropdown">
+                  @foreach($properties as $property)
+                  <li><a href="{{route('reports.depositsdue',['id' => $property->id])}}">{{$property->name}} - {{number_format($property->depositBalance(),2)}} </a></li>
+                  <li class="divider"></li>
+                  @endforeach
+              </ul>              
             </li>  
             @endif        
           </ul> 

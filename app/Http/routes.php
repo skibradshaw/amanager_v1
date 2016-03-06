@@ -58,8 +58,8 @@ Route::post('/apartments/{apartments}/lease/{lease}/terminate',['as' => 'apartme
 Route::get('/apartments/{apartments}/lease/{lease}/{fees}/delete',['as' => 'apartments.lease.fees.delete', 'uses' => 'FeeController@destroy']);
 
 //Reports
-Route::get('/reports/rents_due',['as' => 'reports.rentsdue', 'uses' => 'ReportController@rentsDue']);
-Route::get('/reports/deposits_due',['as' => 'reports.depositsdue', 'uses' => 'ReportController@depositsDue']);
+Route::get('/reports/{properties}/rents_due',['as' => 'reports.rentsdue', 'uses' => 'ReportController@rentsDue']);
+Route::get('/reports/{properties}/deposits_due',['as' => 'reports.depositsdue', 'uses' => 'ReportController@depositsDue']);
 
 //Better URLs
 Route::bind('apartments',function($value,$route){

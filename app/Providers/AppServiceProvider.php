@@ -14,20 +14,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Load Undeposited Payments to Nav Bar
+        
         view()->composer('inc.header',function($view){
             $view->with('undepositedfunds',\App\Payment::whereRaw('bank_deposits_id IS NULL')->get()->sum('amount'));
-            $current_leases = \App\Lease::get();
+            $properties = \App\Property::all();
             $rents_due = 0;
             $deposits_due = 0;
-            foreach ($current_leases as $lease) {
-                $rents_due += $lease->openBalance();
-                $deposits_due += $lease->depositBalance();
+            foreach ($properties as $p) {
+                $rents_due += $p->rentBalance();
+                $deposits_due += $p->depositBalance();
             }            
-            $properties = \App\Property::all();
+            
             $view->with('rents_due',$rents_due);
             $view->with('deposits_due',$deposits_due);
             $view->with('properties',$properties);
+
         });
+
     }
 
     /**

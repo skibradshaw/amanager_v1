@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Lease;
 use App\Tenanat;
 use App\Apartment;
+use App\Property;
 
 
 class ReportController extends Controller
@@ -23,16 +24,16 @@ class ReportController extends Controller
      * Shows all Leases with an Open Balance
      * @return [type] [description]
      */
-    public function rentsDue()
+    public function rentsDue(Property $property)
     {
-    	$current_leases = Lease::where('enddate','>=',Carbon::now())->get();
-    	return view('reports.rentsdue',['title' => "Rents Due",'current_leases' => $current_leases]);
+    	$current_leases = $property->leases()->where('enddate','>=',Carbon::now())->get();
+    	return view('reports.rentsdue',['title' => $property->name . " Rents Due", 'property' => $property, 'current_leases' => $current_leases]);
     }
     //
     
-    public function depositsDue()
+    public function depositsDue(Property $property)
     {
-    	$current_leases = Lease::where('enddate','>=',Carbon::now())->get();
-    	return view('reports.depositsdue',['title' => "Deposits Due", 'current_leases' => $current_leases]);
+    	$current_leases = $property->leases()->where('enddate','>=',Carbon::now())->get();
+    	return view('reports.depositsdue',['title' => $property->name . " Deposits Due", 'property' => $property, 'current_leases' => $current_leases]);
     }
 }

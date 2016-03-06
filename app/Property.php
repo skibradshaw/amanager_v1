@@ -21,6 +21,10 @@ class Property extends Model
     	return $this->hasMany('App\Deposit');
     }
 
+    /**
+     * Calculates the Total Undeposited Funds for the Property
+     * @return [type] [description]
+     */
     public function undeposited()
     {
     	// return $this->apartments->leases->payments->where('')
@@ -34,5 +38,34 @@ class Property extends Model
     	}
 
     	return $undeposited;
+    }
+
+    public function tenants()
+    {
+        $tenants = 0;
+        foreach($this->leases as $l)
+        {
+            $tenants += $l->tenants()->count('users.id');
+        }
+        return $tenants;
+    }
+
+    public function rentBalance()
+    {
+        $rentbalance = 0;
+        foreach($this->leases as $l)
+        {
+            $rentbalance += $l->openBalance();
+        }
+        return $rentbalance;
+    }
+
+    public function depositBalance()
+    {
+        $depositbalance = 0;
+        foreach ($this->leases as $l) {
+            $depositbalance += $l->depositBalance();
+        }
+        return $depositbalance;
     }
 }
