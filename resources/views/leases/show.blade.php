@@ -41,7 +41,7 @@
 				  @else
 				  <li><a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/tenants/{{ $tenant->id }}" class="label radius warning" data-reveal-id="addSubLease" data-reveal-ajax="true">Add SubLease</a></li>
 				  @endif
-				  <li><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="label success radius">Record Payemnt</a></li>			  
+				  <li><a href="{{ route('apartments.lease.payments.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}?tenant_id={{ $tenant->id}}" class="label success radius">Record Payment</a></li>			  
 				</ul>			    	
 	    		  
 		    	@endforeach
