@@ -23,11 +23,11 @@ class DepositController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Property $property)
     {
         //
-        $deposits = Deposit::orderBy('deposit_date','desc')->get();
-        return view('deposits.index',['title' => 'Deposit History','deposits' => $deposits]);
+        $deposits = $property->deposits()->orderBy('deposit_date','desc')->get();
+        return view('deposits.index',['title' => 'Deposit History','property' => $property, 'deposits' => $deposits]);
     }
 
     /**
@@ -48,21 +48,24 @@ class DepositController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Property $property, Request $request)
     {
         //
         $input = $request->except(['payment_id']);
         $payments = $request->only(['payment_id']);
         $input['deposit_date'] = Carbon::parse($input['deposit_date']);
         $input['user_id'] = \Auth::user()->id;
+
         //Bank Transaction ID is currently a placeholder for a future need/feature
-        $deposit = Deposit::create($input);
+        // $deposit = Deposit::create($input);
+        $deposit = $property->deposits()->create($input);
+
         foreach($payments['payment_id'] as $p)
         {
             Payment::where('id',$p)->update(['bank_deposits_id' => $deposit->id]);   
         }
 
-        return redirect()->route('deposits.index');
+        return redirect()->route('properties.deposits.index',['id' => $property->id]);
 
     }
 
@@ -100,7 +103,7 @@ class DepositController extends Controller
         //
     }
 
-    public function confirm(Request $request)
+    public function confirm(Property $property, Request $request)
     {
         $input = $request->all();
         
@@ -118,7 +121,7 @@ class DepositController extends Controller
         $ids = rtrim($ids,',');
         $payments = Payment::whereRaw('id IN ('.$ids.')')->get();
         //return $payments;
-        return view('deposits.confirm_deposit',['title' => 'Confirm Bank Deposit','payments' => $payments,'total' => $total]);
+        return view('deposits.confirm_deposit',['title' => 'Confirm ' . $property->name . ' Bank Deposit','property' => $property, 'payments' => $payments,'total' => $total]);
     }
 
 
@@ -149,6 +152,6 @@ class DepositController extends Controller
         $title = $title . ": " . $property->name;
 
 
-	    return view('deposits.undeposited_funds',['title' => $title,'properties' => $properties, 'rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
+	    return view('deposits.undeposited_funds',['title' => $title,'property' => $property, 'properties' => $properties, 'rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
     }
 }

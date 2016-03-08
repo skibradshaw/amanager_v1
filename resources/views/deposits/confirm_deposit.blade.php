@@ -4,7 +4,7 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
-	{!! Form::open(['route' => ['deposits.store'],'mehtod' => 'Post']) !!}
+	{!! Form::open(['route' => ['properties.deposits.store',$property->id],'mehtod' => 'Post']) !!}
 	<div class="row collapse">
 		<div class="large-2 columns">
 			{!! Form::label('bank_account_id','Choose Account',['class' => 'inline']) !!}

@@ -62,7 +62,14 @@
                 </ul>
              </li>
             <li class="divider"></li>
-            <li><a href="/deposits">Deposits</a></li>
+            <li class="has-dropdown"><a href="#">Bank Deposits</a>
+                <ul class="dropdown">
+                  @foreach($properties as $property)
+                  <li><a href="{{route('properties.deposits.index',['id' => $property->id])}}">{{$property->name}}</a></li>
+                  <li class="divider"></li>
+                  @endforeach                  
+                </ul>
+            </li>
 <!--             <li class="has-dropdown">
               <a href="#">Navigation</a>
               <ul class="dropdown">

@@ -10,7 +10,7 @@
 @if($rentpayments->sum('amount') <> 0)
 	<h2><small>Undeposited Rent & Fee Payments</small></h2>
 		<div class="large-12 columns">
-			{!! Form::open(['route' => ['deposit.confirm'], 'method' => 'post', 'id' => 'rentdeposit']) !!}
+			{!! Form::open(['route' => ['deposit.confirm',$property->id], 'method' => 'post', 'id' => 'rentdeposit']) !!}
 			<table role="grid" class="table table-striped table-condensed responsive" id="rentpayments" width="100%">
 			<thead>
 			<tr>
