@@ -209,6 +209,7 @@
 				<th align="center" style="cursor:pointer">Date</th>
 				<th align="center" style="cursor:pointer">Name</th>
 				<th align="center" style="cursor:pointer">Amount</th>
+				<th align="center" style="cursor:pointer">Method</th>
 				<th align="center" style="cursor:pointer">Allocation</th>
 				<th align="center" style="cursor:pointer">Type</th>
 				<th align="center" style="cursor:pointer">Delete</th>
@@ -226,6 +227,7 @@
 						</td>
 						<td>{{ $p->tenant->fullname }}</td>
 						<td>{{ number_format($p->amount,2) }} </td>
+						<td>{{ $p->method }} {{ (!empty($p->check_no)) ? "#" . $p->check_no : "(# missing)"  }}</td>
 						<td>
 							@foreach($p->allocations as $a)
 								{{$a->name . ": $" . number_format($a->amount,2) . " "}}

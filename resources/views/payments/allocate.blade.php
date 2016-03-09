@@ -1,5 +1,5 @@
 
-  	 <h3>{{ $payment->payment_type }} Payment {{ $payment->paid_date->format('n/d/Y') }}: ${{ number_format($payment->amount,2) }} by {{ $payment->method }} {{ (!empty($payment->check_no)) ? " #" . $payment->check_no : "(no #)" }}</h3>	
+  	 <h3>{{ $payment->payment_type }} Payment {{ $payment->paid_date->format('n/d/Y') }}: ${{ number_format($payment->amount,2) }} by {{ $payment->method }} {{ (!empty($payment->check_no)) ? " #" . $payment->check_no : "(# missing)" }}</h3>	
 	 {!! Form::open(['route' => ['apartments.lease.payments.allocate','name' => $lease->apartment->name, 'lease_id' => $lease->id, 'payment_id' => $payment->id], 'method' => 'post', 'id' => 'allocate']) !!}
 	 	<div class="row collapse">
 		 	@foreach($lease->details as $m)
