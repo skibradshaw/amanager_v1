@@ -40,11 +40,17 @@ class Lease extends Model
     {
 	    return $this->hasMany('App\Payment','lease_id');
     }
+
+    public function allocations()
+    {
+        return $this->hasManyThrough('App\PaymentAllocation','App\Payment');
+    }
     
     public function getTotalfeesAttribute()
     {
 	    return $this->fees->sum('amount');
     }
+
     
     /**
      * Returns the number of completed months as a percentage of all months on a lease.

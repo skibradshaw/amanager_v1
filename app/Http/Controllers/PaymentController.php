@@ -158,6 +158,7 @@ class PaymentController extends Controller
     {
 	    
         $input = $request->all();
+        $payment->allocations()->delete();
 	    foreach($input as $key => $value)
 	    {
 			if($key != '_token' && $value != 0)
