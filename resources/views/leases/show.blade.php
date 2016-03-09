@@ -344,7 +344,7 @@ $( document ).ready(function() {
     });
  	
  	//JQuery Confirm Payment Delete
-   $(".del").click(function(){
+   $('.del').click(function(event){
 	    event.preventDefault();
 	    var r=confirm("Are you sure you want to delete?");
 	    if (r==true)   {  
