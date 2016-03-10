@@ -3,6 +3,7 @@
 <h1>{{ $title or 'A Manager' }}</h1>
 @stop
 @section('content')
+<a href="{{ route('apartments.lease.fees.create',['name' => $lease->apartment->name, 'id' => $lease->id]) }}" class="button radius small">Assess Fees</a>
 		<table class="table table-striped table-condensed responsive" id="Fees" width="100%">
 			<thead>
 			<tr>
