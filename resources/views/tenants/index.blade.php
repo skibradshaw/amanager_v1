@@ -17,7 +17,7 @@
 		<tbody>
 			@forelse($tenants as $tenant)
 				<tr>
-					<td><a href="/tenants/{{ $tenant->id }}">{{ $tenant->firstname . " " . $tenant->lastname }}</a></td>
+					<td><a href="/tenants/{{ $tenant->id }}">{{ $tenant->lastname . ", " . $tenant->firstname }}</a></td>
 					<td>{{ $tenant->phone }} </td>
 					<td><a href="mailto:{{$tenant->email}}">{{$tenant->email}} </td>
 					<td>
