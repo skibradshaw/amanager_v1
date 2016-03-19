@@ -17,7 +17,26 @@
         </div>
       </footer>
 
+	<!--     Universal Modals   -->
+	  <div id="allocatePayment" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
+	  </div>
+
+	  <div id="choosePayment" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+	  </div>
+
+	  <div id="changePetRent" class="reveal-modal medium" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+	  </div>
+
+	  <div id="addSubLease" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+	  </div> 
+	  
+	  <div id="terminateLease" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+	  </div>
     <!-- Foundation core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

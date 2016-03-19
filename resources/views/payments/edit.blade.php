@@ -77,6 +77,8 @@
 	
   {!! Form::close() !!}
 
+	<hr>
+	@include('leases.partials.ledger')	
 
 @stop
 @section('scripts')
