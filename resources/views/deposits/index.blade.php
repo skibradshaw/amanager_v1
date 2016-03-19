@@ -1,4 +1,4 @@
-  <!--- FOUNDATION Template: Contact Page Template http://foundation.zurb.com/templates.html -->
+
 @extends('app')
 @section('header')
 <h1>{{ $title or 'A Manager' }}</h1>
@@ -35,4 +35,29 @@
 		</div>
 	</div>
 		
+@stop
+@section('scripts')
+<script>
+$(document).ready( function () {
+
+	$(document).ready(function() {
+	    $('#deposits').DataTable({
+		    "searching": false,
+		    "lengthChange": false,
+		    "paging": false,
+		    "info": true,
+
+			//Hides a column
+			// "columnDefs": [
+			// 	{ 'orderData':[0,2], 'targets': [1] },
+			//     { "targets": [2], "visible": false }
+			//   ],
+
+			"dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+			//"order":[[0,'asc'],[4,'asc']]		    
+	    });
+	} );    
+    
+} );    
+</script>
 @stop

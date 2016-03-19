@@ -16,7 +16,7 @@
 			<tbody>
 				@forelse($fees as $fee)
 					<tr>
-						<td><a href="{{ route('apartments.lease.fees.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $fee->id]) }} ">{{$fee->due_date->format('n/d/Y') }} </a>
+						<td><a href="{{ route('apartments.lease.fees.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $fee->id]) }} ">{{$fee->due_date->format('n/j/Y') }} </a>
 						</td>
 						<td>{{ number_format($fee->amount,2) }} </td>
 						<td>{{ $fee->note }}</td>

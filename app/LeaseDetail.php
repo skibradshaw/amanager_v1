@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class LeaseDetail extends Model
 {
     use SoftDeletes;
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at','startdate','enddate'];
     //
     /**
      * Returns a name for the month i format Dec 15
@@ -16,8 +17,19 @@ class LeaseDetail extends Model
      */
     public function detailName()
     {
-    	$return = \Carbon\Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $this->month, 10)) . ' ' . $this->year);
-    	$return = $return->format('M') . '-' . $return->format('Y');
+    	// $return = \Carbon\Carbon::parse('first day of ' . date("F", mktime(0, 0, 0, $this->month, 10)) . ' ' . $this->year);
+    	// $return = $return->format('M') . '-' . $return->format('Y');
+        // $num_days = date("t",mktime(0,0,0,$this->month,1,$this->year));
+        // $num_days = round($num_days-($this->multiplier*$num_days))+1; 
+        // $return = $this->month . "/". $num_days . "/" . $this->year;
+        // 
+        // If the Detail End Date does not match the last day of the month, return the end date
+        if(Carbon::parse($this->enddate) !=  Carbon::parse('last day of ' . $this->enddate->format('F') . " " . $this->enddate->year))
+        {
+            $return = $this->enddate->format('n/j/Y');
+        } else {
+            $return = $this->startdate->format('n/j/Y');
+        }
     	return $return;
 
     }

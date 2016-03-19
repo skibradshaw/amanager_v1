@@ -23,7 +23,7 @@
 			{!! Form::label('due_date','Due Date:',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-2 columns left">
-			{!! Form::text('due_date',(isset($fee)) ? $fee->due_date->format('n/d/Y') : \Carbon\Carbon::now()->format('n/d/Y'),['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
+			{!! Form::text('due_date',(isset($fee)) ? $fee->due_date->format('n/j/Y') : \Carbon\Carbon::now()->format('n/j/Y'),['id' => 'datepicker','placeholder' => 'mm/dd/yy', 'style' => 'position: relative; z-index: 100000;']) !!}	      
 	    </div>
    </div>
   <div class="row collapse">

@@ -96,17 +96,24 @@ class LeaseController extends Controller
             //If the startdate has the same month and year as the current month, calculate a partial
             if($start->month == $d->format('n') && $start->year == $d->format('Y')) {
                 $multiplier = (date('t',strtotime($d->format('Y-m-d')))-($start->day-1))/date('t',strtotime($d->format('Y-m-d')));
+                $lease_detail->startdate = $start;
+                $lease_detail->enddate = Carbon::parse('last day of ' . $d->format('F') . " " . $d->year);
                 // echo "Remaining Days/Total Days in Month (" . date('t',strtotime($d->format('Y-m-d'))) . " - " . ($start->day-1) . "/" .  date('t',strtotime($d->format('Y-m-d'))) . ") Mulitiplier: ";
             }
             //Else If the enddate has the same month and year as this month, calculate for partial          
             elseif($end->month == $d->format('n') && $end->year == $d->format('Y')) {
                 $multiplier = ($end->day)/date('t',strtotime($d->format('Y-m-d')));
+                $lease_detail->startdate = Carbon::parse('first day of ' . $d->format('F') . " " . $d->year);
+                $lease_detail->enddate = $end;
                 // echo "# of Days in Last Month/Total Days in Month (" . ($end->day) . "/" .  date('t',strtotime($d->format('Y-m-d'))) . ") Mulitiplier: ";
             }
             //else calculate a full month
             else {
                 //echo '- Full Month';
                 $multiplier = 1.0;
+                $lease_detail->startdate = Carbon::parse('first day of ' . $d->format('F') . " " . $d->year);
+                $lease_detail->enddate = Carbon::parse('last day of ' . $d->format('F') . " " . $d->year);
+
             }
             // echo $multiplier . "<br>";
             $lease_detail->multiplier = $multiplier;

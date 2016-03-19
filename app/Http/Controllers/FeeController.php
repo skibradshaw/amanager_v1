@@ -60,7 +60,7 @@ class FeeController extends Controller
         $due_date = $input['due_date'];
         if($due_date->lt($lease->startdate) || $due_date->gt($lease->enddate))
         {
-            return redirect()->back()->with('status','Fee Due Date Must be within Lease Dates ('.$lease->startdate->format('n/d/Y'). '-' . $lease->enddate->format('n/d/Y').')')->withInput();
+            return redirect()->back()->with('status','Fee Due Date Must be within Lease Dates ('.$lease->startdate->format('n/j/Y'). '-' . $lease->enddate->format('n/j/Y').')')->withInput();
         }
         $fee = Fee::create($input);
         return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'id' => $lease->id])->with('status', 'Fee Added Successfully!');        

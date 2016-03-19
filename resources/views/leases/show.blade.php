@@ -147,9 +147,9 @@
 					<tr>
 						<td>
 							@if(empty($p->bank_deposits_id))
-								<a href="{{ route('apartments.lease.payments.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $p->id]) }} ">{{$p->paid_date->format('n/d/Y') }} </a>
+								<a href="{{ route('apartments.lease.payments.edit',['name' => $lease->apartment->name,'lease' => $lease->id,'id' => $p->id]) }} ">{{$p->paid_date->format('n/j/Y') }} </a>
 							@else
-								{{$p->paid_date->format('n/d/Y') }}
+								{{$p->paid_date->format('n/j/Y') }}
 							@endif
 						</td>
 						<td>{{ $p->tenant->fullname }}</td>

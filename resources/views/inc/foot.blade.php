@@ -51,9 +51,6 @@
 	$(document).foundation();
 	</script>
 
-
-		
-
     @yield('scripts')
 
 	</script>
