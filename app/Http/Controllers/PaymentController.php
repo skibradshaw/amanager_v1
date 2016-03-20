@@ -43,12 +43,19 @@ class PaymentController extends Controller
         $tenants = $lease->tenants->lists('fullname','id');
         ($request->input('tenant_id')) ? $tenant = Tenant::find($request->input('tenant_id')) : $tenant = new Tenant;
         (!empty($request->input('type'))) ? $type = $request->input('type') : $type = '';
+        if($lease->depositBalance() <> 0)
+        {
+           $payment_types = ['Rent' => 'Rent','Fee' => 'Fee','Deposit' => 'Deposit'];        
+        } else {
+                   $payment_types = ['Rent' => 'Rent','Fee' => 'Fee'];
+        }        
         //return $tenant;
         return view('payments.edit',[
             'title' => 'Record a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
             'apartment' => $apartment, 'lease' => $lease, 
             'tenants' => $tenants, 
             'tenant' => $tenant,
+            'payment_types' => $payment_types,
             'payment_type' => $type
             ]);
     }
@@ -94,6 +101,13 @@ class PaymentController extends Controller
         //
        $tenants = $lease->tenants->lists('fullname','id');
        $tenant = $payment->tenant;
+       if($lease->depositBalance() <> 0)
+       {
+           $payment_types = ['Rent' => 'Rent','Fee' => 'Fee','Deposit' => 'Deposit'];        
+       } else {
+                   $payment_types = ['Rent' => 'Rent','Fee' => 'Fee'];
+       }
+
        return view('payments.edit',[
             'title' => 'Edit a Payment: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y')  ,
             'apartment' => $apartment, 
@@ -101,6 +115,7 @@ class PaymentController extends Controller
             'tenants' => $tenants,
             'tenant' => $tenant,
             'payment' => $payment,
+            'payment_types' => $payment_types,
             'payment_type' => $payment->payment_type
             ]);
     }

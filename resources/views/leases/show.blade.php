@@ -7,21 +7,36 @@
 	
 	<div class="row" data-equalizer>
 	<h2><small>Rental Info</small></h2>
-		    <div class="large-12 columns panel" data-equalizer-watch>
-		    	
-		    		<div class="large-3 columns text-center">
-				    	<h5>Lease:<br>  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}</h5>
-				    </div>
-				    <div class="large-3 columns text-center">
-				    	<h5>Apartment Rent:<br> ${{ number_format($lease->monthly_rent,2) }}</h5>
-				    </div>
-				    <div class="large-3 columns text-center">
-				    	<h5>Pet Rent:<br> ${{ number_format($lease->pet_rent,2) }}</h5>
-				    </div>
-				    <div class="large-3 columns text-center">
-				    	<h5>Total Fees:<br> ${{ number_format($lease->totalfees,2) }} </h5>
-				    </div>
-			</div>			
+		    <div class="large-4 columns">
+		    	<div class="panel text-center radius">
+		    		<h5>Lease:<br>  {{ $lease->startdate->format('n/j/y') }}-{{ $lease->enddate->format('n/j/y') }}</h5>
+		    	</div>
+		    </div>
+		    <div class="large-4 columns">
+		    	<div class="panel text-center radius">
+		    		<h5>Apartment Rent:<br> ${{ number_format($lease->monthly_rent,2) }}</h5>
+		    	</div>
+		    </div>
+		    <div class="large-4 columns">
+		    	<div class="panel text-center radius">
+		    		<h5>Pet Rent:<br> ${{ number_format($lease->pet_rent,2) }}</h5>
+		    	</div>
+		    </div>
+		    <div class="large-4 columns">
+		    	<div class="panel text-center radius">
+		    		<h5>Total Fees:<br> ${{ number_format($lease->totalfees,2) }} </h5>
+		    	</div>
+		    </div>
+		    <div class="large-4 columns">
+		    	<div class="panel text-center radius">
+		    		<h5>Total Deposits:<br> ${{ number_format($lease->leaseDeposits()->sum('amount'),2) }} </h5>
+		    	</div>
+		    </div>
+		    <div class="large-4 columns end">
+		    	<div class="panel text-center radius">
+		    		<h5>Residents:<br> {{ number_format($lease->tenants()->count('users.id'),0) }} </h5>
+		    	</div>
+		    </div>
 	</div>
 	@if($lease->openBalance() != 0)
 	<div class="row">
@@ -50,9 +65,9 @@
 	     	</p>
 	     </div>	
     </div>
-
+    <!-- Ledger -->
 	@include('leases.partials.ledger')
-
+	<!-- End Ledger -->
   <div class="row">
   	<div class="large-12 columns">
   		@if($lease->openBalance() != 0)
@@ -60,14 +75,9 @@
 		@endif
 	</div>
   </div>
-  <div class="row">
-  	<div class="large-12 columns">
-  		<a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/terminate" class="button radius alert" data-reveal-id="terminateLease" data-reveal-ajax="true">Terminate Lease</a>
-  	</div>
-  </div>
   <hr>
 	<div class="row" data-equalizer>
-	<h2><small>Deposit Info</small></h2>
+	<h2><small>Damage Deposit Info</small></h2>
 	     <div class="large-12 columns panel">
 							<div class="large-4 columns text-center">
 								<h5>Rent Deposit: ${{ number_format($lease->leaseDeposits()->where('deposit_type','Damage Deposit')->sum('amount'),2) }}</h5>
@@ -176,7 +186,12 @@
 		</table>
 	</div>
   </div>
-
+<hr>
+  <div class="row">
+  	<div class="large-12 columns">
+  		<a href="/apartments/{{ $lease->apartment->name }}/lease/{{ $lease->id }}/terminate" class="button radius alert" data-reveal-id="terminateLease" data-reveal-ajax="true">Terminate Lease</a>
+  	</div>
+  </div>
 
   <div id="myModal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 	 {!! Form::open(['route' => 'tenants.add_to_lease']) !!}

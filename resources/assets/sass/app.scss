@@ -13,6 +13,38 @@ table.ledger th, table.ledger td {
 
 }
 
+/** Style for Header Panels on Lease */
+.header.panel {
+  margin: 1rem auto;
+  border: 2px solid #444;
+  background: #fff; }
+.header.panel p {
+    
+    
+     }
+    .header.panel p span {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 75%;
+      font-weight: bold; }
+.header.panel .sign {
+    background: #fff;
+    width: 150px;
+    height: 2.4rem;
+    border: 2px solid #444;
+    position: relative;
+    top: -2.5rem;
+    margin: auto; }
+.header.panel .sign h1 {
+  text-transform: uppercase;
+  
+
+  letter-spacing: 3px;
+  color: #666;
+  font-size: 70%;
+  text-align: center;
+  line-height: 1rem; }
+
 
 
 /**

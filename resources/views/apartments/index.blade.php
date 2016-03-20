@@ -32,7 +32,7 @@
 <!-- 								<div class="progress small-12 round">
 									<span class="meter text-center" style="width: {{ $a->currentLease()->progress()*100 }}%"></span>
 								</div> -->
-								{{  $a->currentLease()->enddate->format('m/j/y') }}
+								{{  $a->currentLease()->enddate->format('n/j/y') }}
 								</a>
 						</td>
 						<td align="left" class="text-left">{{$a->currentLease()->enddate->diffForHumans()}}</td>

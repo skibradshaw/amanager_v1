@@ -32,7 +32,7 @@
 			{!! Form::label('payment_type','Payment Type',['class' => 'inline']) !!}
 	    </div>   
 	    <div class="large-4 columns left">
-	        {!! Form::select('payment_type',['Rent' => 'Rent', 'Fee' => 'Fee', 'Deposit' => 'Deposit'], (isset($payment_type)) ? $payment_type : $payment->payment_type) !!}
+	        {!! Form::select('payment_type',$payment_types, (isset($payment_type)) ? $payment_type : $payment->payment_type) !!}
 	    </div>
    </div>
   <div class="row collapse">
