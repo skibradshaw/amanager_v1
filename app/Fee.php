@@ -12,6 +12,6 @@ class Fee extends Model
    
     public function lease()
     {
-	    return $this->belongsTo('App\Lease','lease_id');
+        return $this->belongsTo('App\Lease', 'lease_id');
     }
 }

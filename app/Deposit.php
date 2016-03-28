@@ -13,6 +13,6 @@ class Deposit extends Model
 
     public function payments()
     {
-    	return $this->hasMany('App\Payment','bank_deposits_id');
+        return $this->hasMany('App\Payment', 'bank_deposits_id');
     }
 }

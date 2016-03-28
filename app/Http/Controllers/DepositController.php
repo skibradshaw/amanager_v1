@@ -16,7 +16,7 @@ class DepositController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }    
+    }
 
     /**
      * Display a listing of the resource.
@@ -26,8 +26,8 @@ class DepositController extends Controller
     public function index(Property $property)
     {
         //
-        $deposits = $property->deposits()->orderBy('deposit_date','desc')->get();
-        return view('deposits.index',['title' => 'Deposit History','property' => $property, 'deposits' => $deposits]);
+        $deposits = $property->deposits()->orderBy('deposit_date', 'desc')->get();
+        return view('deposits.index', ['title' => 'Deposit History','property' => $property, 'deposits' => $deposits]);
     }
 
     /**
@@ -60,12 +60,11 @@ class DepositController extends Controller
         // $deposit = Deposit::create($input);
         $deposit = $property->deposits()->create($input);
 
-        foreach($payments['payment_id'] as $p)
-        {
-            Payment::where('id',$p)->update(['bank_deposits_id' => $deposit->id]);   
+        foreach ($payments['payment_id'] as $p) {
+            Payment::where('id', $p)->update(['bank_deposits_id' => $deposit->id]);
         }
 
-        return redirect()->route('properties.deposits.index',['id' => $property->id]);
+        return redirect()->route('properties.deposits.index', ['id' => $property->id]);
 
     }
 
@@ -109,19 +108,17 @@ class DepositController extends Controller
         
         $total = $input['deposit_total'];
         $ids = '';
-        foreach($input as $key => $value)
-        {
-            //echo strpos($key,'_');
-            if(substr($key, 0,strpos($key,'_')) == 'paymentid')
-            {
-                //echo substr($key, strpos($key,'_')+1,strlen($key));
-                $ids .= substr($key, strpos($key,'_')+1,strlen($key)) . ',';
+        foreach ($input as $key => $value) {
+        //echo strpos($key,'_');
+            if (substr($key, 0, strpos($key, '_')) == 'paymentid') {
+            //echo substr($key, strpos($key,'_')+1,strlen($key));
+                $ids .= substr($key, strpos($key, '_')+1, strlen($key)) . ',';
             }
         }
-        $ids = rtrim($ids,',');
+        $ids = rtrim($ids, ',');
         $payments = Payment::whereRaw('id IN ('.$ids.')')->get();
         //return $payments;
-        return view('deposits.confirm_deposit',['title' => 'Confirm ' . $property->name . ' Bank Deposit','property' => $property, 'payments' => $payments,'total' => $total]);
+        return view('deposits.confirm_deposit', ['title' => 'Confirm ' . $property->name . ' Bank Deposit','property' => $property, 'payments' => $payments,'total' => $total]);
     }
 
 
@@ -130,28 +127,28 @@ class DepositController extends Controller
         $propertyid = $property->id;
         // return $propertyid;
         // (isset($propertyid)) ? $property = Property::find($propertyid) : $property = null;
-            $rentpayments = Payment::where('payment_type','<>','Deposit')
+            $rentpayments = Payment::where('payment_type', '<>', 'Deposit')
                     ->whereRaw('bank_deposits_id IS NULL')
-                    ->whereHas('lease',function($q) use ($propertyid){
-                        $q->join('apartments',function($join) use ($propertyid){
-                            $join->on('apartments.id','=','leases.apartment_id')
-                                ->where('property_id','=',$propertyid);
+                    ->whereHas('lease', function ($q) use ($propertyid) {
+                        $q->join('apartments', function ($join) use ($propertyid) {
+                            $join->on('apartments.id', '=', 'leases.apartment_id')
+                                ->where('property_id', '=', $propertyid);
                         });
                     })->get();
-            $depositpayments = Payment::where('payment_type','=','Deposit')
+            $depositpayments = Payment::where('payment_type', '=', 'Deposit')
                     ->whereRaw('bank_deposits_id IS NULL')
-                    ->whereHas('lease',function($q) use ($propertyid){
-                        $q->join('apartments',function($join) use ($propertyid){
-                            $join->on('apartments.id','=','leases.apartment_id')
-                                ->where('property_id','=',$propertyid);
+                    ->whereHas('lease', function ($q) use ($propertyid) {
+                        $q->join('apartments', function ($join) use ($propertyid) {
+                            $join->on('apartments.id', '=', 'leases.apartment_id')
+                                ->where('property_id', '=', $propertyid);
                         });
                     })->get();
 
-        $properties = Property::all();
-        $title = 'Undeposited Funds'; 
-        $title = $title . ": " . $property->name;
+            $properties = Property::all();
+            $title = 'Undeposited Funds';
+            $title = $title . ": " . $property->name;
 
 
-	    return view('deposits.undeposited_funds',['title' => $title,'property' => $property, 'properties' => $properties, 'rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
+            return view('deposits.undeposited_funds', ['title' => $title,'property' => $property, 'properties' => $properties, 'rentpayments' => $rentpayments, 'depositpayments' => $depositpayments]);
     }
 }

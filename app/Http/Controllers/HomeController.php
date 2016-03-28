@@ -14,18 +14,18 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-	public function __construct()
+    public function __construct()
     {
-	    $this->middleware('auth');
-    } 
+        $this->middleware('auth');
+    }
 
     //
     public function index()
     {
-	    $properties = \App\Property::all();
-	    return view('index',[
-	    	'title' => 'Happy ' . \Carbon\Carbon::now()->format('l'), 
-	    	'properties' => $properties,
-	    	]);   	
+        $properties = \App\Property::all();
+        return view('index', [
+            'title' => 'Happy ' . \Carbon\Carbon::now()->format('l'),
+            'properties' => $properties,
+            ]);
     }
 }

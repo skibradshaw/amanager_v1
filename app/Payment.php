@@ -13,22 +13,21 @@ class Payment extends Model
     
     public function lease()
     {
-	    return $this->belongsTo('App\Lease','lease_id');
+        return $this->belongsTo('App\Lease', 'lease_id');
     }
     
     public function allocations()
     {
-	    return $this->hasMany('App\PaymentAllocation','payment_id');
+        return $this->hasMany('App\PaymentAllocation', 'payment_id');
     }
     
     public function tenant()
     {
-	    return $this->belongsTo('App\Tenant','tenant_id');
+        return $this->belongsTo('App\Tenant', 'tenant_id');
     }
 
     public function deposit()
     {
-        return $this->belongsTo('App\Deposit','bank_deposits_id');
+        return $this->belongsTo('App\Deposit', 'bank_deposits_id');
     }
-  
 }
