@@ -12,11 +12,10 @@ class LeaseDeposit extends Model
     //Relationships
     public function lease()
     {
-    	return $this->belongsTo('App\Lease');
+        return $this->belongsTo('App\Lease');
     }
     public function payments()
     {
-    	return $this->hasMany('App\Payment','lease_deposit_id');
+        return $this->hasMany('App\Payment', 'lease_deposit_id');
     }
-    
 }

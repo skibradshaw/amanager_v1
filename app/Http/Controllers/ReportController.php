@@ -13,12 +13,11 @@ use App\Tenanat;
 use App\Apartment;
 use App\Property;
 
-
 class ReportController extends Controller
 {
-	public function __construct()
+    public function __construct()
     {
-	    $this->middleware('auth');
+        $this->middleware('auth');
     }
     /**
      * Shows all Leases with an Open Balance
@@ -26,14 +25,14 @@ class ReportController extends Controller
      */
     public function rentsDue(Property $property)
     {
-    	$current_leases = $property->leases()->where('enddate','>=',Carbon::now())->get();
-    	return view('reports.rentsdue',['title' => $property->name . " Rents Due", 'property' => $property, 'current_leases' => $current_leases]);
+        $current_leases = $property->leases()->where('enddate', '>=', Carbon::now())->get();
+        return view('reports.rentsdue', ['title' => $property->name . " Rents Due", 'property' => $property, 'current_leases' => $current_leases]);
     }
     //
     
     public function depositsDue(Property $property)
     {
-    	$current_leases = $property->leases()->where('enddate','>=',Carbon::now())->get();
-    	return view('reports.depositsdue',['title' => $property->name . " Deposits Due", 'property' => $property, 'current_leases' => $current_leases]);
+        $current_leases = $property->leases()->where('enddate', '>=', Carbon::now())->get();
+        return view('reports.depositsdue', ['title' => $property->name . " Deposits Due", 'property' => $property, 'current_leases' => $current_leases]);
     }
 }

@@ -8,17 +8,19 @@ class Property extends Model
 {
     //
     
-    public function apartments() {
-	    return $this->hasMany('App\Apartment');
+    public function apartments()
+    {
+        return $this->hasMany('App\Apartment');
     }
 
-    public function leases(){
-    	return $this->hasManyThrough('App\Lease','App\Apartment');
+    public function leases()
+    {
+        return $this->hasManyThrough('App\Lease', 'App\Apartment');
     }
 
     public function deposits()
     {
-    	return $this->hasMany('App\Deposit');
+        return $this->hasMany('App\Deposit');
     }
 
     /**
@@ -27,24 +29,21 @@ class Property extends Model
      */
     public function undeposited()
     {
-    	// return $this->apartments->leases->payments->where('')
-    	$undeposited = 0;
-    	foreach($this->apartments as $a)
-    	{
-    		foreach($a->leases as $l)
-    		{
-    			$undeposited += $l->payments()->whereNull('bank_deposits_id')->get()->sum('amount');
-    		}
-    	}
+        // return $this->apartments->leases->payments->where('')
+        $undeposited = 0;
+        foreach ($this->apartments as $a) {
+            foreach ($a->leases as $l) {
+                $undeposited += $l->payments()->whereNull('bank_deposits_id')->get()->sum('amount');
+            }
+        }
 
-    	return $undeposited;
+        return $undeposited;
     }
 
     public function tenants()
     {
         $tenants = 0;
-        foreach($this->leases as $l)
-        {
+        foreach ($this->leases as $l) {
             $tenants += $l->tenants()->count('users.id');
         }
         return $tenants;
@@ -53,8 +52,7 @@ class Property extends Model
     public function rentBalance()
     {
         $rentbalance = 0;
-        foreach($this->leases as $l)
-        {
+        foreach ($this->leases as $l) {
             $rentbalance += $l->openBalance();
         }
         return $rentbalance;

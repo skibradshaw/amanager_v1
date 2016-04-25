@@ -7,16 +7,16 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
-Use App\Tenant;
+use App\Tenant;
 use App\Lease;
 use App\Apartment;
-Use App\Fee;
+use App\Fee;
 
 class FeeController extends Controller
 {
     public function __construct()
     {
-	    $this->middleware('auth');
+        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class FeeController extends Controller
     {
         //
         $fees = $lease->fees;
-        return view('fees.index',['title' => 'All Fees For: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'),'fees' => $fees,'apartment' => $apartment, 'lease' => $lease]);
+        return view('fees.index', ['title' => 'All Fees For: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'),'fees' => $fees,'apartment' => $apartment, 'lease' => $lease]);
     }
 
     /**
@@ -40,7 +40,7 @@ class FeeController extends Controller
         //
         $fees = ['Miscellaneous' => 'Miscellaneous', 'Late Fee' => 'Late Fee', 'Damage Fee' => 'Damage Fee'];
         
-        return view('fees.edit',['title' => 'Assess Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease, 'fees' => $fees]);
+        return view('fees.edit', ['title' => 'Assess Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease, 'fees' => $fees]);
     }
 
     /**
@@ -58,12 +58,11 @@ class FeeController extends Controller
         $input['month'] = Carbon::parse($input['due_date'])->month;
         $input['year'] = Carbon::parse($input['due_date'])->year;
         $due_date = $input['due_date'];
-        if($due_date->lt($lease->startdate) || $due_date->gt($lease->enddate))
-        {
-            return redirect()->back()->with('status','Fee Due Date Must be within Lease Dates ('.$lease->startdate->format('n/j/Y'). '-' . $lease->enddate->format('n/j/Y').')')->withInput();
+        if ($due_date->lt($lease->startdate) || $due_date->gt($lease->enddate)) {
+            return redirect()->back()->with('status', 'Fee Due Date Must be within Lease Dates ('.$lease->startdate->format('n/j/Y'). '-' . $lease->enddate->format('n/j/Y').')')->withInput();
         }
         $fee = Fee::create($input);
-        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'id' => $lease->id])->with('status', 'Fee Added Successfully!');        
+        return redirect()->route('apartments.lease.show', ['name' => $lease->apartment->name,'id' => $lease->id])->with('status', 'Fee Added Successfully!');
     }
 
     /**
@@ -89,7 +88,7 @@ class FeeController extends Controller
         $fees = ['Miscellaneous' => 'Miscellaneous', 'Late Fee' => 'Late Fee', 'Damage Fee' => 'Damage Fee'];
         // return $id;
         
-        return view('fees.edit',['title' => 'Edit Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease,'fee' => $fee, 'fees' => $fees]);
+        return view('fees.edit', ['title' => 'Edit Fee: ' . $lease->apartment->name . ' Lease: ' . $lease->startdate->format('n/j/y') . ' - ' . $lease->enddate->format('n/j/y'), 'lease' => $lease,'fee' => $fee, 'fees' => $fees]);
     }
 
     /**
@@ -105,7 +104,7 @@ class FeeController extends Controller
         $fee->update($request->except('due_date'));
         $fee->due_date = Carbon::parse($request->input('due_date'));
         $fee->save();
-        return redirect()->route('apartments.lease.show',['name' => $lease->apartment->name,'lease' => $lease->id]);
+        return redirect()->route('apartments.lease.show', ['name' => $lease->apartment->name,'lease' => $lease->id]);
     }
 
     /**

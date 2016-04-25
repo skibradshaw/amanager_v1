@@ -14,23 +14,21 @@ class LeaseDetailController extends Controller
 {
     public function showPetRent(Apartment $apartment, Lease $lease)
     {
-        return view('leases.petrent',['apartment' => $apartment,'lease' => $lease]);
+        return view('leases.petrent', ['apartment' => $apartment,'lease' => $lease]);
     }
 
     public function storePetRent(Apartment $apartment, Lease $lease, Request $request)
     {
         $input = $request->all();
-        foreach($input as $key => $value)
-        {
-            if($key != '_token' && $key != 'monthly_pet_rent')
-            {
+        foreach ($input as $key => $value) {
+            if ($key != '_token' && $key != 'monthly_pet_rent') {
                 //echo $key . ": " . $value . "<br>";
                 $detail = LeaseDetail::find($key);
                 $detail->monthly_pet_rent = $value;
-                $detail->save();            
+                $detail->save();
 
             }
-        } 
+        }
         return back();
     }
 
@@ -39,7 +37,7 @@ class LeaseDetailController extends Controller
         $detail = LeaseDetail::find($request->id);
         $detail->monthly_pet_rent = $request->value;
         $detail->save();
-        return number_format($detail->monthly_pet_rent,2);
+        return number_format($detail->monthly_pet_rent, 2);
     }
     /**
      * Display a listing of the resource.

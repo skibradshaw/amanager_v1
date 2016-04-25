@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local')) {
             $this->app->register('Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider');
             $this->app->register('Way\Generators\GeneratorsServiceProvider');
-        }		
-		       
+        }
+               
     }
 }
